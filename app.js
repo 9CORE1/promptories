@@ -83,7 +83,8 @@ let state = {
   searchQuery: "",
   activePromptId: null,
   recentPromptIds: [],
-  isAdmin: false                 // 관리자 모드 인증 여부
+  isAdmin: false,                 // 관리자 모드 인증 여부
+  lmWarehouseItems: []
 };
 
 // ==========================================================================
@@ -150,6 +151,17 @@ function initData() {
   } else {
     state.warehouseItems = [];
   }
+  
+  const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
+  if (localLMWarehouse) {
+    try {
+      state.lmWarehouseItems = JSON.parse(localLMWarehouse);
+    } catch (e) {
+      state.lmWarehouseItems = [];
+    }
+  } else {
+    state.lmWarehouseItems = [];
+  }
 }
 
 // Save current prompts state to localStorage
@@ -159,6 +171,10 @@ function saveData() {
 
 function saveWarehouseData() {
   localStorage.setItem("prompt_manager_warehouse_data", JSON.stringify(state.warehouseItems));
+}
+
+function saveLMWarehouseData() {
+  localStorage.setItem("prompt_manager_lm_warehouse_data", JSON.stringify(state.lmWarehouseItems));
 }
 
 function saveRecents() {
@@ -193,10 +209,17 @@ function renderApp() {
   if (state.currentFilter === "warehouse") {
     document.getElementById("prompts-main-view").classList.add("hidden");
     document.getElementById("warehouse-main-view").classList.remove("hidden");
+    document.getElementById("lm-warehouse-main-view").classList.add("hidden");
     renderWarehouseGrid();
+  } else if (state.currentFilter === "lm-warehouse") {
+    document.getElementById("prompts-main-view").classList.add("hidden");
+    document.getElementById("warehouse-main-view").classList.add("hidden");
+    document.getElementById("lm-warehouse-main-view").classList.remove("hidden");
+    renderLMWarehouseGrid();
   } else {
     document.getElementById("prompts-main-view").classList.remove("hidden");
     document.getElementById("warehouse-main-view").classList.add("hidden");
+    document.getElementById("lm-warehouse-main-view").classList.add("hidden");
     
     renderSidebar();
     renderPromptGrid();
@@ -430,6 +453,9 @@ function selectQuickFilter(filterType) {
   if (filterType === "warehouse") {
     const navWh = document.getElementById("nav-warehouse");
     if (navWh) navWh.classList.add("active");
+  } else if (filterType === "lm-warehouse") {
+    const navLmWh = document.getElementById("nav-lm-warehouse");
+    if (navLmWh) navLmWh.classList.add("active");
   } else {
     const activeLi = document.querySelector(`.nav-menu > li[data-filter="${filterType}"]`);
     if (activeLi) activeLi.classList.add("active");
@@ -537,14 +563,17 @@ function renderTemplate(text, values) {
 // ==========================================================================
 function openDetailDrawer(id) {
   const isWarehouse = id.startsWith("wh-");
+  const isLMWarehouse = id.startsWith("lm-wh-");
   state.activePromptId = id;
   renderAdminUI();
   
-  if (isWarehouse) {
-    const item = state.warehouseItems.find(x => x.id === id);
+  if (isWarehouse || isLMWarehouse) {
+    const item = isLMWarehouse 
+      ? state.lmWarehouseItems.find(x => x.id === id)
+      : state.warehouseItems.find(x => x.id === id);
     if (!item) return;
     
-    document.getElementById("detail-category").textContent = "프롬프트 창고";
+    document.getElementById("detail-category").textContent = isLMWarehouse ? "LM스타일 창고" : "프롬프트 창고";
     document.getElementById("detail-title").textContent = item.title;
     
     // Description section toggler (Show URL as clickable link)
@@ -1111,6 +1140,10 @@ function setupEventListeners() {
     if (e.key === "Escape") {
       if (document.getElementById("prompt-modal").classList.contains("active")) {
         closeModal();
+      } else if (document.getElementById("warehouse-modal").classList.contains("active")) {
+        closeWarehouseModal();
+      } else if (document.getElementById("lm-warehouse-modal").classList.contains("active")) {
+        closeLMWarehouseModal();
       } else if (document.getElementById("detail-drawer").classList.contains("active")) {
         closeDetailDrawer();
       }
@@ -1205,7 +1238,9 @@ function setupEventListeners() {
   
   document.getElementById("btn-detail-edit").addEventListener("click", () => {
     if (state.activePromptId) {
-      if (state.activePromptId.startsWith("wh-")) {
+      if (state.activePromptId.startsWith("lm-wh-")) {
+        openLMWarehouseModal(state.activePromptId);
+      } else if (state.activePromptId.startsWith("wh-")) {
         openWarehouseModal(state.activePromptId);
       } else {
         openModal(state.activePromptId);
@@ -1215,7 +1250,9 @@ function setupEventListeners() {
   
   document.getElementById("btn-detail-delete").addEventListener("click", () => {
     if (state.activePromptId) {
-      if (state.activePromptId.startsWith("wh-")) {
+      if (state.activePromptId.startsWith("lm-wh-")) {
+        deleteLMWarehouseItem(state.activePromptId);
+      } else if (state.activePromptId.startsWith("wh-")) {
         deleteWarehouseItem(state.activePromptId);
       } else {
         deletePrompt(state.activePromptId);
@@ -1448,6 +1485,79 @@ function setupEventListeners() {
     whFileInput.value = "";
     showToast("첨부 이미지가 제거되었습니다.", "info", "x-circle");
   });
+
+  // LM Style Warehouse Menu Selection
+  document.getElementById("nav-lm-warehouse").addEventListener("click", (e) => {
+    e.preventDefault();
+    selectQuickFilter("lm-warehouse");
+  });
+
+  // LM Warehouse Item Add Modal Toggle
+  document.getElementById("btn-new-lm-warehouse-item").addEventListener("click", () => openLMWarehouseModal());
+  document.getElementById("btn-lm-warehouse-modal-close").addEventListener("click", closeLMWarehouseModal);
+  document.getElementById("btn-lm-warehouse-modal-cancel").addEventListener("click", closeLMWarehouseModal);
+  document.getElementById("lm-warehouse-modal").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("lm-warehouse-modal")) {
+      closeLMWarehouseModal();
+    }
+  });
+
+  // LM Warehouse Submit
+  document.getElementById("lm-warehouse-form").addEventListener("submit", handleLMWarehouseFormSubmit);
+
+  // LM Warehouse Image upload zone trigger
+  const lmMwUploadZone = document.getElementById("lm-wh-image-upload-zone");
+  const lmMwFileInput = document.getElementById("lm-wh-image-input");
+
+  lmMwUploadZone.addEventListener("click", () => lmMwFileInput.click());
+  lmMwFileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) handleLMWarehouseImageUpload(file);
+  });
+
+  lmMwUploadZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    lmMwUploadZone.classList.add("dragover");
+  });
+
+  lmMwUploadZone.addEventListener("dragleave", () => {
+    lmMwUploadZone.classList.remove("dragover");
+  });
+
+  lmMwUploadZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    lmMwUploadZone.classList.remove("dragover");
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      handleLMWarehouseImageUpload(file);
+    }
+  });
+
+  // Global paste hook for LM warehouse modal
+  window.addEventListener("paste", (e) => {
+    const lmWhModal = document.getElementById("lm-warehouse-modal");
+    if (!lmWhModal.classList.contains("active")) return;
+
+    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf("image") !== -1) {
+        const file = items[i].getAsFile();
+        handleLMWarehouseImageUpload(file);
+        break;
+      }
+    }
+  });
+
+  // LM Warehouse Remove image attachment
+  document.getElementById("btn-lm-wh-remove-image").addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.getElementById("lm-wh-image-data").value = "";
+    document.getElementById("lm-wh-image-preview").src = "";
+    document.getElementById("lm-wh-image-preview-container").classList.add("hidden");
+    document.getElementById("lm-wh-upload-placeholder").classList.remove("hidden");
+    lmMwFileInput.value = "";
+    showToast("첨부 이미지가 제거되었습니다.", "info", "x-circle");
+  });
 }
 
 // ==========================================================================
@@ -1662,6 +1772,7 @@ function renderAdminUI() {
   const btnImport = document.getElementById("btn-import-trigger");
   const btnReset = document.getElementById("btn-reset-data");
   const navWarehouse = document.getElementById("nav-warehouse");
+  const navLMWarehouse = document.getElementById("nav-lm-warehouse");
   
   if (!statusBar) return;
   
@@ -1675,6 +1786,7 @@ function renderAdminUI() {
     if (btnImport) btnImport.style.display = "inline-flex";
     if (btnReset) btnReset.style.display = "inline-flex";
     if (navWarehouse) navWarehouse.style.display = "block";
+    if (navLMWarehouse) navLMWarehouse.style.display = "block";
   } else {
     statusBar.classList.remove("admin-active");
     statusText.textContent = "일반 사용자 모드";
@@ -1688,6 +1800,13 @@ function renderAdminUI() {
       navWarehouse.style.display = "none";
       // Fallback to default prompts view if logged out while inside warehouse
       if (state.currentFilter === "warehouse") {
+        selectQuickFilter("all");
+      }
+    }
+    if (navLMWarehouse) {
+      navLMWarehouse.style.display = "none";
+      // Fallback to default prompts view if logged out while inside warehouse
+      if (state.currentFilter === "lm-warehouse") {
         selectQuickFilter("all");
       }
     }
@@ -1929,6 +2048,243 @@ function renderWarehouseGrid() {
     card.querySelector(".wh-delete-btn").addEventListener("click", (e) => {
       e.stopPropagation();
       deleteWarehouseItem(item.id);
+    });
+
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".btn-copy-wh-prompt") || 
+          e.target.closest(".wh-delete-btn") || 
+          e.target.closest(".card-thumbnail-container") || 
+          e.target.closest("a")) {
+        return;
+      }
+      openDetailDrawer(item.id);
+    });
+    
+    grid.appendChild(card);
+  });
+  
+  lucide.createIcons();
+}
+
+// ==========================================================================
+// LM STYLE WAREHOUSE CONTROLLERS
+// ==========================================================================
+function openLMWarehouseModal(editingId = null) {
+  const form = document.getElementById("lm-warehouse-form");
+  form.reset();
+  
+  // Reset preview fields
+  document.getElementById("lm-wh-id").value = "";
+  document.getElementById("lm-wh-image-data").value = "";
+  document.getElementById("lm-wh-image-preview").src = "";
+  document.getElementById("lm-wh-image-preview-container").classList.add("hidden");
+  document.getElementById("lm-wh-upload-placeholder").classList.remove("hidden");
+  
+  const modalTitle = document.getElementById("lm-warehouse-modal-title");
+  const submitBtn = document.getElementById("btn-lm-warehouse-modal-submit");
+  
+  if (editingId && typeof editingId === "string") {
+    const item = state.lmWarehouseItems.find(x => x.id === editingId);
+    if (!item) return;
+    
+    modalTitle.textContent = "LM스타일 자료 수정";
+    submitBtn.textContent = "수정하기";
+    
+    document.getElementById("lm-wh-id").value = item.id;
+    document.getElementById("lm-wh-title").value = item.title;
+    document.getElementById("lm-wh-url").value = item.url || "";
+    document.getElementById("lm-wh-prompt").value = item.prompt || "";
+    
+    if (item.image) {
+      document.getElementById("lm-wh-image-data").value = item.image;
+      document.getElementById("lm-wh-image-preview").src = item.image;
+      document.getElementById("lm-wh-image-preview-container").classList.remove("hidden");
+      document.getElementById("lm-wh-upload-placeholder").classList.add("hidden");
+    }
+    
+    closeDetailDrawer();
+  } else {
+    modalTitle.textContent = "새 LM스타일 자료 등록";
+    submitBtn.textContent = "등록하기";
+  }
+  
+  document.getElementById("lm-warehouse-modal").classList.add("active");
+  setTimeout(() => document.getElementById("lm-wh-title").focus(), 150);
+}
+
+function closeLMWarehouseModal() {
+  document.getElementById("lm-warehouse-modal").classList.remove("active");
+}
+
+function handleLMWarehouseImageUpload(file) {
+  if (!file.type.startsWith("image/")) {
+    showToast("이미지 파일만 첨부할 수 있습니다.", "error", "alert-circle");
+    return;
+  }
+  
+  showToast("이미지를 압축 및 변환 중...", "info", "refresh-cw");
+  
+  compressImage(file, (base64Str) => {
+    document.getElementById("lm-wh-image-data").value = base64Str;
+    document.getElementById("lm-wh-image-preview").src = base64Str;
+    document.getElementById("lm-wh-image-preview-container").classList.remove("hidden");
+    document.getElementById("lm-wh-upload-placeholder").classList.add("hidden");
+    showToast("캡처 이미지가 임시 등록되었습니다!", "success", "image");
+  });
+}
+
+function handleLMWarehouseFormSubmit(e) {
+  e.preventDefault();
+  
+  const id = document.getElementById("lm-wh-id").value;
+  const title = document.getElementById("lm-wh-title").value.trim();
+  const url = document.getElementById("lm-wh-url").value.trim();
+  const prompt = document.getElementById("lm-wh-prompt").value.trim();
+  const imageData = document.getElementById("lm-wh-image-data").value;
+  
+  if (!imageData) {
+    showToast("캡처 이미지를 첨부해주세요.", "error", "alert-circle");
+    return;
+  }
+  
+  const isEditing = id !== "";
+  
+  if (isEditing) {
+    const idx = state.lmWarehouseItems.findIndex(item => item.id === id);
+    if (idx !== -1) {
+      state.lmWarehouseItems[idx] = {
+        ...state.lmWarehouseItems[idx],
+        title,
+        url,
+        prompt,
+        image: imageData,
+        updatedAt: new Date().toISOString()
+      };
+      showToast("자료가 수정되었습니다.", "success", "archive");
+    }
+  } else {
+    const newItem = {
+      id: "lm-wh-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9),
+      title,
+      url,
+      prompt,
+      image: imageData,
+      createdAt: new Date().toISOString()
+    };
+    state.lmWarehouseItems.push(newItem);
+    showToast("LM스타일 창고에 자료가 등록되었습니다.", "success", "archive");
+  }
+  
+  saveLMWarehouseData();
+  closeLMWarehouseModal();
+  renderLMWarehouseGrid();
+  
+  if (isEditing) {
+    setTimeout(() => {
+      openDetailDrawer(id);
+    }, 300);
+  }
+}
+
+function deleteLMWarehouseItem(id) {
+  if (confirm("정말 이 자료를 삭제하시겠습니까?")) {
+    state.lmWarehouseItems = state.lmWarehouseItems.filter(item => item.id !== id);
+    saveLMWarehouseData();
+    closeDetailDrawer();
+    renderLMWarehouseGrid();
+    showToast("자료가 정상적으로 삭제되었습니다.", "info", "trash-2");
+  }
+}
+
+function renderLMWarehouseGrid() {
+  const grid = document.getElementById("lm-warehouse-grid");
+  const emptyState = document.getElementById("lm-warehouse-empty-state");
+  const items = [...state.lmWarehouseItems];
+  
+  if (items.length === 0) {
+    grid.innerHTML = "";
+    emptyState.style.display = "flex";
+    return;
+  }
+  
+  emptyState.style.display = "none";
+  grid.innerHTML = "";
+  
+  // Sort items desc (newest first)
+  items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "prompt-card";
+    
+    // Thumbnail section
+    const imageHtml = item.image 
+      ? `<div class="card-thumbnail-container" style="height: 160px; overflow: hidden; border-radius: 8px; position: relative; cursor: zoom-in;">
+           <img src="${item.image}" alt="${escapeHtml(item.title)}" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-smooth);">
+           <div class="image-overlay-info"><i data-lucide="zoom-in"></i> 클릭하여 확대</div>
+         </div>`
+      : "";
+      
+    // Footer button rendering
+    const linkBtnHtml = item.url 
+      ? `<a href="${item.url}" target="_blank" class="btn btn-secondary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px;">
+           <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> 바로가기
+         </a>`
+      : `<span style="font-size: 11px; color: var(--text-muted);">링크 없음</span>`;
+      
+    card.innerHTML = `
+      <div class="card-body" style="padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+        ${imageHtml}
+        <h3 class="card-title" style="font-size: 14px; font-weight: 600; line-height: 1.4; height: auto; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+          ${escapeHtml(item.title)}
+        </h3>
+        ${item.prompt ? `
+          <div class="card-prompt-section" style="margin-top: 6px; padding: 10px; background-color: var(--bg-main); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+              <span>연관 프롬프트</span>
+              <button type="button" class="btn-copy-wh-prompt" style="background: none; border: none; padding: 2px 6px; color: var(--accent-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--font-sans); font-weight: 500; background-color: rgba(79, 70, 229, 0.08); border-radius: 4px; transition: var(--transition-fast);">
+                <i data-lucide="copy" style="width: 11px; height: 11px;"></i> 복사
+              </button>
+            </div>
+            <pre style="font-size: 12px; color: var(--text-main); font-family: var(--font-mono); white-space: pre-wrap; word-break: break-all; margin: 0; max-height: 80px; overflow-y: auto; line-height: 1.5; padding: 2px 0;">${escapeHtml(item.prompt)}</pre>
+          </div>
+        ` : ""}
+      </div>
+      <div class="card-footer" style="padding: 10px 14px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-card);">
+        ${linkBtnHtml}
+        <button class="btn-icon text-danger wh-delete-btn" title="삭제하기" style="padding: 4px;">
+          <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+        </button>
+      </div>
+    `;
+    
+    // Click events
+    if (item.image) {
+      card.querySelector(".card-thumbnail-container").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const lightboxModal = document.getElementById("lightbox-modal");
+        const lightboxImage = document.getElementById("lightbox-image");
+        lightboxImage.src = item.image;
+        lightboxModal.classList.add("active");
+      });
+    }
+
+    // Copy prompt event
+    const copyBtn = card.querySelector(".btn-copy-wh-prompt");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(item.prompt).then(() => {
+          showToast("프롬프트가 복사되었습니다!", "success", "check");
+        }).catch(err => {
+          showToast("복사에 실패했습니다.", "error", "alert-circle");
+        });
+      });
+    }
+    
+    card.querySelector(".wh-delete-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteLMWarehouseItem(item.id);
     });
 
     card.addEventListener("click", (e) => {

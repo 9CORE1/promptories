@@ -72,6 +72,12 @@
               <span>프롬프트 창고</span>
             </a>
           </li>
+          <li class="nav-item" id="nav-lm-warehouse" style="display: none;">
+            <a href="#" class="nav-link">
+              <i data-lucide="layers"></i>
+              <span>LM스타일 창고</span>
+            </a>
+          </li>
         </ul>
         
         <!-- Categories Section -->
@@ -194,6 +200,33 @@
             </div>
             <h2>저장된 창고 자료가 없습니다</h2>
             <p>상단의 버튼을 통해 참조 링크나 결과물 캡처를 기록해보세요.</p>
+          </div>
+        </div>
+
+        <!-- LM Style Warehouse Section (Admin Only) -->
+        <div id="lm-warehouse-main-view" class="hidden">
+          <div class="warehouse-header flex-between" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">LM스타일 창고</h2>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">LM 스타일의 템플릿과 실행 결과물을 저장하고 관리합니다.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-new-lm-warehouse-item">
+              <i data-lucide="plus"></i>
+              <span>새 자료 등록</span>
+            </button>
+          </div>
+          
+          <div class="prompt-grid" id="lm-warehouse-grid">
+            <!-- Dynamically populated -->
+          </div>
+          
+          <!-- LM Warehouse Empty State -->
+          <div class="empty-state" id="lm-warehouse-empty-state" style="display: none;">
+            <div class="empty-icon">
+              <i data-lucide="layers"></i>
+            </div>
+            <h2>저장된 LM스타일 자료가 없습니다</h2>
+            <p>상단의 버튼을 통해 새로운 LM스타일 자료를 기록해보세요.</p>
           </div>
         </div>
       </div>
@@ -443,6 +476,61 @@
           <div class="modal-actions">
             <button type="button" class="btn btn-secondary" id="btn-warehouse-modal-cancel">취소</button>
             <button type="submit" class="btn btn-primary" id="btn-warehouse-modal-submit">등록하기</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- LM Warehouse Item Add Modal -->
+    <div class="modal-overlay" id="lm-warehouse-modal">
+      <div class="modal-container modal-sm">
+        <div class="modal-header">
+          <h2 id="lm-warehouse-modal-title">새 LM스타일 자료 등록</h2>
+          <button class="btn-icon" id="btn-lm-warehouse-modal-close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        
+        <form id="lm-warehouse-form" class="modal-form">
+          <input type="hidden" id="lm-wh-id">
+          
+          <div class="form-group">
+            <label for="lm-wh-title">자료 설명/제목 <span class="required">*</span></label>
+            <input type="text" id="lm-wh-title" placeholder="예: LM스타일 번역 템플릿" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
+          </div>
+          
+          <div class="form-group">
+            <label for="lm-wh-url">참조 링크 (URL) <span class="muted">(선택사항)</span></label>
+            <input type="text" id="lm-wh-url" placeholder="예: https://example.com/reference" autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
+          </div>
+          
+          <div class="form-group">
+            <label for="lm-wh-prompt">프롬프트 내용 <span class="muted">(선택사항)</span></label>
+            <textarea id="lm-wh-prompt" placeholder="관련 프롬프트 내용을 입력하세요." rows="4" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%; resize: vertical; font-family: inherit; line-height: 1.6;"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>캡처 이미지 첨부 <span class="required">*</span> <span class="muted">(클릭 업로드 또는 이 창에서 Ctrl+V 붙여넣기 가능)</span></label>
+            <div class="image-upload-zone" id="lm-wh-image-upload-zone">
+              <div class="upload-placeholder" id="lm-wh-upload-placeholder">
+                <i data-lucide="image-plus" class="upload-icon"></i>
+                <span class="upload-text">클릭하여 이미지 파일 선택 또는 스크린샷 붙여넣기 (Ctrl+V)</span>
+              </div>
+              <input type="file" id="lm-wh-image-input" accept="image/*" class="hidden">
+              
+              <div class="image-preview-container hidden" id="lm-wh-image-preview-container">
+                <img id="lm-wh-image-preview" src="" alt="첨부 이미지 미리보기" style="max-height: 180px; max-width: 100%; border-radius: 6px; object-fit: contain;">
+                <button type="button" class="btn-remove-image" id="btn-lm-wh-remove-image" title="이미지 삭제">
+                  <i data-lucide="x"></i>
+                </button>
+              </div>
+            </div>
+            <input type="hidden" id="lm-wh-image-data" required>
+          </div>
+          
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-lm-warehouse-modal-cancel">취소</button>
+            <button type="submit" class="btn btn-primary" id="btn-lm-warehouse-modal-submit">등록하기</button>
           </div>
         </form>
       </div>
