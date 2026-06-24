@@ -1074,6 +1074,26 @@ async function syncLMWarehouseFromServer() {
   }
 }
 
+function copyWarehouseJson() {
+  const dataStr = JSON.stringify(state.warehouseItems, null, 2);
+  navigator.clipboard.writeText(dataStr).then(() => {
+    showToast("창고 데이터(JSON)가 클립보드에 복사되었습니다! 메모장에 붙여넣고 저장하세요.", "success", "copy");
+  }).catch(err => {
+    console.error(err);
+    showToast("복사에 실패했습니다. 권한을 확인해주세요.", "error", "alert-circle");
+  });
+}
+
+function copyLMWarehouseJson() {
+  const dataStr = JSON.stringify(state.lmWarehouseItems, null, 2);
+  navigator.clipboard.writeText(dataStr).then(() => {
+    showToast("LM스타일 창고 데이터(JSON)가 클립보드에 복사되었습니다! 메모장에 붙여넣고 저장하세요.", "success", "copy");
+  }).catch(err => {
+    console.error(err);
+    showToast("복사에 실패했습니다. 권한을 확인해주세요.", "error", "alert-circle");
+  });
+}
+
 function handleImport(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -1517,6 +1537,7 @@ function setupEventListeners() {
   document.getElementById("btn-new-warehouse-item").addEventListener("click", () => openWarehouseModal());
   document.getElementById("btn-sync-warehouse").addEventListener("click", syncWarehouseFromServer);
   document.getElementById("btn-export-warehouse").addEventListener("click", exportWarehouseData);
+  document.getElementById("btn-copy-warehouse-json").addEventListener("click", copyWarehouseJson);
   document.getElementById("btn-warehouse-modal-close").addEventListener("click", closeWarehouseModal);
   document.getElementById("btn-warehouse-modal-cancel").addEventListener("click", closeWarehouseModal);
   document.getElementById("warehouse-modal").addEventListener("click", (e) => {
@@ -1592,6 +1613,7 @@ function setupEventListeners() {
   document.getElementById("btn-new-lm-warehouse-item").addEventListener("click", () => openLMWarehouseModal());
   document.getElementById("btn-sync-lm-warehouse").addEventListener("click", syncLMWarehouseFromServer);
   document.getElementById("btn-export-lm-warehouse").addEventListener("click", exportLMWarehouseData);
+  document.getElementById("btn-copy-lm-warehouse-json").addEventListener("click", copyLMWarehouseJson);
   document.getElementById("btn-lm-warehouse-modal-close").addEventListener("click", closeLMWarehouseModal);
   document.getElementById("btn-lm-warehouse-modal-cancel").addEventListener("click", closeLMWarehouseModal);
   document.getElementById("lm-warehouse-modal").addEventListener("click", (e) => {
