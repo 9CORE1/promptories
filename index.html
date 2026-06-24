@@ -183,10 +183,16 @@
               <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">프롬프트 창고</h2>
               <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">웹 링크 및 캡처 이미지를 카드 형태로 보관하고 관리합니다.</p>
             </div>
-            <button class="btn btn-primary btn-sm" id="btn-new-warehouse-item">
-              <i data-lucide="plus"></i>
-              <span>새 링크/캡처 등록</span>
-            </button>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" id="btn-export-warehouse" title="현재 창고 데이터를 warehouse_data.json 파일로 내보냅니다.">
+                <i data-lucide="download"></i>
+                <span>JSON 다운로드</span>
+              </button>
+              <button class="btn btn-primary btn-sm" id="btn-new-warehouse-item">
+                <i data-lucide="plus"></i>
+                <span>새 링크/캡처 등록</span>
+              </button>
+            </div>
           </div>
           
           <div class="prompt-grid" id="warehouse-grid">
@@ -210,10 +216,16 @@
               <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">LM스타일 창고</h2>
               <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">LM 스타일의 템플릿과 실행 결과물을 저장하고 관리합니다.</p>
             </div>
-            <button class="btn btn-primary btn-sm" id="btn-new-lm-warehouse-item">
-              <i data-lucide="plus"></i>
-              <span>새 자료 등록</span>
-            </button>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" id="btn-export-lm-warehouse" title="현재 LM스타일 창고 데이터를 lm_warehouse_data.json 파일로 내보냅니다.">
+                <i data-lucide="download"></i>
+                <span>JSON 다운로드</span>
+              </button>
+              <button class="btn btn-primary btn-sm" id="btn-new-lm-warehouse-item">
+                <i data-lucide="plus"></i>
+                <span>새 자료 등록</span>
+              </button>
+            </div>
           </div>
           
           <div class="prompt-grid" id="lm-warehouse-grid">
