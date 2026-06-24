@@ -1786,3 +1786,9 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Warehouse Card Copy Button Hover Effect */
+.btn-copy-wh-prompt:hover {
+  background-color: rgba(79, 70, 229, 0.15) !important;
+  color: var(--accent-primary) !important;
+}

@@ -1678,6 +1678,7 @@ function handleWarehouseFormSubmit(e) {
   
   const title = document.getElementById("wh-title").value.trim();
   const url = document.getElementById("wh-url").value.trim();
+  const prompt = document.getElementById("wh-prompt").value.trim();
   const imageData = document.getElementById("wh-image-data").value;
   
   if (!imageData) {
@@ -1689,6 +1690,7 @@ function handleWarehouseFormSubmit(e) {
     id: "wh-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9),
     title,
     url,
+    prompt,
     image: imageData,
     createdAt: new Date().toISOString()
   };
@@ -1751,6 +1753,17 @@ function renderWarehouseGrid() {
         <h3 class="card-title" style="font-size: 14px; font-weight: 600; line-height: 1.4; height: auto; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
           ${escapeHtml(item.title)}
         </h3>
+        ${item.prompt ? `
+          <div class="card-prompt-section" style="margin-top: 6px; padding: 10px; background-color: var(--bg-main); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+              <span>연관 프롬프트</span>
+              <button type="button" class="btn-copy-wh-prompt" style="background: none; border: none; padding: 2px 6px; color: var(--accent-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--font-sans); font-weight: 500; background-color: rgba(79, 70, 229, 0.08); border-radius: 4px; transition: var(--transition-fast);">
+                <i data-lucide="copy" style="width: 11px; height: 11px;"></i> 복사
+              </button>
+            </div>
+            <pre style="font-size: 12px; color: var(--text-main); font-family: var(--font-mono); white-space: pre-wrap; word-break: break-all; margin: 0; max-height: 80px; overflow-y: auto; line-height: 1.5; padding: 2px 0;">${escapeHtml(item.prompt)}</pre>
+          </div>
+        ` : ""}
       </div>
       <div class="card-footer" style="padding: 10px 14px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-card);">
         ${linkBtnHtml}
@@ -1767,6 +1780,19 @@ function renderWarehouseGrid() {
         const lightboxImage = document.getElementById("lightbox-image");
         lightboxImage.src = item.image;
         lightboxModal.classList.add("active");
+      });
+    }
+
+    // Copy prompt event
+    const copyBtn = card.querySelector(".btn-copy-wh-prompt");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(item.prompt).then(() => {
+          showToast("프롬프트가 복사되었습니다!", "success", "check");
+        }).catch(err => {
+          showToast("복사에 실패했습니다.", "error", "alert-circle");
+        });
       });
     }
     
