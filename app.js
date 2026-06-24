@@ -536,98 +536,165 @@ function renderTemplate(text, values) {
 // DETAILS DRAWER INTERACTIVE LOGIC
 // ==========================================================================
 function openDetailDrawer(id) {
-  const prompt = state.prompts.find(p => p.id === id);
-  if (!prompt) return;
-  
+  const isWarehouse = id.startsWith("wh-");
   state.activePromptId = id;
   renderAdminUI();
   
-  // Set UI elements
-  document.getElementById("detail-category").textContent = prompt.category || "기타";
-  document.getElementById("detail-title").textContent = prompt.title;
-  document.getElementById("detail-desc").textContent = prompt.description || "등록된 설명이나 메모가 없습니다.";
-  
-  // Description section toggler
-  const descSection = document.getElementById("detail-desc-section");
-  if (!prompt.description) {
-    descSection.style.display = "none";
-  } else {
-    descSection.style.display = "flex";
-  }
-
-  // Recommended model section toggler
-  const modelSection = document.getElementById("detail-model-section");
-  const modelElement = document.getElementById("detail-model");
-  if (prompt.recommendedModel && prompt.recommendedModel.trim()) {
-    modelElement.innerHTML = `<i data-lucide="cpu" class="size-xs"></i><span>${escapeHtml(prompt.recommendedModel)}</span>`;
-    modelSection.style.display = "flex";
-  } else {
-    modelSection.style.display = "none";
-  }
-  
-  // Tags cloud
-  const tagsContainer = document.getElementById("detail-tags");
-  tagsContainer.innerHTML = "";
-  if (prompt.tags && prompt.tags.length > 0) {
-    prompt.tags.forEach(tag => {
-      const span = document.createElement("span");
-      span.className = "drawer-tag";
-      span.textContent = `#${tag}`;
-      tagsContainer.appendChild(span);
-    });
-    tagsContainer.style.display = "flex";
-  } else {
-    tagsContainer.style.display = "none";
-  }
-  
-  // Output example section
-  const outputSection = document.getElementById("detail-output-section");
-  const outputText = document.getElementById("detail-output-text");
-  const outputTextContainer = document.getElementById("detail-output-text-container");
-  const outputImageContainer = document.getElementById("detail-output-image-container");
-  const outputImage = document.getElementById("detail-output-image");
-  const copyOutputBtn = document.getElementById("btn-copy-output");
-  
-  const hasText = prompt.outputText && prompt.outputText.trim();
-  const hasImage = prompt.outputImage && prompt.outputImage.trim();
-  
-  if (hasText || hasImage) {
-    outputSection.style.display = "flex";
+  if (isWarehouse) {
+    const item = state.warehouseItems.find(x => x.id === id);
+    if (!item) return;
     
-    if (hasText) {
-      outputText.textContent = prompt.outputText;
-      outputTextContainer.style.display = "block";
-      copyOutputBtn.style.display = "inline-flex";
+    document.getElementById("detail-category").textContent = "프롬프트 창고";
+    document.getElementById("detail-title").textContent = item.title;
+    
+    // Description section toggler (Show URL as clickable link)
+    const descSection = document.getElementById("detail-desc-section");
+    const descElement = document.getElementById("detail-desc");
+    if (item.url) {
+      descElement.innerHTML = `참조 링크: <a href="${item.url}" target="_blank" style="color: var(--accent-primary); font-weight: 500; text-decoration: underline; word-break: break-all;">${escapeHtml(item.url)}</a>`;
+      descSection.style.display = "flex";
     } else {
-      outputTextContainer.style.display = "none";
-      copyOutputBtn.style.display = "none";
+      descSection.style.display = "none";
+    }
+
+    // Recommended model section toggler (hide for warehouse)
+    document.getElementById("detail-model-section").style.display = "none";
+    
+    // Tags cloud (hide for warehouse)
+    document.getElementById("detail-tags").style.display = "none";
+    
+    // Original prompt text section (Show Associated Prompt text)
+    const originalTextElement = document.getElementById("detail-original-text");
+    const promptSection = document.getElementById("detail-prompt-section");
+    if (item.prompt && item.prompt.trim()) {
+      originalTextElement.textContent = item.prompt;
+      promptSection.style.display = "flex";
+    } else {
+      originalTextElement.textContent = "";
+      promptSection.style.display = "none";
     }
     
-    if (hasImage) {
-      outputImage.src = prompt.outputImage;
+    // Output example section (Show Image capture)
+    const outputSection = document.getElementById("detail-output-section");
+    const outputTextContainer = document.getElementById("detail-output-text-container");
+    const outputImageContainer = document.getElementById("detail-output-image-container");
+    const outputImage = document.getElementById("detail-output-image");
+    const copyOutputBtn = document.getElementById("btn-copy-output");
+    
+    outputSection.style.display = "flex";
+    outputTextContainer.style.display = "none";
+    copyOutputBtn.style.display = "none";
+    
+    if (item.image) {
+      outputImage.src = item.image;
       outputImageContainer.style.display = "flex";
     } else {
       outputImageContainer.style.display = "none";
       outputImage.src = "";
     }
+    
+    // Hide usage count container
+    document.getElementById("detail-usage-container").style.display = "none";
+    
+    const createdDate = new Date(item.createdAt);
+    document.getElementById("detail-created-at").textContent = `${createdDate.getFullYear()}-${String(createdDate.getMonth() + 1).padStart(2, '0')}-${String(createdDate.getDate()).padStart(2, '0')}`;
+    
+    // Show drawer UI
+    document.getElementById("detail-drawer-backdrop").classList.add("active");
+    document.getElementById("detail-drawer").classList.add("active");
   } else {
-    outputSection.style.display = "none";
-  }
-  
-  // Usage statistics & dates
-  document.getElementById("detail-usage-count").textContent = prompt.usageCount || 0;
-  
-  const createdDate = new Date(prompt.createdAt);
-  document.getElementById("detail-created-at").textContent = `${createdDate.getFullYear()}-${String(createdDate.getMonth() + 1).padStart(2, '0')}-${String(createdDate.getDate()).padStart(2, '0')}`;
-  
+    const prompt = state.prompts.find(p => p.id === id);
+    if (!prompt) return;
+    
+    // Reset standard elements display
+    document.getElementById("detail-usage-container").style.display = "block";
+    document.getElementById("detail-prompt-section").style.display = "flex";
+    
+    // Set UI elements
+    document.getElementById("detail-category").textContent = prompt.category || "기타";
+    document.getElementById("detail-title").textContent = prompt.title;
+    document.getElementById("detail-desc").textContent = prompt.description || "등록된 설명이나 메모가 없습니다.";
+    
+    // Description section toggler
+    const descSection = document.getElementById("detail-desc-section");
+    if (!prompt.description) {
+      descSection.style.display = "none";
+    } else {
+      descSection.style.display = "flex";
+    }
 
-  
-  // Setup Original text preview directly (no variables form/tabs)
-  document.getElementById("detail-original-text").textContent = prompt.promptText;
-  
-  // Show drawer UI
-  document.getElementById("detail-drawer-backdrop").classList.add("active");
-  document.getElementById("detail-drawer").classList.add("active");
+    // Recommended model section toggler
+    const modelSection = document.getElementById("detail-model-section");
+    const modelElement = document.getElementById("detail-model");
+    if (prompt.recommendedModel && prompt.recommendedModel.trim()) {
+      modelElement.innerHTML = `<i data-lucide="cpu" class="size-xs"></i><span>${escapeHtml(prompt.recommendedModel)}</span>`;
+      modelSection.style.display = "flex";
+    } else {
+      modelSection.style.display = "none";
+    }
+    
+    // Tags cloud
+    const tagsContainer = document.getElementById("detail-tags");
+    tagsContainer.innerHTML = "";
+    if (prompt.tags && prompt.tags.length > 0) {
+      prompt.tags.forEach(tag => {
+        const span = document.createElement("span");
+        span.className = "drawer-tag";
+        span.textContent = `#${tag}`;
+        tagsContainer.appendChild(span);
+      });
+      tagsContainer.style.display = "flex";
+    } else {
+      tagsContainer.style.display = "none";
+    }
+    
+    // Output example section
+    const outputSection = document.getElementById("detail-output-section");
+    const outputText = document.getElementById("detail-output-text");
+    const outputTextContainer = document.getElementById("detail-output-text-container");
+    const outputImageContainer = document.getElementById("detail-output-image-container");
+    const outputImage = document.getElementById("detail-output-image");
+    const copyOutputBtn = document.getElementById("btn-copy-output");
+    
+    const hasText = prompt.outputText && prompt.outputText.trim();
+    const hasImage = prompt.outputImage && prompt.outputImage.trim();
+    
+    if (hasText || hasImage) {
+      outputSection.style.display = "flex";
+      
+      if (hasText) {
+        outputText.textContent = prompt.outputText;
+        outputTextContainer.style.display = "block";
+        copyOutputBtn.style.display = "inline-flex";
+      } else {
+        outputTextContainer.style.display = "none";
+        copyOutputBtn.style.display = "none";
+      }
+      
+      if (hasImage) {
+        outputImage.src = prompt.outputImage;
+        outputImageContainer.style.display = "flex";
+      } else {
+        outputImageContainer.style.display = "none";
+        outputImage.src = "";
+      }
+    } else {
+      outputSection.style.display = "none";
+    }
+    
+    // Usage statistics & dates
+    document.getElementById("detail-usage-count").textContent = prompt.usageCount || 0;
+    
+    const createdDate = new Date(prompt.createdAt);
+    document.getElementById("detail-created-at").textContent = `${createdDate.getFullYear()}-${String(createdDate.getMonth() + 1).padStart(2, '0')}-${String(createdDate.getDate()).padStart(2, '0')}`;
+    
+    // Setup Original text preview directly (no variables form/tabs)
+    document.getElementById("detail-original-text").textContent = prompt.promptText;
+    
+    // Show drawer UI
+    document.getElementById("detail-drawer-backdrop").classList.add("active");
+    document.getElementById("detail-drawer").classList.add("active");
+  }
 }
 
 function closeDetailDrawer() {
@@ -1138,13 +1205,21 @@ function setupEventListeners() {
   
   document.getElementById("btn-detail-edit").addEventListener("click", () => {
     if (state.activePromptId) {
-      openModal(state.activePromptId);
+      if (state.activePromptId.startsWith("wh-")) {
+        openWarehouseModal(state.activePromptId);
+      } else {
+        openModal(state.activePromptId);
+      }
     }
   });
   
   document.getElementById("btn-detail-delete").addEventListener("click", () => {
     if (state.activePromptId) {
-      deletePrompt(state.activePromptId);
+      if (state.activePromptId.startsWith("wh-")) {
+        deleteWarehouseItem(state.activePromptId);
+      } else {
+        deletePrompt(state.activePromptId);
+      }
     }
   });
   
@@ -1638,15 +1713,44 @@ function renderAdminUI() {
 // ==========================================================================
 // PROMPT WAREHOUSE CONTROLLERS
 // ==========================================================================
-function openWarehouseModal() {
+function openWarehouseModal(editingId = null) {
   const form = document.getElementById("warehouse-form");
   form.reset();
   
   // Reset preview fields
+  document.getElementById("wh-id").value = "";
   document.getElementById("wh-image-data").value = "";
   document.getElementById("wh-image-preview").src = "";
   document.getElementById("wh-image-preview-container").classList.add("hidden");
   document.getElementById("wh-upload-placeholder").classList.remove("hidden");
+  
+  const modalTitle = document.getElementById("warehouse-modal-title");
+  const submitBtn = document.getElementById("btn-warehouse-modal-submit");
+  
+  if (editingId) {
+    const item = state.warehouseItems.find(x => x.id === editingId);
+    if (!item) return;
+    
+    modalTitle.textContent = "링크/캡처 자료 수정";
+    submitBtn.textContent = "수정하기";
+    
+    document.getElementById("wh-id").value = item.id;
+    document.getElementById("wh-title").value = item.title;
+    document.getElementById("wh-url").value = item.url || "";
+    document.getElementById("wh-prompt").value = item.prompt || "";
+    
+    if (item.image) {
+      document.getElementById("wh-image-data").value = item.image;
+      document.getElementById("wh-image-preview").src = item.image;
+      document.getElementById("wh-image-preview-container").classList.remove("hidden");
+      document.getElementById("wh-upload-placeholder").classList.add("hidden");
+    }
+    
+    closeDetailDrawer();
+  } else {
+    modalTitle.textContent = "새 링크/캡처 등록";
+    submitBtn.textContent = "등록하기";
+  }
   
   document.getElementById("warehouse-modal").classList.add("active");
   setTimeout(() => document.getElementById("wh-title").focus(), 150);
@@ -1676,6 +1780,7 @@ function handleWarehouseImageUpload(file) {
 function handleWarehouseFormSubmit(e) {
   e.preventDefault();
   
+  const id = document.getElementById("wh-id").value;
   const title = document.getElementById("wh-title").value.trim();
   const url = document.getElementById("wh-url").value.trim();
   const prompt = document.getElementById("wh-prompt").value.trim();
@@ -1686,26 +1791,50 @@ function handleWarehouseFormSubmit(e) {
     return;
   }
   
-  const newItem = {
-    id: "wh-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9),
-    title,
-    url,
-    prompt,
-    image: imageData,
-    createdAt: new Date().toISOString()
-  };
+  const isEditing = id !== "";
   
-  state.warehouseItems.push(newItem);
+  if (isEditing) {
+    const idx = state.warehouseItems.findIndex(item => item.id === id);
+    if (idx !== -1) {
+      state.warehouseItems[idx] = {
+        ...state.warehouseItems[idx],
+        title,
+        url,
+        prompt,
+        image: imageData,
+        updatedAt: new Date().toISOString()
+      };
+      showToast("창고 자료가 수정되었습니다.", "success", "archive");
+    }
+  } else {
+    const newItem = {
+      id: "wh-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9),
+      title,
+      url,
+      prompt,
+      image: imageData,
+      createdAt: new Date().toISOString()
+    };
+    state.warehouseItems.push(newItem);
+    showToast("창고에 자료가 등록되었습니다.", "success", "archive");
+  }
+  
   saveWarehouseData();
   closeWarehouseModal();
   renderWarehouseGrid();
-  showToast("창고에 자료가 등록되었습니다.", "success", "archive");
+  
+  if (isEditing) {
+    setTimeout(() => {
+      openDetailDrawer(id);
+    }, 300);
+  }
 }
 
 function deleteWarehouseItem(id) {
   if (confirm("정말 이 창고 자료를 삭제하시겠습니까?")) {
     state.warehouseItems = state.warehouseItems.filter(item => item.id !== id);
     saveWarehouseData();
+    closeDetailDrawer();
     renderWarehouseGrid();
     showToast("자료가 정상적으로 삭제되었습니다.", "info", "trash-2");
   }
@@ -1775,7 +1904,8 @@ function renderWarehouseGrid() {
     
     // Click events
     if (item.image) {
-      card.querySelector(".card-thumbnail-container").addEventListener("click", () => {
+      card.querySelector(".card-thumbnail-container").addEventListener("click", (e) => {
+        e.stopPropagation();
         const lightboxModal = document.getElementById("lightbox-modal");
         const lightboxImage = document.getElementById("lightbox-image");
         lightboxImage.src = item.image;
@@ -1799,6 +1929,16 @@ function renderWarehouseGrid() {
     card.querySelector(".wh-delete-btn").addEventListener("click", (e) => {
       e.stopPropagation();
       deleteWarehouseItem(item.id);
+    });
+
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".btn-copy-wh-prompt") || 
+          e.target.closest(".wh-delete-btn") || 
+          e.target.closest(".card-thumbnail-container") || 
+          e.target.closest("a")) {
+        return;
+      }
+      openDetailDrawer(item.id);
     });
     
     grid.appendChild(card);

@@ -236,7 +236,7 @@
 
         
         <!-- Prompt Original Text Box (Simple Layout) -->
-        <div class="drawer-section">
+        <div class="drawer-section" id="detail-prompt-section">
           <h4 class="section-title flex-between">
             <span>프롬프트 본문 템플릿</span>
             <button class="btn btn-primary btn-sm" id="btn-copy-original" style="font-size: 11px; padding: 4px 8px; height: auto; display: inline-flex; align-items: center; gap: 4px;">
@@ -271,7 +271,7 @@
         
         <!-- Metadata -->
         <div class="drawer-meta">
-          <div><i data-lucide="copy"></i> 복사 횟수: <span id="detail-usage-count">0</span>회</div>
+          <div id="detail-usage-container"><i data-lucide="copy"></i> 복사 횟수: <span id="detail-usage-count">0</span>회</div>
           <div><i data-lucide="calendar"></i> 생성: <span id="detail-created-at">2026-06-24</span></div>
         </div>
       </div>
@@ -397,13 +397,15 @@
     <div class="modal-overlay" id="warehouse-modal">
       <div class="modal-container modal-sm">
         <div class="modal-header">
-          <h2>새 링크/캡처 등록</h2>
+          <h2 id="warehouse-modal-title">새 링크/캡처 등록</h2>
           <button class="btn-icon" id="btn-warehouse-modal-close">
             <i data-lucide="x"></i>
           </button>
         </div>
         
         <form id="warehouse-form" class="modal-form">
+          <input type="hidden" id="wh-id">
+          
           <div class="form-group">
             <label for="wh-title">자료 설명/제목 <span class="required">*</span></label>
             <input type="text" id="wh-title" placeholder="예: 번역 이메일 레이아웃 스크린샷" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
@@ -440,7 +442,7 @@
           
           <div class="modal-actions">
             <button type="button" class="btn btn-secondary" id="btn-warehouse-modal-cancel">취소</button>
-            <button type="submit" class="btn btn-primary">등록하기</button>
+            <button type="submit" class="btn btn-primary" id="btn-warehouse-modal-submit">등록하기</button>
           </div>
         </form>
       </div>
