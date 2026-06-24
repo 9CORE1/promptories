@@ -1383,7 +1383,7 @@ function setupEventListeners() {
   });
 
   // Warehouse Item Add Modal Toggle
-  document.getElementById("btn-new-warehouse-item").addEventListener("click", openWarehouseModal);
+  document.getElementById("btn-new-warehouse-item").addEventListener("click", () => openWarehouseModal());
   document.getElementById("btn-warehouse-modal-close").addEventListener("click", closeWarehouseModal);
   document.getElementById("btn-warehouse-modal-cancel").addEventListener("click", closeWarehouseModal);
   document.getElementById("warehouse-modal").addEventListener("click", (e) => {
@@ -1727,7 +1727,7 @@ function openWarehouseModal(editingId = null) {
   const modalTitle = document.getElementById("warehouse-modal-title");
   const submitBtn = document.getElementById("btn-warehouse-modal-submit");
   
-  if (editingId) {
+  if (editingId && typeof editingId === "string") {
     const item = state.warehouseItems.find(x => x.id === editingId);
     if (!item) return;
     
