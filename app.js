@@ -90,8 +90,8 @@ let state = {
 // ==========================================================================
 // INITIALIZATION & DOM SELECTION
 // ==========================================================================
-document.addEventListener("DOMContentLoaded", () => {
-  initData();
+document.addEventListener("DOMContentLoaded", async () => {
+  await initData();
   setupEventListeners();
   renderApp();
   handleDeepLink();
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Load data from localStorage or initialize with sample data
-function initData() {
+async function initData() {
   const localPrompts = localStorage.getItem("prompt_manager_data");
   const localRecents = localStorage.getItem("prompt_manager_recents");
   const adminSession = localStorage.getItem("prompt_manager_admin_session");
@@ -149,7 +149,18 @@ function initData() {
       state.warehouseItems = [];
     }
   } else {
-    state.warehouseItems = [];
+    try {
+      const response = await fetch("warehouse_data.json");
+      if (response.ok) {
+        state.warehouseItems = await response.json();
+        saveWarehouseData();
+      } else {
+        state.warehouseItems = [];
+      }
+    } catch (e) {
+      console.warn("warehouse_data.json 로드 실패. 빈 배열로 시작합니다.", e);
+      state.warehouseItems = [];
+    }
   }
   
   const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
@@ -160,7 +171,18 @@ function initData() {
       state.lmWarehouseItems = [];
     }
   } else {
-    state.lmWarehouseItems = [];
+    try {
+      const response = await fetch("lm_warehouse_data.json");
+      if (response.ok) {
+        state.lmWarehouseItems = await response.json();
+        saveLMWarehouseData();
+      } else {
+        state.lmWarehouseItems = [];
+      }
+    } catch (e) {
+      console.warn("lm_warehouse_data.json 로드 실패. 빈 배열로 시작합니다.", e);
+      state.lmWarehouseItems = [];
+    }
   }
 }
 
@@ -980,6 +1002,78 @@ function exportData() {
   showToast("데이터 백업 파일이 다운로드되었습니다.", "success", "download");
 }
 
+function exportWarehouseData() {
+  const dataStr = JSON.stringify(state.warehouseItems, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "warehouse_data.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("창고 데이터가 warehouse_data.json으로 다운로드되었습니다.", "success", "download");
+}
+
+function exportLMWarehouseData() {
+  const dataStr = JSON.stringify(state.lmWarehouseItems, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "lm_warehouse_data.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("LM스타일 창고 데이터가 lm_warehouse_data.json으로 다운로드되었습니다.", "success", "download");
+}
+
+async function syncWarehouseFromServer() {
+  if (confirm("GitHub 서버에 업로드된 warehouse_data.json 데이터를 불러와 현재 브라우저 데이터를 덮어쓰시겠습니까?")) {
+    try {
+      showToast("서버에서 데이터를 가져오는 중...", "info", "refresh-cw");
+      const response = await fetch(`warehouse_data.json?t=${Date.now()}`);
+      if (response.ok) {
+        const data = await response.json();
+        state.warehouseItems = data;
+        saveWarehouseData();
+        renderWarehouseGrid();
+        showToast("서버 데이터 동기화 완료!", "success", "refresh-cw");
+      } else {
+        showToast("서버에서 warehouse_data.json을 찾을 수 없습니다.", "error", "alert-circle");
+      }
+    } catch (e) {
+      console.error(e);
+      showToast("동기화 실패: 서버 연결 상태를 확인해주세요.", "error", "alert-triangle");
+    }
+  }
+}
+
+async function syncLMWarehouseFromServer() {
+  if (confirm("GitHub 서버에 업로드된 lm_warehouse_data.json 데이터를 불러와 현재 브라우저 데이터를 덮어쓰시겠습니까?")) {
+    try {
+      showToast("서버에서 데이터를 가져오는 중...", "info", "refresh-cw");
+      const response = await fetch(`lm_warehouse_data.json?t=${Date.now()}`);
+      if (response.ok) {
+        const data = await response.json();
+        state.lmWarehouseItems = data;
+        saveLMWarehouseData();
+        renderLMWarehouseGrid();
+        showToast("서버 데이터 동기화 완료!", "success", "refresh-cw");
+      } else {
+        showToast("서버에서 lm_warehouse_data.json을 찾을 수 없습니다.", "error", "alert-circle");
+      }
+    } catch (e) {
+      console.error(e);
+      showToast("동기화 실패: 서버 연결 상태를 확인해주세요.", "error", "alert-triangle");
+    }
+  }
+}
+
 function handleImport(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -1421,6 +1515,8 @@ function setupEventListeners() {
 
   // Warehouse Item Add Modal Toggle
   document.getElementById("btn-new-warehouse-item").addEventListener("click", () => openWarehouseModal());
+  document.getElementById("btn-sync-warehouse").addEventListener("click", syncWarehouseFromServer);
+  document.getElementById("btn-export-warehouse").addEventListener("click", exportWarehouseData);
   document.getElementById("btn-warehouse-modal-close").addEventListener("click", closeWarehouseModal);
   document.getElementById("btn-warehouse-modal-cancel").addEventListener("click", closeWarehouseModal);
   document.getElementById("warehouse-modal").addEventListener("click", (e) => {
@@ -1494,6 +1590,8 @@ function setupEventListeners() {
 
   // LM Warehouse Item Add Modal Toggle
   document.getElementById("btn-new-lm-warehouse-item").addEventListener("click", () => openLMWarehouseModal());
+  document.getElementById("btn-sync-lm-warehouse").addEventListener("click", syncLMWarehouseFromServer);
+  document.getElementById("btn-export-lm-warehouse").addEventListener("click", exportLMWarehouseData);
   document.getElementById("btn-lm-warehouse-modal-close").addEventListener("click", closeLMWarehouseModal);
   document.getElementById("btn-lm-warehouse-modal-cancel").addEventListener("click", closeLMWarehouseModal);
   document.getElementById("lm-warehouse-modal").addEventListener("click", (e) => {
