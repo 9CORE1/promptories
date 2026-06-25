@@ -133,10 +133,7 @@ async function initData() {
     }
   } else {
     try {
-      let response = await fetch("prompt_data.json");
-      if (!response.ok) {
-        response = await fetch("prompts_data.json");
-      }
+      const response = await fetch("prompts_data.json");
       if (response.ok) {
         state.prompts = await response.json();
         saveData();
@@ -145,20 +142,9 @@ async function initData() {
         saveData();
       }
     } catch (e) {
-      try {
-        const response = await fetch("prompts_data.json");
-        if (response.ok) {
-          state.prompts = await response.json();
-          saveData();
-        } else {
-          state.prompts = [...DEFAULT_PROMPTS];
-          saveData();
-        }
-      } catch (err) {
-        console.warn("prompt_data.json 로드 실패. 기본 샘플 데이터로 시작합니다.", err);
-        state.prompts = [...DEFAULT_PROMPTS];
-        saveData();
-      }
+      console.warn("prompts_data.json 로드 실패. 기본 샘플 데이터로 시작합니다.", e);
+      state.prompts = [...DEFAULT_PROMPTS];
+      saveData();
     }
   }
   
@@ -1292,17 +1278,17 @@ async function syncPromptsToServer() {
   
   if (config && config.owner && config.repo) {
     if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 전체 프롬프트 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
-      await uploadFileToGitHub("prompt_data.json", state.prompts);
+      await uploadFileToGitHub("prompts_data.json", state.prompts);
     } else {
       openGithubConfigModal(async () => {
         if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
-          await uploadFileToGitHub("prompt_data.json", state.prompts);
+          await uploadFileToGitHub("prompts_data.json", state.prompts);
         }
       });
     }
   } else {
     openGithubConfigModal(async () => {
-      await uploadFileToGitHub("prompt_data.json", state.prompts);
+      await uploadFileToGitHub("prompts_data.json", state.prompts);
     });
   }
 }
