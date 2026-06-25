@@ -90,7 +90,7 @@ function Convert-Base64ToImage {
     if ($convertedCount -gt 0) {
         # 변경된 JSON 데이터를 다시 저장 (한글 깨짐을 막기 위해 BOM 없는 UTF-8 인코딩)
         # ConvertTo-Json depth를 충분히 주어 객체가 문자열로 축소되는 것 방지
-        $updatedJson = ConvertTo-Json $items -Depth 100
+        $updatedJson = ConvertTo-Json -InputObject @($items) -Depth 100
         [System.IO.File]::WriteAllText($jsonFilePath, $updatedJson, [System.Text.Encoding]::UTF8)
         Write-Host "Updated $jsonFilePath with $convertedCount image path(s)." -ForegroundColor Green
     } else {

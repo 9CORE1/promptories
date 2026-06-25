@@ -160,7 +160,8 @@ async function initData() {
   const warehouseInitialized = localStorage.getItem("prompt_manager_warehouse_initialized");
   if (localWarehouse && warehouseInitialized) {
     try {
-      state.warehouseItems = JSON.parse(localWarehouse);
+      const data = JSON.parse(localWarehouse);
+      state.warehouseItems = Array.isArray(data) ? data : (data.value || []);
       state.warehouseLoaded = true;
     } catch (e) {
       state.warehouseItems = [];
@@ -175,7 +176,8 @@ async function initData() {
   const lmWarehouseInitialized = localStorage.getItem("prompt_manager_lm_warehouse_initialized");
   if (localLMWarehouse && lmWarehouseInitialized) {
     try {
-      state.lmWarehouseItems = JSON.parse(localLMWarehouse);
+      const data = JSON.parse(localLMWarehouse);
+      state.lmWarehouseItems = Array.isArray(data) ? data : (data.value || []);
       state.lmWarehouseLoaded = true;
     } catch (e) {
       state.lmWarehouseItems = [];
@@ -195,7 +197,8 @@ async function ensureWarehouseLoaded() {
   const warehouseInitialized = localStorage.getItem("prompt_manager_warehouse_initialized");
   if (localWarehouse && warehouseInitialized) {
     try {
-      state.warehouseItems = JSON.parse(localWarehouse);
+      const data = JSON.parse(localWarehouse);
+      state.warehouseItems = Array.isArray(data) ? data : (data.value || []);
       state.warehouseLoaded = true;
       return;
     } catch (e) {
@@ -207,7 +210,8 @@ async function ensureWarehouseLoaded() {
     showToast("서버에서 창고 데이터를 로드하는 중...", "info", "refresh-cw");
     const response = await fetch("warehouse_data.json");
     if (response.ok) {
-      state.warehouseItems = await response.json();
+      const data = await response.json();
+      state.warehouseItems = Array.isArray(data) ? data : (data.value || []);
       try {
         saveWarehouseData();
         localStorage.setItem("prompt_manager_warehouse_initialized", "true");
@@ -232,7 +236,8 @@ async function ensureLMWarehouseLoaded() {
   const lmWarehouseInitialized = localStorage.getItem("prompt_manager_lm_warehouse_initialized");
   if (localLMWarehouse && lmWarehouseInitialized) {
     try {
-      state.lmWarehouseItems = JSON.parse(localLMWarehouse);
+      const data = JSON.parse(localLMWarehouse);
+      state.lmWarehouseItems = Array.isArray(data) ? data : (data.value || []);
       state.lmWarehouseLoaded = true;
       return;
     } catch (e) {
@@ -244,7 +249,8 @@ async function ensureLMWarehouseLoaded() {
     showToast("서버에서 LM스타일 창고 데이터를 로드하는 중...", "info", "refresh-cw");
     const response = await fetch("lm_warehouse_data.json");
     if (response.ok) {
-      state.lmWarehouseItems = await response.json();
+      const data = await response.json();
+      state.lmWarehouseItems = Array.isArray(data) ? data : (data.value || []);
       try {
         saveLMWarehouseData();
         localStorage.setItem("prompt_manager_lm_warehouse_initialized", "true");
