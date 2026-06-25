@@ -157,7 +157,8 @@ async function initData() {
   }
   
   const localWarehouse = localStorage.getItem("prompt_manager_warehouse_data");
-  if (localWarehouse) {
+  const warehouseInitialized = localStorage.getItem("prompt_manager_warehouse_initialized");
+  if (localWarehouse && warehouseInitialized) {
     try {
       state.warehouseItems = JSON.parse(localWarehouse);
       state.warehouseLoaded = true;
@@ -171,7 +172,8 @@ async function initData() {
   }
   
   const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
-  if (localLMWarehouse) {
+  const lmWarehouseInitialized = localStorage.getItem("prompt_manager_lm_warehouse_initialized");
+  if (localLMWarehouse && lmWarehouseInitialized) {
     try {
       state.lmWarehouseItems = JSON.parse(localLMWarehouse);
       state.lmWarehouseLoaded = true;
@@ -190,7 +192,8 @@ async function ensureWarehouseLoaded() {
   if (state.warehouseLoaded) return;
   
   const localWarehouse = localStorage.getItem("prompt_manager_warehouse_data");
-  if (localWarehouse) {
+  const warehouseInitialized = localStorage.getItem("prompt_manager_warehouse_initialized");
+  if (localWarehouse && warehouseInitialized) {
     try {
       state.warehouseItems = JSON.parse(localWarehouse);
       state.warehouseLoaded = true;
@@ -206,6 +209,7 @@ async function ensureWarehouseLoaded() {
     if (response.ok) {
       state.warehouseItems = await response.json();
       saveWarehouseData();
+      localStorage.setItem("prompt_manager_warehouse_initialized", "true");
       showToast("창고 데이터를 성공적으로 로드했습니다.", "success", "check");
     } else {
       state.warehouseItems = [];
@@ -221,7 +225,8 @@ async function ensureLMWarehouseLoaded() {
   if (state.lmWarehouseLoaded) return;
   
   const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
-  if (localLMWarehouse) {
+  const lmWarehouseInitialized = localStorage.getItem("prompt_manager_lm_warehouse_initialized");
+  if (localLMWarehouse && lmWarehouseInitialized) {
     try {
       state.lmWarehouseItems = JSON.parse(localLMWarehouse);
       state.lmWarehouseLoaded = true;
@@ -237,6 +242,7 @@ async function ensureLMWarehouseLoaded() {
     if (response.ok) {
       state.lmWarehouseItems = await response.json();
       saveLMWarehouseData();
+      localStorage.setItem("prompt_manager_lm_warehouse_initialized", "true");
       showToast("LM스타일 창고 데이터를 성공적으로 로드했습니다.", "success", "check");
     } else {
       state.lmWarehouseItems = [];
@@ -255,10 +261,12 @@ function saveData() {
 
 function saveWarehouseData() {
   localStorage.setItem("prompt_manager_warehouse_data", JSON.stringify(state.warehouseItems));
+  localStorage.setItem("prompt_manager_warehouse_initialized", "true");
 }
 
 function saveLMWarehouseData() {
   localStorage.setItem("prompt_manager_lm_warehouse_data", JSON.stringify(state.lmWarehouseItems));
+  localStorage.setItem("prompt_manager_lm_warehouse_initialized", "true");
 }
 
 function saveRecents() {
