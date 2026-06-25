@@ -208,8 +208,12 @@ async function ensureWarehouseLoaded() {
     const response = await fetch("warehouse_data.json");
     if (response.ok) {
       state.warehouseItems = await response.json();
-      saveWarehouseData();
-      localStorage.setItem("prompt_manager_warehouse_initialized", "true");
+      try {
+        saveWarehouseData();
+        localStorage.setItem("prompt_manager_warehouse_initialized", "true");
+      } catch (storageError) {
+        console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성). 데이터는 메모리에서 유지됩니다.", storageError);
+      }
       showToast("창고 데이터를 성공적으로 로드했습니다.", "success", "check");
     } else {
       state.warehouseItems = [];
@@ -241,8 +245,12 @@ async function ensureLMWarehouseLoaded() {
     const response = await fetch("lm_warehouse_data.json");
     if (response.ok) {
       state.lmWarehouseItems = await response.json();
-      saveLMWarehouseData();
-      localStorage.setItem("prompt_manager_lm_warehouse_initialized", "true");
+      try {
+        saveLMWarehouseData();
+        localStorage.setItem("prompt_manager_lm_warehouse_initialized", "true");
+      } catch (storageError) {
+        console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성). 데이터는 메모리에서 유지됩니다.", storageError);
+      }
       showToast("LM스타일 창고 데이터를 성공적으로 로드했습니다.", "success", "check");
     } else {
       state.lmWarehouseItems = [];
@@ -256,17 +264,29 @@ async function ensureLMWarehouseLoaded() {
 
 // Save current prompts state to localStorage
 function saveData() {
-  localStorage.setItem("prompt_manager_data", JSON.stringify(state.prompts));
+  try {
+    localStorage.setItem("prompt_manager_data", JSON.stringify(state.prompts));
+  } catch (e) {
+    console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성):", e);
+  }
 }
 
 function saveWarehouseData() {
-  localStorage.setItem("prompt_manager_warehouse_data", JSON.stringify(state.warehouseItems));
-  localStorage.setItem("prompt_manager_warehouse_initialized", "true");
+  try {
+    localStorage.setItem("prompt_manager_warehouse_data", JSON.stringify(state.warehouseItems));
+    localStorage.setItem("prompt_manager_warehouse_initialized", "true");
+  } catch (e) {
+    console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성):", e);
+  }
 }
 
 function saveLMWarehouseData() {
-  localStorage.setItem("prompt_manager_lm_warehouse_data", JSON.stringify(state.lmWarehouseItems));
-  localStorage.setItem("prompt_manager_lm_warehouse_initialized", "true");
+  try {
+    localStorage.setItem("prompt_manager_lm_warehouse_data", JSON.stringify(state.lmWarehouseItems));
+    localStorage.setItem("prompt_manager_lm_warehouse_initialized", "true");
+  } catch (e) {
+    console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성):", e);
+  }
 }
 
 function saveRecents() {
