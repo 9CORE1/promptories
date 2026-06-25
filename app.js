@@ -84,7 +84,10 @@ let state = {
   activePromptId: null,
   recentPromptIds: [],
   isAdmin: false,                 // 관리자 모드 인증 여부
-  lmWarehouseItems: []
+  warehouseItems: [],
+  warehouseLoaded: false,
+  lmWarehouseItems: [],
+  lmWarehouseLoaded: false
 };
 
 // ==========================================================================
@@ -157,45 +160,92 @@ async function initData() {
   if (localWarehouse) {
     try {
       state.warehouseItems = JSON.parse(localWarehouse);
+      state.warehouseLoaded = true;
     } catch (e) {
       state.warehouseItems = [];
+      state.warehouseLoaded = false;
     }
   } else {
-    try {
-      const response = await fetch("warehouse_data.json");
-      if (response.ok) {
-        state.warehouseItems = await response.json();
-        saveWarehouseData();
-      } else {
-        state.warehouseItems = [];
-      }
-    } catch (e) {
-      console.warn("warehouse_data.json 로드 실패. 빈 배열로 시작합니다.", e);
-      state.warehouseItems = [];
-    }
+    state.warehouseItems = [];
+    state.warehouseLoaded = false;
   }
   
   const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
   if (localLMWarehouse) {
     try {
       state.lmWarehouseItems = JSON.parse(localLMWarehouse);
+      state.lmWarehouseLoaded = true;
     } catch (e) {
       state.lmWarehouseItems = [];
+      state.lmWarehouseLoaded = false;
     }
   } else {
+    state.lmWarehouseItems = [];
+    state.lmWarehouseLoaded = false;
+  }
+}
+
+// Ensure warehouse data is loaded from localStorage or server
+async function ensureWarehouseLoaded() {
+  if (state.warehouseLoaded) return;
+  
+  const localWarehouse = localStorage.getItem("prompt_manager_warehouse_data");
+  if (localWarehouse) {
     try {
-      const response = await fetch("lm_warehouse_data.json");
-      if (response.ok) {
-        state.lmWarehouseItems = await response.json();
-        saveLMWarehouseData();
-      } else {
-        state.lmWarehouseItems = [];
-      }
+      state.warehouseItems = JSON.parse(localWarehouse);
+      state.warehouseLoaded = true;
+      return;
     } catch (e) {
-      console.warn("lm_warehouse_data.json 로드 실패. 빈 배열로 시작합니다.", e);
-      state.lmWarehouseItems = [];
+      console.error("로컬 창고 데이터 파싱 실패", e);
     }
   }
+  
+  try {
+    showToast("서버에서 창고 데이터를 로드하는 중...", "info", "refresh-cw");
+    const response = await fetch("warehouse_data.json");
+    if (response.ok) {
+      state.warehouseItems = await response.json();
+      saveWarehouseData();
+      showToast("창고 데이터를 성공적으로 로드했습니다.", "success", "check");
+    } else {
+      state.warehouseItems = [];
+    }
+  } catch (e) {
+    console.warn("warehouse_data.json 로드 실패. 빈 배열로 시작합니다.", e);
+    state.warehouseItems = [];
+  }
+  state.warehouseLoaded = true;
+}
+
+async function ensureLMWarehouseLoaded() {
+  if (state.lmWarehouseLoaded) return;
+  
+  const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
+  if (localLMWarehouse) {
+    try {
+      state.lmWarehouseItems = JSON.parse(localLMWarehouse);
+      state.lmWarehouseLoaded = true;
+      return;
+    } catch (e) {
+      console.error("로컬 LM스타일 창고 데이터 파싱 실패", e);
+    }
+  }
+  
+  try {
+    showToast("서버에서 LM스타일 창고 데이터를 로드하는 중...", "info", "refresh-cw");
+    const response = await fetch("lm_warehouse_data.json");
+    if (response.ok) {
+      state.lmWarehouseItems = await response.json();
+      saveLMWarehouseData();
+      showToast("LM스타일 창고 데이터를 성공적으로 로드했습니다.", "success", "check");
+    } else {
+      state.lmWarehouseItems = [];
+    }
+  } catch (e) {
+    console.warn("lm_warehouse_data.json 로드 실패. 빈 배열로 시작합니다.", e);
+    state.lmWarehouseItems = [];
+  }
+  state.lmWarehouseLoaded = true;
 }
 
 // Save current prompts state to localStorage
@@ -1014,7 +1064,8 @@ function exportData() {
   showToast("데이터 백업 파일이 다운로드되었습니다.", "success", "download");
 }
 
-function exportWarehouseData() {
+async function exportWarehouseData() {
+  await ensureWarehouseLoaded();
   const dataStr = JSON.stringify(state.warehouseItems, null, 2);
   const blob = new Blob([dataStr], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -1029,7 +1080,8 @@ function exportWarehouseData() {
   showToast("창고 데이터가 warehouse_data.json으로 다운로드되었습니다.", "success", "download");
 }
 
-function exportLMWarehouseData() {
+async function exportLMWarehouseData() {
+  await ensureLMWarehouseLoaded();
   const dataStr = JSON.stringify(state.lmWarehouseItems, null, 2);
   const blob = new Blob([dataStr], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -1172,6 +1224,7 @@ async function uploadFileToGitHub(fileName, data) {
 
 // 동기화 트리거 함수들
 async function syncWarehouseToServer() {
+  await ensureWarehouseLoaded();
   let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
   
   if (config && config.owner && config.repo) {
@@ -1192,6 +1245,7 @@ async function syncWarehouseToServer() {
 }
 
 async function syncLMWarehouseToServer() {
+  await ensureLMWarehouseLoaded();
   let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
   
   if (config && config.owner && config.repo) {
@@ -1231,7 +1285,8 @@ async function syncPromptsToServer() {
   }
 }
 
-function copyWarehouseJson() {
+async function copyWarehouseJson() {
+  await ensureWarehouseLoaded();
   const dataStr = JSON.stringify(state.warehouseItems, null, 2);
   navigator.clipboard.writeText(dataStr).then(() => {
     showToast("창고 데이터(JSON)가 클립보드에 복사되었습니다! 메모장에 붙여넣고 저장하세요.", "success", "copy");
@@ -1241,7 +1296,8 @@ function copyWarehouseJson() {
   });
 }
 
-function copyLMWarehouseJson() {
+async function copyLMWarehouseJson() {
+  await ensureLMWarehouseLoaded();
   const dataStr = JSON.stringify(state.lmWarehouseItems, null, 2);
   navigator.clipboard.writeText(dataStr).then(() => {
     showToast("LM스타일 창고 데이터(JSON)가 클립보드에 복사되었습니다! 메모장에 붙여넣고 저장하세요.", "success", "copy");
@@ -1610,8 +1666,9 @@ function setupEventListeners() {
   });
 
   // Prompt Warehouse Menu Selection
-  document.getElementById("nav-warehouse").addEventListener("click", (e) => {
+  document.getElementById("nav-warehouse").addEventListener("click", async (e) => {
     e.preventDefault();
+    await ensureWarehouseLoaded();
     selectQuickFilter("warehouse");
   });
 
@@ -1686,8 +1743,9 @@ function setupEventListeners() {
   });
 
   // LM Style Warehouse Menu Selection
-  document.getElementById("nav-lm-warehouse").addEventListener("click", (e) => {
+  document.getElementById("nav-lm-warehouse").addEventListener("click", async (e) => {
     e.preventDefault();
+    await ensureLMWarehouseLoaded();
     selectQuickFilter("lm-warehouse");
   });
 
