@@ -129,8 +129,20 @@ async function initData() {
       saveData();
     }
   } else {
-    state.prompts = [...DEFAULT_PROMPTS];
-    saveData();
+    try {
+      const response = await fetch("prompts_data.json");
+      if (response.ok) {
+        state.prompts = await response.json();
+        saveData();
+      } else {
+        state.prompts = [...DEFAULT_PROMPTS];
+        saveData();
+      }
+    } catch (e) {
+      console.warn("prompts_data.json 로드 실패. 기본 샘플 데이터로 시작합니다.", e);
+      state.prompts = [...DEFAULT_PROMPTS];
+      saveData();
+    }
   }
   
   if (localRecents) {
