@@ -6,6 +6,7 @@ if ([string]::IsNullOrEmpty($scriptPath)) { $scriptPath = Get-Location }
 
 $warehouseFile = Join-Path $scriptPath "warehouse_data.json"
 $lmWarehouseFile = Join-Path $scriptPath "lm_warehouse_data.json"
+$promptsFile = Join-Path $scriptPath "prompts_data.json"
 $imagesDir = Join-Path $scriptPath "images"
 $checkpointFile = Join-Path $scriptPath "conversion_checkpoint.json"
 
@@ -48,12 +49,19 @@ function Convert-Base64ToImage {
     $convertedItems = @()
 
     foreach ($item in $items) {
-        # 이미지 필드가 Base64 데이터 URL 형식인지 확인
-        if ($item.image -like "data:image/*;base64,*") {
+        # 이미지 필드가 Base64 데이터 URL 형식인지 확인 (image 또는 outputImage)
+        $imgField = $null
+        if ($null -ne $item.image -and $item.image -like "data:image/*;base64,*") {
+            $imgField = "image"
+        } elseif ($null -ne $item.outputImage -and $item.outputImage -like "data:image/*;base64,*") {
+            $imgField = "outputImage"
+        }
+
+        if ($null -ne $imgField) {
             Write-Host "Found Base64 image in item: $($item.title) ($($item.id))" -ForegroundColor Yellow
             
             # 포맷 및 Base64 원본 추출
-            $matches = [regex]::Match($item.image, "data:image/(?<ext>[a-zA-Z+]+);base64,(?<data>.+)")
+            $matches = [regex]::Match($item.$imgField, "data:image/(?<ext>[a-zA-Z+]+);base64,(?<data>.+)")
             if ($matches.Success) {
                 $ext = $matches.Groups['ext'].Value
                 # jpeg 확장자 통일
@@ -70,7 +78,7 @@ function Convert-Base64ToImage {
                 
                 # 이미지 필드를 상대 경로로 업데이트
                 $relativePath = "images/$fileName"
-                $item.image = $relativePath
+                $item.$imgField = $relativePath
                 
                 $convertedCount++
                 $convertedItems += [PSCustomObject]@{
@@ -109,6 +117,10 @@ if ($whConverted) { $allConverted += $whConverted }
 # lm_warehouse_data.json 처리
 $lmConverted = Convert-Base64ToImage -jsonFilePath $lmWarehouseFile -name "LM Style Warehouse (lm_warehouse_data.json)"
 if ($lmConverted) { $allConverted += $lmConverted }
+
+# prompts_data.json 처리
+$prConverted = Convert-Base64ToImage -jsonFilePath $promptsFile -name "Prompts Data (prompts_data.json)"
+if ($prConverted) { $allConverted += $prConverted }
 
 # 체크포인트 파일 업데이트
 if ($allConverted.Count -gt 0) {

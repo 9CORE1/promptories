@@ -1134,7 +1134,23 @@ async function downloadFileFromServer(url, defaultFileName) {
 }
 
 async function exportData() {
-  await downloadFileFromServer("prompts_data.json", "prompts_data.json");
+  const { items, count, newImages } = await lightweightPromptItems(state.prompts);
+  
+  if (count > 0) {
+    state.prompts = items;
+    saveData();
+    renderPromptGrid();
+    
+    // Download new images
+    newImages.forEach(img => {
+      downloadBase64Image(img.filename, img.base64);
+    });
+    
+    showToast(`${count}개의 새로운 이미지가 경량화(다운로드)되었습니다.`, "success", "image");
+  }
+  
+  // Download updated JSON file of local state
+  downloadJsonFile("prompts_data.json", state.prompts);
 }
 
 // GitHub 이미지 파일 업로드 기능
@@ -1221,6 +1237,37 @@ async function lightweightWarehouseItems(items, isLM = false) {
       
       // Update image path in the item
       item.image = relativePath;
+      count++;
+    }
+  }
+  
+  return { items, count, newImages };
+}
+
+async function lightweightPromptItems(items) {
+  let count = 0;
+  const newImages = [];
+  
+  for (let item of items) {
+    if (item.outputImage && item.outputImage.startsWith("data:image/")) {
+      // Find extension from data URL
+      const matches = item.outputImage.match(/^data:image\/([a-zA-Z+]+);base64,/);
+      let ext = "jpeg";
+      if (matches && matches[1]) {
+        ext = matches[1] === "jpeg" ? "jpeg" : matches[1];
+      }
+      
+      const filename = `${item.id}.${ext}`;
+      const relativePath = `images/${filename}`;
+      
+      newImages.push({
+        path: relativePath,
+        base64: item.outputImage,
+        filename: filename
+      });
+      
+      // Update image path in the item
+      item.outputImage = relativePath;
       count++;
     }
   }
@@ -1594,16 +1641,78 @@ async function syncPromptsToServer() {
   
   if (config && config.owner && config.repo) {
     if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 전체 프롬프트 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
+      
+      // Perform lightweighting first!
+      const { items, count, newImages } = await lightweightPromptItems(state.prompts);
+      
+      if (count > 0) {
+        state.prompts = items;
+        saveData();
+        renderPromptGrid();
+        
+        try {
+          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+          for (let img of newImages) {
+            await uploadImageToGitHub(img.path, img.base64);
+          }
+          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+        } catch (err) {
+          console.error(err);
+          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+          return; // Stop if image upload fails
+        }
+      }
+      
       await uploadFileToGitHub("prompts_data.json", state.prompts);
     } else {
       openGithubConfigModal(async () => {
         if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
+          // Perform lightweighting first!
+          const { items, count, newImages } = await lightweightPromptItems(state.prompts);
+          
+          if (count > 0) {
+            state.prompts = items;
+            saveData();
+            renderPromptGrid();
+            
+            try {
+              showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+              for (let img of newImages) {
+                await uploadImageToGitHub(img.path, img.base64);
+              }
+              showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+            } catch (err) {
+              console.error(err);
+              showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+              return;
+            }
+          }
           await uploadFileToGitHub("prompts_data.json", state.prompts);
         }
       });
     }
   } else {
     openGithubConfigModal(async () => {
+      // Perform lightweighting first!
+      const { items, count, newImages } = await lightweightPromptItems(state.prompts);
+      
+      if (count > 0) {
+        state.prompts = items;
+        saveData();
+        renderPromptGrid();
+        
+        try {
+          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+          for (let img of newImages) {
+            await uploadImageToGitHub(img.path, img.base64);
+          }
+          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+        } catch (err) {
+          console.error(err);
+          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+          return;
+        }
+      }
       await uploadFileToGitHub("prompts_data.json", state.prompts);
     });
   }
