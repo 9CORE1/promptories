@@ -1,4 +1,353 @@
-{
-  "lastRun": "",
-  "history": []
+﻿{
+    "lastRun":  "2026-06-25 13:37:59",
+    "history":  [
+                    {
+                        "timestamp":  "2026-06-25 13:37:59",
+                        "items":  [
+                                      {
+                                          "id":  "wh-1782273754605-tumtkfz43",
+                                          "title":  "라인 이미지",
+                                          "filePath":  "images/wh-1782273754605-tumtkfz43.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782274864144-ggvad8z1y",
+                                          "title":  "라인 이미지 핑크배경",
+                                          "filePath":  "images/wh-1782274864144-ggvad8z1y.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782274909528-ihr8h9jaz",
+                                          "title":  "라인 스케치",
+                                          "filePath":  "images/wh-1782274909528-ihr8h9jaz.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782274971280-qkg3pcg3n",
+                                          "title":  "눈큰 아이 스타일",
+                                          "filePath":  "images/wh-1782274971280-qkg3pcg3n.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275013406-16i6o9f3r",
+                                          "title":  "2D 컬러풀 이미지",
+                                          "filePath":  "images/wh-1782275013406-16i6o9f3r.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275087232-bxi9m6x5a",
+                                          "title":  "2스타일 라인 스케치",
+                                          "filePath":  "images/wh-1782275087232-bxi9m6x5a.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275260236-d7n4odaw0",
+                                          "title":  "페이퍼스크랩 스타일",
+                                          "filePath":  "images/wh-1782275260236-d7n4odaw0.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275382627-nklw5wfl1",
+                                          "title":  "종이카드 크래프트 스타일",
+                                          "filePath":  "images/wh-1782275382627-nklw5wfl1.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275682467-wp0ae4p4s",
+                                          "title":  "손그림손글씨 스타일",
+                                          "filePath":  "images/wh-1782275682467-wp0ae4p4s.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275735754-txcki1mtr",
+                                          "title":  "라인 단순화 이미지",
+                                          "filePath":  "images/wh-1782275735754-txcki1mtr.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275840715-pg0ablzul",
+                                          "title":  "2D 레이어 일러스트레이터 이미지",
+                                          "filePath":  "images/wh-1782275840715-pg0ablzul.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275898428-6r9a8mbgq",
+                                          "title":  "파스텔 2D 일러스트레이터",
+                                          "filePath":  "images/wh-1782275898428-6r9a8mbgq.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275932054-7lvp9l9hf",
+                                          "title":  "수채화 스타일",
+                                          "filePath":  "images/wh-1782275932054-7lvp9l9hf.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782275981147-pr27uigzc",
+                                          "title":  "굵은 라인 일러스트레이터 이미지",
+                                          "filePath":  "images/wh-1782275981147-pr27uigzc.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276088398-3wd0wduzr",
+                                          "title":  "사진 꾸미기 등",
+                                          "filePath":  "images/wh-1782276088398-3wd0wduzr.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276149165-jnc9yjic9",
+                                          "title":  "스토리북 일러스트 이미지",
+                                          "filePath":  "images/wh-1782276149165-jnc9yjic9.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276274961-c77vkxv47",
+                                          "title":  "페이퍼컷 일러스트 이미지",
+                                          "filePath":  "images/wh-1782276274961-c77vkxv47.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276365160-dd13juugi",
+                                          "title":  "라인스타일 일러스트",
+                                          "filePath":  "images/wh-1782276365160-dd13juugi.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276415425-dfppqo2xf",
+                                          "title":  "플랫 포크아트 스타일",
+                                          "filePath":  "images/wh-1782276415425-dfppqo2xf.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276480610-pkworybof",
+                                          "title":  "플랫 일러스트 이미지",
+                                          "filePath":  "images/wh-1782276480610-pkworybof.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276571734-ogako3jsv",
+                                          "title":  "애니메이션 스타일 변환",
+                                          "filePath":  "images/wh-1782276571734-ogako3jsv.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276667344-710j9k6nd",
+                                          "title":  "2D 심플 플랫 이미지",
+                                          "filePath":  "images/wh-1782276667344-710j9k6nd.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276759038-4dq7tpnwe",
+                                          "title":  "스토리북 플랫 일러스트",
+                                          "filePath":  "images/wh-1782276759038-4dq7tpnwe.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276827076-1dvgfani8",
+                                          "title":  "벡터 일러스트 스타일",
+                                          "filePath":  "images/wh-1782276827076-1dvgfani8.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782276955416-ih9chhhgk",
+                                          "title":  "플랫 수채화 포스터 스타일",
+                                          "filePath":  "images/wh-1782276955416-ih9chhhgk.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782277112732-f2ul3ahfm",
+                                          "title":  "사진 꾸미기 설정",
+                                          "filePath":  "images/wh-1782277112732-f2ul3ahfm.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782278149607-37y0vz57n",
+                                          "title":  "플랫 일러스트 이미지",
+                                          "filePath":  "images/wh-1782278149607-37y0vz57n.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782278198846-gv6oj4zmy",
+                                          "title":  "아트워크 일러스트",
+                                          "filePath":  "images/wh-1782278198846-gv6oj4zmy.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782278423046-q0su2f9ee",
+                                          "title":  "따뜻한 손그림 스타일",
+                                          "filePath":  "images/wh-1782278423046-q0su2f9ee.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782278552751-pry6i2vbx",
+                                          "title":  "수채화 스타일로 변환",
+                                          "filePath":  "images/wh-1782278552751-pry6i2vbx.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782278706889-bbkmzwww8",
+                                          "title":  "플랫 만화스타일",
+                                          "filePath":  "images/wh-1782278706889-bbkmzwww8.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782278778315-cl7504da0",
+                                          "title":  "미니멀리스트 컨셉 이미지",
+                                          "filePath":  "images/wh-1782278778315-cl7504da0.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284418046-sdtkjxdrz",
+                                          "title":  "얼굴과 텍스트 이미지",
+                                          "filePath":  "images/wh-1782284418046-sdtkjxdrz.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284458105-pr98tw9ko",
+                                          "title":  "심플 페이즈 이미지",
+                                          "filePath":  "images/wh-1782284458105-pr98tw9ko.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284515258-5lhp48mjt",
+                                          "title":  "3단 세로 이미지",
+                                          "filePath":  "images/wh-1782284515258-5lhp48mjt.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284553797-i7hw3dixs",
+                                          "title":  "일러스트 스타일 전환",
+                                          "filePath":  "images/wh-1782284553797-i7hw3dixs.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284596939-br0rjktey",
+                                          "title":  "SNS 일러스트 스타일",
+                                          "filePath":  "images/wh-1782284596939-br0rjktey.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284642713-xaaydxzfy",
+                                          "title":  "크라프트 배경 프로필",
+                                          "filePath":  "images/wh-1782284642713-xaaydxzfy.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284689228-kkwtexk0c",
+                                          "title":  "내 3D 미니미와 함께",
+                                          "filePath":  "images/wh-1782284689228-kkwtexk0c.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284719162-lqlmrb06e",
+                                          "title":  "스티커 스타일",
+                                          "filePath":  "images/wh-1782284719162-lqlmrb06e.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284770681-ibst4ae2p",
+                                          "title":  "플랫손그림 스타일 전환",
+                                          "filePath":  "images/wh-1782284770681-ibst4ae2p.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782284900045-nhwoqkfbw",
+                                          "title":  "미니미 이미지",
+                                          "filePath":  "images/wh-1782284900045-nhwoqkfbw.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782286075483-ul3j153by",
+                                          "title":  "블랙앤 화이트 라인아트",
+                                          "filePath":  "images/wh-1782286075483-ul3j153by.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782286167719-76hgsq0r8",
+                                          "title":  "레고 아이콘",
+                                          "filePath":  "images/wh-1782286167719-76hgsq0r8.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782286289217-es68pekng",
+                                          "title":  "심플 일러스트로 전환",
+                                          "filePath":  "images/wh-1782286289217-es68pekng.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782286684888-wadcdoiof",
+                                          "title":  "심플 미니미 이미지",
+                                          "filePath":  "images/wh-1782286684888-wadcdoiof.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782286732555-qgozepsde",
+                                          "title":  "아이콘 이미지",
+                                          "filePath":  "images/wh-1782286732555-qgozepsde.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782287169615-9hftp4wy8",
+                                          "title":  "펜슬 스케치 이미지",
+                                          "filePath":  "images/wh-1782287169615-9hftp4wy8.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782348201927-erv5i3p71",
+                                          "title":  "블랙 이미지 텍스트 포스터",
+                                          "filePath":  "images/wh-1782348201927-erv5i3p71.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782348246429-5j7cehsdi",
+                                          "title":  "부드러운 손그림 삽화",
+                                          "filePath":  "images/wh-1782348246429-5j7cehsdi.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782348873566-wfyf9lay9",
+                                          "title":  "스토리북 스타일",
+                                          "filePath":  "images/wh-1782348873566-wfyf9lay9.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782348965865-jna5n7i4k",
+                                          "title":  "그린 정장 프로필",
+                                          "filePath":  "images/wh-1782348965865-jna5n7i4k.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782349000676-mdu5ln42l",
+                                          "title":  "손그림 캐릭터 스타일",
+                                          "filePath":  "images/wh-1782349000676-mdu5ln42l.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782349119666-fn9yqhf2a",
+                                          "title":  "만화스타일 전환",
+                                          "filePath":  "images/wh-1782349119666-fn9yqhf2a.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782349160186-qk7t48783",
+                                          "title":  "빈티지 이미지 텍스트 스타일",
+                                          "filePath":  "images/wh-1782349160186-qk7t48783.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782349288765-8t5n9zbrj",
+                                          "title":  "픽셀 스타일 전환",
+                                          "filePath":  "images/wh-1782349288765-8t5n9zbrj.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      },
+                                      {
+                                          "id":  "wh-1782361182050-y7gjcvihx",
+                                          "title":  "스케치 스타일",
+                                          "filePath":  "images/wh-1782361182050-y7gjcvihx.jpeg",
+                                          "timestamp":  "2026-06-25 13:37:59"
+                                      }
+                                  ],
+                        "convertedCount":  57
+                    }
+                ]
 }
