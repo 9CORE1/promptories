@@ -50,5 +50,22 @@
     "usageCount": 5,
     "createdAt": "2026-06-24T00:30:00.000Z",
     "updatedAt": "2026-06-24T00:30:00.000Z"
+  },
+  {
+    "id": "prompt-1782375021563-c2usk4m49",
+    "title": "4K 화질개선",
+    "category": "이미지",
+    "tags": [
+      "고화질",
+      "화질개선"
+    ],
+    "description": "저화질 이미지를 고화질로 변환",
+    "recommendedModel": "GPT-4o",
+    "promptText": "Prompt:\n{ \"task\": \"image_restoration_upscale\", \"positive_prompt\":\n\"Restore and enhance the provided image. Preserve original identity, facial structure, proportions and composition. High-fidelity photo restoration, ultra-realistic, natural skin texture, accurate details, professional photographic look. 4K output, sharp but natural focus, modern cinematic lighting, subtle volumetric lighting, professional color grading, depth of field, HDR. Shot on Arri Alexa, raw photo aesthetic, masterpiece.\",\n\"negative_prompt\": \"Creative reinterpretation, style change, identity alteration, face reshaping, exaggerated features, cartoonish, painting, illustration, over-sharpening, plastic skin, blur, noise, film grain, jpeg artifacts, distortion, bad anatomy, overexposed, underexposed, washed out colors.\", \"parameters\":\n{ \"steps\": 30, \"cfg_scale\": 6.5, \"denoising_strength\": 0.45,\n\"upscaler\": \"4x_NMKD_Siax_200k\", \"target_resolution\": \"4K\" } }",
+    "outputText": "",
+    "outputImage": "images/prompt-1782375021563-c2usk4m49.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-06-25T08:10:21.563Z",
+    "updatedAt": "2026-06-25T08:10:21.563Z"
   }
 ]
