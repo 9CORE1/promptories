@@ -1074,54 +1074,41 @@ function deletePrompt(id) {
 // ==========================================================================
 // IMPORT & EXPORT LOGIC
 // ==========================================================================
-function exportData() {
-  const dataStr = JSON.stringify(state.prompts, null, 2);
-  const blob = new Blob([dataStr], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  
-  const a = document.createElement("a");
-  const now = new Date();
-  const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
-  
-  a.href = url;
-  a.download = `PROMPTORIES_백업_${dateStr}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast("데이터 백업 파일이 다운로드되었습니다.", "success", "download");
+async function downloadFileFromServer(url, defaultFileName) {
+  try {
+    showToast("서버에서 파일을 다운로드하는 중...", "info", "refresh-cw");
+    // 캐시 방지를 위해 타임스탬프 추가
+    const response = await fetch(`${url}?t=${Date.now()}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const blob = await response.blob();
+    const downloadUrl = URL.createObjectURL(blob);
+    
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.download = defaultFileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(downloadUrl);
+    showToast(`${defaultFileName} 파일을 성공적으로 다운로드했습니다.`, "success", "download");
+  } catch (error) {
+    console.error(`서버 파일 다운로드 실패: ${url}`, error);
+    showToast("서버에서 파일을 다운로드하는데 실패했습니다.", "error", "alert-circle");
+  }
+}
+
+async function exportData() {
+  await downloadFileFromServer("prompts_data.json", "prompts_data.json");
 }
 
 async function exportWarehouseData() {
-  await ensureWarehouseLoaded();
-  const dataStr = JSON.stringify(state.warehouseItems, null, 2);
-  const blob = new Blob([dataStr], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "warehouse_data.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast("창고 데이터가 warehouse_data.json으로 다운로드되었습니다.", "success", "download");
+  await downloadFileFromServer("warehouse_data.json", "warehouse_data.json");
 }
 
 async function exportLMWarehouseData() {
-  await ensureLMWarehouseLoaded();
-  const dataStr = JSON.stringify(state.lmWarehouseItems, null, 2);
-  const blob = new Blob([dataStr], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "lm_warehouse_data.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast("LM스타일 창고 데이터가 lm_warehouse_data.json으로 다운로드되었습니다.", "success", "download");
+  await downloadFileFromServer("lm_warehouse_data.json", "lm_warehouse_data.json");
 }
 
 // GitHub 연동 모달 관련 상태
