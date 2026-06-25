@@ -1109,12 +1109,163 @@ async function exportData() {
   await downloadFileFromServer("prompts_data.json", "prompts_data.json");
 }
 
+// GitHub 이미지 파일 업로드 기능
+async function uploadImageToGitHub(filePath, base64Data) {
+  let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
+  if (!config || !config.token || !config.owner || !config.repo) {
+    throw new Error("GitHub 설정(PAT, Owner, Repository)이 필요합니다.");
+  }
+  
+  const { token, owner, repo, branch } = config;
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+  const commitMessage = `Upload image ${filePath} via PROMPTORIES Sync at ${new Date().toLocaleString()}`;
+  
+  // Extract pure Base64 content from data URL (e.g. data:image/jpeg;base64,...)
+  const matches = base64Data.match(/^data:image\/([a-zA-Z+]+);base64,(.+)$/);
+  if (!matches) {
+    throw new Error("올바른 Base64 이미지 형식이 아닙니다.");
+  }
+  const contentBase64 = matches[2];
+
+  // 1. 기존 파일의 SHA 가져오기
+  let sha = null;
+  const getRes = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Accept": "application/vnd.github+json"
+    }
+  });
+  
+  if (getRes.ok) {
+    const fileInfo = await getRes.json();
+    sha = fileInfo.sha;
+  }
+  
+  // 2. PUT 요청으로 이미지 파일 업로드
+  const body = {
+    message: commitMessage,
+    content: contentBase64,
+    branch: branch || "main"
+  };
+  if (sha) {
+    body.sha = sha;
+  }
+  
+  const putRes = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "Accept": "application/vnd.github+json"
+    },
+    body: JSON.stringify(body)
+  });
+  
+  if (!putRes.ok) {
+    const errData = await putRes.json();
+    throw new Error(`이미지 업로드 실패: ${errData.message || "API 오류"}`);
+  }
+}
+
+// 새로운 프롬프트 창고 항목에 대해서만 이미지 경량화 수행 (Base64 -> relative path)
+async function lightweightWarehouseItems(items, isLM = false) {
+  let count = 0;
+  const newImages = [];
+  
+  for (let item of items) {
+    if (item.image && item.image.startsWith("data:image/")) {
+      // Find extension from data URL
+      const matches = item.image.match(/^data:image\/([a-zA-Z+]+);base64,/);
+      let ext = "jpeg";
+      if (matches && matches[1]) {
+        ext = matches[1] === "jpeg" ? "jpeg" : matches[1];
+      }
+      
+      const filename = `${item.id}.${ext}`;
+      const relativePath = `images/${filename}`;
+      
+      newImages.push({
+        path: relativePath,
+        base64: item.image,
+        filename: filename
+      });
+      
+      // Update image path in the item
+      item.image = relativePath;
+      count++;
+    }
+  }
+  
+  return { items, count, newImages };
+}
+
+// 브라우저에서 Base64 이미지 파일 개별 다운로드
+function downloadBase64Image(filename, base64Data) {
+  const link = document.createElement("a");
+  link.href = base64Data;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// 브라우저에서 JSON 파일 직접 다운로드
+function downloadJsonFile(filename, data) {
+  const jsonStr = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 async function exportWarehouseData() {
-  await downloadFileFromServer("warehouse_data.json", "warehouse_data.json");
+  await ensureWarehouseLoaded();
+  
+  const { items, count, newImages } = await lightweightWarehouseItems(state.warehouseItems, false);
+  
+  if (count > 0) {
+    state.warehouseItems = items;
+    saveWarehouseData();
+    renderWarehouseGrid();
+    
+    // Download new images
+    newImages.forEach(img => {
+      downloadBase64Image(img.filename, img.base64);
+    });
+    
+    showToast(`${count}개의 새로운 이미지가 경량화(다운로드)되었습니다.`, "success", "image");
+  }
+  
+  // Download updated JSON file of local state
+  downloadJsonFile("warehouse_data.json", state.warehouseItems);
 }
 
 async function exportLMWarehouseData() {
-  await downloadFileFromServer("lm_warehouse_data.json", "lm_warehouse_data.json");
+  await ensureLMWarehouseLoaded();
+  
+  const { items, count, newImages } = await lightweightWarehouseItems(state.lmWarehouseItems, true);
+  
+  if (count > 0) {
+    state.lmWarehouseItems = items;
+    saveLMWarehouseData();
+    renderLMWarehouseGrid();
+    
+    // Download new images
+    newImages.forEach(img => {
+      downloadBase64Image(img.filename, img.base64);
+    });
+    
+    showToast(`${count}개의 새로운 이미지가 경량화(다운로드)되었습니다.`, "success", "image");
+  }
+  
+  // Download updated JSON file of local state
+  downloadJsonFile("lm_warehouse_data.json", state.lmWarehouseItems);
 }
 
 // GitHub 연동 모달 관련 상태
@@ -1250,16 +1401,78 @@ async function syncWarehouseToServer() {
   
   if (config && config.owner && config.repo) {
     if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 프롬프트 창고 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
+      
+      // Perform lightweighting first!
+      const { items, count, newImages } = await lightweightWarehouseItems(state.warehouseItems, false);
+      
+      if (count > 0) {
+        state.warehouseItems = items;
+        saveWarehouseData();
+        renderWarehouseGrid();
+        
+        try {
+          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+          for (let img of newImages) {
+            await uploadImageToGitHub(img.path, img.base64);
+          }
+          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+        } catch (err) {
+          console.error(err);
+          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+          return; // Stop if image upload fails
+        }
+      }
+      
       await uploadFileToGitHub("warehouse_data.json", state.warehouseItems);
     } else {
       openGithubConfigModal(async () => {
         if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
+          // Perform lightweighting first!
+          const { items, count, newImages } = await lightweightWarehouseItems(state.warehouseItems, false);
+          
+          if (count > 0) {
+            state.warehouseItems = items;
+            saveWarehouseData();
+            renderWarehouseGrid();
+            
+            try {
+              showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+              for (let img of newImages) {
+                await uploadImageToGitHub(img.path, img.base64);
+              }
+              showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+            } catch (err) {
+              console.error(err);
+              showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+              return;
+            }
+          }
           await uploadFileToGitHub("warehouse_data.json", state.warehouseItems);
         }
       });
     }
   } else {
     openGithubConfigModal(async () => {
+      // Perform lightweighting first!
+      const { items, count, newImages } = await lightweightWarehouseItems(state.warehouseItems, false);
+      
+      if (count > 0) {
+        state.warehouseItems = items;
+        saveWarehouseData();
+        renderWarehouseGrid();
+        
+        try {
+          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+          for (let img of newImages) {
+            await uploadImageToGitHub(img.path, img.base64);
+          }
+          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+        } catch (err) {
+          console.error(err);
+          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+          return;
+        }
+      }
       await uploadFileToGitHub("warehouse_data.json", state.warehouseItems);
     });
   }
@@ -1271,16 +1484,78 @@ async function syncLMWarehouseToServer() {
   
   if (config && config.owner && config.repo) {
     if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 LM스타일 창고 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
+      
+      // Perform lightweighting first!
+      const { items, count, newImages } = await lightweightWarehouseItems(state.lmWarehouseItems, true);
+      
+      if (count > 0) {
+        state.lmWarehouseItems = items;
+        saveLMWarehouseData();
+        renderLMWarehouseGrid();
+        
+        try {
+          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+          for (let img of newImages) {
+            await uploadImageToGitHub(img.path, img.base64);
+          }
+          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+        } catch (err) {
+          console.error(err);
+          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+          return; // Stop if image upload fails
+        }
+      }
+      
       await uploadFileToGitHub("lm_warehouse_data.json", state.lmWarehouseItems);
     } else {
       openGithubConfigModal(async () => {
         if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
+          // Perform lightweighting first!
+          const { items, count, newImages } = await lightweightWarehouseItems(state.lmWarehouseItems, true);
+          
+          if (count > 0) {
+            state.lmWarehouseItems = items;
+            saveLMWarehouseData();
+            renderLMWarehouseGrid();
+            
+            try {
+              showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+              for (let img of newImages) {
+                await uploadImageToGitHub(img.path, img.base64);
+              }
+              showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+            } catch (err) {
+              console.error(err);
+              showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+              return;
+            }
+          }
           await uploadFileToGitHub("lm_warehouse_data.json", state.lmWarehouseItems);
         }
       });
     }
   } else {
     openGithubConfigModal(async () => {
+      // Perform lightweighting first!
+      const { items, count, newImages } = await lightweightWarehouseItems(state.lmWarehouseItems, true);
+      
+      if (count > 0) {
+        state.lmWarehouseItems = items;
+        saveLMWarehouseData();
+        renderLMWarehouseGrid();
+        
+        try {
+          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+          for (let img of newImages) {
+            await uploadImageToGitHub(img.path, img.base64);
+          }
+          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+        } catch (err) {
+          console.error(err);
+          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+          return;
+        }
+      }
       await uploadFileToGitHub("lm_warehouse_data.json", state.lmWarehouseItems);
     });
   }
