@@ -1032,45 +1032,170 @@ function exportLMWarehouseData() {
   showToast("LM스타일 창고 데이터가 lm_warehouse_data.json으로 다운로드되었습니다.", "success", "download");
 }
 
-async function syncWarehouseFromServer() {
-  if (confirm("GitHub 서버에 업로드된 warehouse_data.json 데이터를 불러와 현재 브라우저 데이터를 덮어쓰시겠습니까?")) {
-    try {
-      showToast("서버에서 데이터를 가져오는 중...", "info", "refresh-cw");
-      const response = await fetch(`warehouse_data.json?t=${Date.now()}`);
-      if (response.ok) {
-        const data = await response.json();
-        state.warehouseItems = data;
-        saveWarehouseData();
-        renderWarehouseGrid();
-        showToast("서버 데이터 동기화 완료!", "success", "refresh-cw");
-      } else {
-        showToast("서버에서 warehouse_data.json을 찾을 수 없습니다.", "error", "alert-circle");
-      }
-    } catch (e) {
-      console.error(e);
-      showToast("동기화 실패: 서버 연결 상태를 확인해주세요.", "error", "alert-triangle");
-    }
+// GitHub 연동 모달 관련 상태
+let githubConfigCallback = null;
+
+function openGithubConfigModal(callback = null) {
+  githubConfigCallback = callback;
+  
+  // 기존 설정값 채우기
+  const config = JSON.parse(localStorage.getItem("prompt_manager_github_config") || "{}");
+  document.getElementById("github-token").value = config.token || "";
+  document.getElementById("github-owner").value = config.owner || "";
+  document.getElementById("github-repo").value = config.repo || "";
+  document.getElementById("github-branch").value = config.branch || "";
+  
+  document.getElementById("github-config-modal").classList.add("active");
+  setTimeout(() => document.getElementById("github-token").focus(), 150);
+}
+
+function closeGithubConfigModal() {
+  document.getElementById("github-config-modal").classList.remove("active");
+  githubConfigCallback = null;
+}
+
+function handleSaveGithubConfig(e) {
+  if (e) e.preventDefault();
+  
+  const token = document.getElementById("github-token").value.trim();
+  const owner = document.getElementById("github-owner").value.trim();
+  const repo = document.getElementById("github-repo").value.trim();
+  const branch = document.getElementById("github-branch").value.trim() || "main";
+  
+  if (!token || !owner || !repo) {
+    showToast("필수 입력 필드를 채워주세요.", "error", "alert-circle");
+    return;
+  }
+  
+  const config = { token, owner, repo, branch };
+  localStorage.setItem("prompt_manager_github_config", JSON.stringify(config));
+  
+  showToast("GitHub 동기화 설정이 저장되었습니다.", "success", "settings");
+  closeGithubConfigModal();
+  
+  if (githubConfigCallback) {
+    githubConfigCallback(config);
   }
 }
 
-async function syncLMWarehouseFromServer() {
-  if (confirm("GitHub 서버에 업로드된 lm_warehouse_data.json 데이터를 불러와 현재 브라우저 데이터를 덮어쓰시겠습니까?")) {
-    try {
-      showToast("서버에서 데이터를 가져오는 중...", "info", "refresh-cw");
-      const response = await fetch(`lm_warehouse_data.json?t=${Date.now()}`);
-      if (response.ok) {
-        const data = await response.json();
-        state.lmWarehouseItems = data;
-        saveLMWarehouseData();
-        renderLMWarehouseGrid();
-        showToast("서버 데이터 동기화 완료!", "success", "refresh-cw");
-      } else {
-        showToast("서버에서 lm_warehouse_data.json을 찾을 수 없습니다.", "error", "alert-circle");
+// 공통 GitHub 파일 업로드 기능
+async function uploadFileToGitHub(fileName, data) {
+  let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
+  
+  if (!config || !config.token || !config.owner || !config.repo) {
+    openGithubConfigModal((newConfig) => {
+      uploadFileToGitHub(fileName, data);
+    });
+    return;
+  }
+  
+  const { token, owner, repo, branch } = config;
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${fileName}`;
+  const commitMessage = `Update ${fileName} via PROMPTORIES Sync at ${new Date().toLocaleString()}`;
+  
+  // Base64 encoding supporting UTF-8
+  const jsonStr = JSON.stringify(data, null, 2);
+  const utf8Bytes = new TextEncoder().encode(jsonStr);
+  let binary = "";
+  const len = utf8Bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(utf8Bytes[i]);
+  }
+  const contentBase64 = btoa(binary);
+
+  try {
+    showToast("GitHub 서버와 통신 중...", "info", "refresh-cw");
+    
+    // 1. 기존 파일의 SHA 가져오기
+    let sha = null;
+    const getRes = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Accept": "application/vnd.github+json"
       }
-    } catch (e) {
-      console.error(e);
-      showToast("동기화 실패: 서버 연결 상태를 확인해주세요.", "error", "alert-triangle");
+    });
+    
+    if (getRes.ok) {
+      const fileInfo = await getRes.json();
+      sha = fileInfo.sha;
+    } else if (getRes.status !== 404) {
+      const errData = await getRes.json();
+      showToast(`GitHub 서버 연결 실패: ${errData.message || "오류"}`, "error", "alert-triangle");
+      return;
     }
+    
+    // 2. PUT 요청으로 파일 업데이트 또는 생성
+    const body = {
+      message: commitMessage,
+      content: contentBase64,
+      branch: branch || "main"
+    };
+    if (sha) {
+      body.sha = sha;
+    }
+    
+    const putRes = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/vnd.github+json"
+      },
+      body: JSON.stringify(body)
+    });
+    
+    if (putRes.ok) {
+      showToast(`${fileName} 파일이 GitHub 서버에 성공적으로 동기화되었습니다!`, "success", "cloud-lightning");
+    } else {
+      const errData = await putRes.json();
+      console.error("GitHub API PUT Error:", errData);
+      showToast(`동기화 실패: ${errData.message || "GitHub API 오류"}`, "error", "alert-circle");
+    }
+  } catch (e) {
+    console.error("GitHub API Sync Error:", e);
+    showToast("서버 동기화 중 오류가 발생했습니다. 네트워크 상태를 확인하세요.", "error", "alert-triangle");
+  }
+}
+
+// 동기화 트리거 함수들
+async function syncWarehouseToServer() {
+  let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
+  
+  if (config && config.owner && config.repo) {
+    if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 프롬프트 창고 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
+      await uploadFileToGitHub("warehouse_data.json", state.warehouseItems);
+    } else {
+      openGithubConfigModal(async () => {
+        if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
+          await uploadFileToGitHub("warehouse_data.json", state.warehouseItems);
+        }
+      });
+    }
+  } else {
+    openGithubConfigModal(async () => {
+      await uploadFileToGitHub("warehouse_data.json", state.warehouseItems);
+    });
+  }
+}
+
+async function syncLMWarehouseToServer() {
+  let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
+  
+  if (config && config.owner && config.repo) {
+    if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 LM스타일 창고 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
+      await uploadFileToGitHub("lm_warehouse_data.json", state.lmWarehouseItems);
+    } else {
+      openGithubConfigModal(async () => {
+        if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
+          await uploadFileToGitHub("lm_warehouse_data.json", state.lmWarehouseItems);
+        }
+      });
+    }
+  } else {
+    openGithubConfigModal(async () => {
+      await uploadFileToGitHub("lm_warehouse_data.json", state.lmWarehouseItems);
+    });
   }
 }
 
@@ -1258,6 +1383,8 @@ function setupEventListeners() {
         closeWarehouseModal();
       } else if (document.getElementById("lm-warehouse-modal").classList.contains("active")) {
         closeLMWarehouseModal();
+      } else if (document.getElementById("github-config-modal").classList.contains("active")) {
+        closeGithubConfigModal();
       } else if (document.getElementById("detail-drawer").classList.contains("active")) {
         closeDetailDrawer();
       }
@@ -1535,7 +1662,7 @@ function setupEventListeners() {
 
   // Warehouse Item Add Modal Toggle
   document.getElementById("btn-new-warehouse-item").addEventListener("click", () => openWarehouseModal());
-  document.getElementById("btn-sync-warehouse").addEventListener("click", syncWarehouseFromServer);
+  document.getElementById("btn-sync-warehouse").addEventListener("click", syncWarehouseToServer);
   document.getElementById("btn-export-warehouse").addEventListener("click", exportWarehouseData);
   document.getElementById("btn-copy-warehouse-json").addEventListener("click", copyWarehouseJson);
   document.getElementById("btn-warehouse-modal-close").addEventListener("click", closeWarehouseModal);
@@ -1611,7 +1738,7 @@ function setupEventListeners() {
 
   // LM Warehouse Item Add Modal Toggle
   document.getElementById("btn-new-lm-warehouse-item").addEventListener("click", () => openLMWarehouseModal());
-  document.getElementById("btn-sync-lm-warehouse").addEventListener("click", syncLMWarehouseFromServer);
+  document.getElementById("btn-sync-lm-warehouse").addEventListener("click", syncLMWarehouseToServer);
   document.getElementById("btn-export-lm-warehouse").addEventListener("click", exportLMWarehouseData);
   document.getElementById("btn-copy-lm-warehouse-json").addEventListener("click", copyLMWarehouseJson);
   document.getElementById("btn-lm-warehouse-modal-close").addEventListener("click", closeLMWarehouseModal);
@@ -1677,6 +1804,16 @@ function setupEventListeners() {
     document.getElementById("lm-wh-upload-placeholder").classList.remove("hidden");
     lmMwFileInput.value = "";
     showToast("첨부 이미지가 제거되었습니다.", "info", "x-circle");
+  });
+
+  // GitHub Config Modal Events
+  document.getElementById("btn-github-config-close").addEventListener("click", closeGithubConfigModal);
+  document.getElementById("btn-github-config-cancel").addEventListener("click", closeGithubConfigModal);
+  document.getElementById("github-config-form").addEventListener("submit", handleSaveGithubConfig);
+  document.getElementById("github-config-modal").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("github-config-modal")) {
+      closeGithubConfigModal();
+    }
   });
 }
 

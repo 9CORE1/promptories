@@ -612,6 +612,48 @@
       </div>
     </div>
 
+    <!-- GitHub Config Modal -->
+    <div class="modal-overlay" id="github-config-modal">
+      <div class="modal-container modal-sm">
+        <div class="modal-header">
+          <h2>GitHub 서버 동기화 설정</h2>
+          <button class="btn-icon" id="btn-github-config-close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        
+        <form id="github-config-form" class="modal-form">
+          <div class="modal-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">JSON 데이터를 GitHub 저장소에 동기화(저장)하기 위한 계정 및 토큰 설정을 입력해주세요.</div>
+          
+          <div class="form-group">
+            <label for="github-token">Personal Access Token (PAT) <span class="required">*</span></label>
+            <input type="password" id="github-token" placeholder="ghp_..." required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
+            <div class="textarea-hint" style="margin-top: 4px; font-size: 11px; color: var(--text-muted);">필요 권한: <code>repo</code> 권한이 활성화된 토큰이어야 합니다.</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="github-owner">GitHub 사용자 이름 (Owner) <span class="required">*</span></label>
+            <input type="text" id="github-owner" placeholder="예: github-username" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
+          </div>
+          
+          <div class="form-group">
+            <label for="github-repo">저장소 이름 (Repository) <span class="required">*</span></label>
+            <input type="text" id="github-repo" placeholder="예: promptories" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
+          </div>
+          
+          <div class="form-group">
+            <label for="github-branch">브랜치 이름 (Branch)</label>
+            <input type="text" id="github-branch" placeholder="main (비워두면 main으로 설정)" autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
+          </div>
+          
+          <div class="modal-actions" style="margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" id="btn-github-config-cancel">취소</button>
+            <button type="submit" class="btn btn-primary" id="btn-github-config-save">설정 저장</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toast-container"></div>
     
