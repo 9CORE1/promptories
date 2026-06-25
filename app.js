@@ -1199,6 +1199,26 @@ async function syncLMWarehouseToServer() {
   }
 }
 
+async function syncPromptsToServer() {
+  let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
+  
+  if (config && config.owner && config.repo) {
+    if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 전체 프롬프트 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
+      await uploadFileToGitHub("prompts_data.json", state.prompts);
+    } else {
+      openGithubConfigModal(async () => {
+        if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
+          await uploadFileToGitHub("prompts_data.json", state.prompts);
+        }
+      });
+    }
+  } else {
+    openGithubConfigModal(async () => {
+      await uploadFileToGitHub("prompts_data.json", state.prompts);
+    });
+  }
+}
+
 function copyWarehouseJson() {
   const dataStr = JSON.stringify(state.warehouseItems, null, 2);
   navigator.clipboard.writeText(dataStr).then(() => {
@@ -1217,79 +1237,6 @@ function copyLMWarehouseJson() {
     console.error(err);
     showToast("복사에 실패했습니다. 권한을 확인해주세요.", "error", "alert-circle");
   });
-}
-
-function handleImport(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    try {
-      const imported = JSON.parse(evt.target.result);
-      
-      // Basic validations
-      if (!Array.isArray(imported)) {
-        throw new Error("올바른 프롬프트 목록 형식이 아닙니다 (배열이 아님).");
-      }
-      
-      // Validate schema of first item as checklist
-      if (imported.length > 0) {
-        const item = imported[0];
-        if (!item.title || !item.promptText) {
-          throw new Error("필수 항목(title, promptText)이 누락되었습니다.");
-        }
-      }
-      
-      // Merge or Overwrite decision
-      if (confirm(`가져온 프롬프트 ${imported.length}개를 기존 라이브러리에 덮어쓰시겠습니까?\n[확인]을 누르면 덮어쓰고, [취소]를 누르면 병합합니다.`)) {
-        state.prompts = imported;
-        state.recentPromptIds = [];
-      } else {
-        // Merge without duplicate IDs
-        imported.forEach(impItem => {
-          if (!impItem.id) impItem.id = generateId();
-          // Avoid ID duplicates
-          if (state.prompts.some(p => p.id === impItem.id)) {
-            impItem.id = generateId(); // Regenerate ID if exists
-          }
-          state.prompts.push(impItem);
-        });
-      }
-      
-      saveData();
-      saveRecents();
-      renderApp();
-      showToast("데이터 복원이 완료되었습니다!", "success", "upload-cloud");
-      
-    } catch (err) {
-      alert(`복원 실패: ${err.message}`);
-      showToast("올바른 JSON 백업 파일이 아닙니다.", "error", "alert-triangle");
-    }
-  };
-  reader.readAsText(file);
-  e.target.value = ""; // Clear file selector
-}
-
-function resetData() {
-  if (confirm("정말로 모든 데이터를 삭제하고 기본 샘플 데이터로 복원하시겠습니까?")) {
-    state.prompts = [...DEFAULT_PROMPTS];
-    state.recentPromptIds = [];
-    saveData();
-    saveRecents();
-    
-    // Reset filters
-    state.currentFilter = "all";
-    state.currentCategoryFilter = null;
-    state.currentTagFilter = null;
-    state.searchQuery = "";
-    document.getElementById("search-input").value = "";
-    document.getElementById("search-clear").style.display = "none";
-    
-    closeDetailDrawer();
-    renderApp();
-    showToast("라이브러리가 기본값으로 초기화되었습니다.", "warning", "refresh-cw");
-  }
 }
 
 // ==========================================================================
@@ -1531,13 +1478,9 @@ function setupEventListeners() {
     });
   });
   
-  // Backup / Restore / Reset Actions
+  // Backup / Sync Actions
   document.getElementById("btn-export").addEventListener("click", exportData);
-  document.getElementById("btn-import-trigger").addEventListener("click", () => {
-    document.getElementById("file-import").click();
-  });
-  document.getElementById("file-import").addEventListener("change", handleImport);
-  document.getElementById("btn-reset-data").addEventListener("click", resetData);
+  document.getElementById("btn-sync-prompts").addEventListener("click", syncPromptsToServer);
   
   // Link sharing copies
   document.getElementById("btn-modal-share").addEventListener("click", () => {
@@ -2026,8 +1969,7 @@ function renderAdminUI() {
   const statusText = document.getElementById("admin-status-text");
   const lockIcon = document.getElementById("admin-lock-icon");
   const btnExport = document.getElementById("btn-export");
-  const btnImport = document.getElementById("btn-import-trigger");
-  const btnReset = document.getElementById("btn-reset-data");
+  const btnSyncPrompts = document.getElementById("btn-sync-prompts");
   const navWarehouse = document.getElementById("nav-warehouse");
   const navLMWarehouse = document.getElementById("nav-lm-warehouse");
   
@@ -2040,8 +1982,7 @@ function renderAdminUI() {
     
     // Show admin tools
     if (btnExport) btnExport.style.display = "inline-flex";
-    if (btnImport) btnImport.style.display = "inline-flex";
-    if (btnReset) btnReset.style.display = "inline-flex";
+    if (btnSyncPrompts) btnSyncPrompts.style.display = "inline-flex";
     if (navWarehouse) navWarehouse.style.display = "block";
     if (navLMWarehouse) navLMWarehouse.style.display = "block";
   } else {
@@ -2051,8 +1992,7 @@ function renderAdminUI() {
     
     // Hide admin tools
     if (btnExport) btnExport.style.display = "none";
-    if (btnImport) btnImport.style.display = "none";
-    if (btnReset) btnReset.style.display = "none";
+    if (btnSyncPrompts) btnSyncPrompts.style.display = "none";
     if (navWarehouse) {
       navWarehouse.style.display = "none";
       // Fallback to default prompts view if logged out while inside warehouse

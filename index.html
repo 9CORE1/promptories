@@ -105,18 +105,13 @@
       
       <!-- Sidebar Footer Settings -->
       <div class="sidebar-footer">
-        <button class="btn btn-ghost btn-sm" id="btn-export" title="데이터 백업 (JSON)">
+        <button class="btn btn-ghost btn-sm" id="btn-export" title="현재 전체 프롬프트 데이터를 JSON 파일로 다운로드합니다.">
           <i data-lucide="download"></i>
-          <span>백업</span>
+          <span>JSON 다운로드</span>
         </button>
-        <button class="btn btn-ghost btn-sm" id="btn-import-trigger" title="데이터 복원 (JSON)">
-          <i data-lucide="upload"></i>
-          <span>복원</span>
-        </button>
-        <input type="file" id="file-import" accept=".json" style="display: none;">
-        <button class="btn btn-ghost-danger btn-sm" id="btn-reset-data" title="기본값으로 초기화">
+        <button class="btn btn-ghost btn-sm" id="btn-sync-prompts" title="GitHub 서버의 prompts_data.json 파일 데이터로 동기화합니다.">
           <i data-lucide="refresh-cw"></i>
-          <span>초기화</span>
+          <span>서버 동기화</span>
         </button>
       </div>
     </aside>
