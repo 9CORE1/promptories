@@ -104,6 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // Load data from localStorage or initialize with sample data
+// Load data from localStorage or initialize with sample data
 async function initData() {
   const localPrompts = localStorage.getItem("prompt_manager_data");
   const localRecents = localStorage.getItem("prompt_manager_recents");
@@ -123,26 +124,25 @@ async function initData() {
     }
   }
   
-  if (localPrompts) {
-    try {
-      state.prompts = JSON.parse(localPrompts);
-    } catch (e) {
-      console.error("데이터 로드 중 오류 발생. 샘플 데이터로 복원합니다.", e);
-      state.prompts = [...DEFAULT_PROMPTS];
+  // 1. 항상 서버의 prompts_data.json 최신 버전을 먼저 가져오려고 시도합니다.
+  try {
+    const response = await fetch("prompts_data.json?t=" + Date.now());
+    if (response.ok) {
+      state.prompts = await response.json();
       saveData();
+    } else {
+      throw new Error("Server response not ok");
     }
-  } else {
-    try {
-      const response = await fetch("prompts_data.json");
-      if (response.ok) {
-        state.prompts = await response.json();
-        saveData();
-      } else {
+  } catch (e) {
+    console.warn("prompts_data.json 서버 로드 실패. 로컬 캐시를 사용합니다.", e);
+    if (localPrompts) {
+      try {
+        state.prompts = JSON.parse(localPrompts);
+      } catch (err) {
         state.prompts = [...DEFAULT_PROMPTS];
         saveData();
       }
-    } catch (e) {
-      console.warn("prompts_data.json 로드 실패. 기본 샘플 데이터로 시작합니다.", e);
+    } else {
       state.prompts = [...DEFAULT_PROMPTS];
       saveData();
     }
@@ -156,36 +156,64 @@ async function initData() {
     }
   }
   
-  const localWarehouse = localStorage.getItem("prompt_manager_warehouse_data");
-  const warehouseInitialized = localStorage.getItem("prompt_manager_warehouse_initialized");
-  if (localWarehouse && warehouseInitialized) {
-    try {
-      const data = JSON.parse(localWarehouse);
+  // 2. 항상 서버의 warehouse_data.json 최신 버전을 먼저 가져오려고 시도합니다.
+  try {
+    const response = await fetch("warehouse_data.json?t=" + Date.now());
+    if (response.ok) {
+      const data = await response.json();
       state.warehouseItems = Array.isArray(data) ? data : (data.value || []);
       state.warehouseLoaded = true;
-    } catch (e) {
+      saveWarehouseData();
+    } else {
+      throw new Error("Server response not ok");
+    }
+  } catch (e) {
+    console.warn("warehouse_data.json 서버 로드 실패. 로컬 캐시를 사용합니다.", e);
+    const localWarehouse = localStorage.getItem("prompt_manager_warehouse_data");
+    const warehouseInitialized = localStorage.getItem("prompt_manager_warehouse_initialized");
+    if (localWarehouse && warehouseInitialized) {
+      try {
+        const data = JSON.parse(localWarehouse);
+        state.warehouseItems = Array.isArray(data) ? data : (data.value || []);
+        state.warehouseLoaded = true;
+      } catch (err) {
+        state.warehouseItems = [];
+        state.warehouseLoaded = false;
+      }
+    } else {
       state.warehouseItems = [];
       state.warehouseLoaded = false;
     }
-  } else {
-    state.warehouseItems = [];
-    state.warehouseLoaded = false;
   }
   
-  const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
-  const lmWarehouseInitialized = localStorage.getItem("prompt_manager_lm_warehouse_initialized");
-  if (localLMWarehouse && lmWarehouseInitialized) {
-    try {
-      const data = JSON.parse(localLMWarehouse);
+  // 3. 항상 서버의 lm_warehouse_data.json 최신 버전을 먼저 가져오려고 시도합니다.
+  try {
+    const response = await fetch("lm_warehouse_data.json?t=" + Date.now());
+    if (response.ok) {
+      const data = await response.json();
       state.lmWarehouseItems = Array.isArray(data) ? data : (data.value || []);
       state.lmWarehouseLoaded = true;
-    } catch (e) {
+      saveLMWarehouseData();
+    } else {
+      throw new Error("Server response not ok");
+    }
+  } catch (e) {
+    console.warn("lm_warehouse_data.json 서버 로드 실패. 로컬 캐시를 사용합니다.", e);
+    const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
+    const lmWarehouseInitialized = localStorage.getItem("prompt_manager_lm_warehouse_initialized");
+    if (localLMWarehouse && lmWarehouseInitialized) {
+      try {
+        const data = JSON.parse(localLMWarehouse);
+        state.lmWarehouseItems = Array.isArray(data) ? data : (data.value || []);
+        state.lmWarehouseLoaded = true;
+      } catch (err) {
+        state.lmWarehouseItems = [];
+        state.lmWarehouseLoaded = false;
+      }
+    } else {
       state.lmWarehouseItems = [];
       state.lmWarehouseLoaded = false;
     }
-  } else {
-    state.lmWarehouseItems = [];
-    state.lmWarehouseLoaded = false;
   }
 }
 
@@ -208,7 +236,7 @@ async function ensureWarehouseLoaded() {
   
   try {
     showToast("서버에서 창고 데이터를 로드하는 중...", "info", "refresh-cw");
-    const response = await fetch("warehouse_data.json");
+    const response = await fetch("warehouse_data.json?t=" + Date.now());
     if (response.ok) {
       const data = await response.json();
       state.warehouseItems = Array.isArray(data) ? data : (data.value || []);
@@ -247,7 +275,7 @@ async function ensureLMWarehouseLoaded() {
   
   try {
     showToast("서버에서 LM스타일 창고 데이터를 로드하는 중...", "info", "refresh-cw");
-    const response = await fetch("lm_warehouse_data.json");
+    const response = await fetch("lm_warehouse_data.json?t=" + Date.now());
     if (response.ok) {
       const data = await response.json();
       state.lmWarehouseItems = Array.isArray(data) ? data : (data.value || []);
