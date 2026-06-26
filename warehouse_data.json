@@ -480,5 +480,37 @@
     "prompt": "Prompt:\nUltra-realistic IMAX-level Netflix-style cinematic photographer poster portrait, 9:16 vertical composition, use the uploaded image as the primary facial and visual reference with high identity preservation, maintaining the woman’s facial structure, eye shape, nose, lips, hairstyle, glasses and overall appearance, create a stylish rooftop photography-themed poster with a confident young woman standing in the center during golden-hour city light, holding a professional camera with a large telephoto lens in both hands, her skin rendered as luminous fair porcelain skin with a smooth milky-white glow, ultra-clean texture, soft natural blush and rich healthy brightness, long straight light-brown hair with soft golden highlights falling naturally over her shoulders, facial expression calm, confident and friendly with a gentle attractive smile, relaxed brows and expressive eyes looking toward the viewer, outfit changed so that she wears a fitted black inner t-shirt, distressed blue jeans, red sneakers, and a black-and-white check shirt tied around her waist with a clear front knot, create a premium collage poster layout with a large title at the top, a vertical film-strip panel on the left showing multiple mini portraits of the same woman in different poses, scattered photo-print elements around the composition, camera gear and photography accessories arranged near the bottom, rooftop railing visible behind her with a softly blurred modern skyline and warm sunset bokeh, include stylish overlay text in different designs such as “CAPTURE THE MOMENTS,” “CREATE YOUR FRAME,” “FOCUS ON THE MAGIC,” and “STORIES IN EVERY SHOT,” cinematic lighting with warm golden-hour highlights, soft rim light around the hair and shoulders, subtle city glow, shallow depth of field, ultra-rich color grading with warm amber sunlight, neutral urban greys, deep black outfit contrast and creamy porcelain skin highlights, premium editorial poster feel, masterpiece quality, ultra-detailed textures, 8K production detail. Negative Prompt: bad anatomy, extra fingers, distorted hands, blurry face, dull skin, uneven skin tone, tanning, flat lighting, messy collage, weak text layout, cartoon, anime, CGI look, low quality.",
     "image": "images/wh-1782374923386-qrlesgzzh.jpeg",
     "createdAt": "2026-06-25T08:08:43.386Z"
+  },
+  {
+    "id": "wh-1782433295320-g4xkuzkye",
+    "title": "플랫 벡터 일러스트",
+    "url": "https://x.com/rovvmut_/status/2070104587487576151?s=20",
+    "prompt": "GPT Image 2 on ChatGPT.\n\nPrompt: Transform the uploaded image into a clean, flat vector avatar illustration. Preserve the person's pose, facial features, hairstyle, clothing, and overall identity while simplifying them into a modern minimalist cartoon. Use smooth geometric shapes, solid colors, crisp edges, and no outlines or textures. Keep the facial details minimal with simple eyes, eyebrows, nose, and a subtle smile. Use soft skin tones, bold hair shapes, and simplified clothing with gentle shading only where needed. Center the subject in a front-facing portrait against a plain light gray or white background. The final result should have a friendly, polished, icon-style appearance similar to modern profile avatars, with balanced proportions, high contrast, and a clean, professional vector aesthetic.",
+    "image": "images/wh-1782433295320-g4xkuzkye.jpeg",
+    "createdAt": "2026-06-26T00:21:35.320Z"
+  },
+  {
+    "id": "wh-1782433352054-hbfp2ji68",
+    "title": "4컷 프로필",
+    "url": "https://x.com/Minahil42298354/status/2070050440775868507?s=20",
+    "prompt": "Gemini Nano Banana image \n\nPrompt:\n​A four-panel photo collage showcasing a cheerful East Asian woman with shoulder-length wavy black hair posing against a textured, vibrant orange background. In the top-left panel, she stands facing forward, smiling broadly, wearing an elegant black dress with a square neckline and short puff sleeves. The top-right and bottom-left panels feature candid, joyful moments of her sitting on a simple wooden stool, laughing genuinely with her hands slightly raised in mid-gesture; in these, she wears a black long-sleeved midi dress with a button-down bodice, a thin belt cinching her waist, and black ankle boots. In the bottom-right panel, she stands in a sophisticated pose, wearing a black slip dress with a side slit paired with a black blazer draped over her shoulders and classic black high heels. The entire image has bright, clean studio lighting that creates a striking contrast between her chic all-black outfits and the warm orange backdrop.",
+    "image": "images/wh-1782433352054-hbfp2ji68.jpeg",
+    "createdAt": "2026-06-26T00:22:32.054Z"
+  },
+  {
+    "id": "wh-1782433450745-vlmauu9di",
+    "title": "블랙앤 화이트 라인 일러스트",
+    "url": "https://x.com/Taaruk_/status/2070180260520620061?s=20",
+    "prompt": "GPT IMAGE 2 ON CHATGPT \n\nPrompt:\nCreate a highly detailed black-and-white manga illustration based on the uploaded photo while preserving the exact pose, composition, facial expressions, clothing, and camera angle. Two friends are taking a mirror selfie inside a modern elevator. The girl stands in the foreground holding a smartphone, wearing an oversized black hoodie, long dark hair, making an exaggerated screaming expression with one eye squinted. Behind her, the boy wears an oversized white hoodie with the hood up, also screaming dramatically with wide eyes and an open mouth, fists clenched in a playful pose.\n\nIllustrate everything using bold manga ink lines, clean contour work, expressive cross-hatching, fine pen strokes, subtle screentone shading, and dynamic comic-style line weight. Keep the elevator background minimal but recognizable with metallic panels and reflections. Add tiny manga emphasis lines around both heads to enhance the comedic energy.",
+    "image": "images/wh-1782433450745-vlmauu9di.jpeg",
+    "createdAt": "2026-06-26T00:24:10.745Z"
+  },
+  {
+    "id": "wh-1782433491562-zthl5nwon",
+    "title": "일본풍 일러스트 손그림",
+    "url": "https://x.com/Sairah_0/status/2070178811329831057?s=20",
+    "prompt": "GPT Image 2 On ChatGPT \n\nPROMPT:\n\nFlat modern risograph-style poster illustration of [HUMAN], wearing [CLOTHING], sitting front-facing behind a simple café table with [ANIMAL] in [SCENERY]. Use [COLORS] as flat solid color blocks on warm cream paper, with simple black hand-drawn outlines, naive proportions, minimal facial features, tiny dash textures, visible speckled print grain, slightly imperfect registration, clean graphic shapes, playful folk-poster composition, and a calm centered layout. The background is [BACKGROUND], simplified into flat wall shapes, one framed poster, one window shape, one potted plant, and a few rounded hanging lanterns. Keep the table objects simple: one bottle, one glass, one plate of food, and two tiny charms. Rounded cream border, retro Japanese picture-book poster feel, aspect ratio 4:5.",
+    "image": "images/wh-1782433491562-zthl5nwon.jpeg",
+    "createdAt": "2026-06-26T00:24:51.562Z"
   }
 ]
