@@ -512,5 +512,13 @@
     "prompt": "GPT Image 2 On ChatGPT \n\nPROMPT:\n\nFlat modern risograph-style poster illustration of [HUMAN], wearing [CLOTHING], sitting front-facing behind a simple café table with [ANIMAL] in [SCENERY]. Use [COLORS] as flat solid color blocks on warm cream paper, with simple black hand-drawn outlines, naive proportions, minimal facial features, tiny dash textures, visible speckled print grain, slightly imperfect registration, clean graphic shapes, playful folk-poster composition, and a calm centered layout. The background is [BACKGROUND], simplified into flat wall shapes, one framed poster, one window shape, one potted plant, and a few rounded hanging lanterns. Keep the table objects simple: one bottle, one glass, one plate of food, and two tiny charms. Rounded cream border, retro Japanese picture-book poster feel, aspect ratio 4:5.",
     "image": "images/wh-1782433491562-zthl5nwon.jpeg",
     "createdAt": "2026-06-26T00:24:51.562Z"
+  },
+  {
+    "id": "wh-1782694102735-1oso9kghq",
+    "title": "test",
+    "url": "test",
+    "prompt": "test",
+    "image": "images/wh-1782694102735-1oso9kghq.jpeg",
+    "createdAt": "2026-06-29T00:48:22.735Z"
   }
 ]
