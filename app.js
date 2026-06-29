@@ -107,6 +107,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Load data from localStorage or initialize with sample data
 // Load data from localStorage or initialize with sample data
+// Load data from localStorage or initialize with sample data
+// Load data from localStorage or initialize with sample data
 async function initData() {
   const localPrompts = localStorage.getItem("prompt_manager_data");
   const localRecents = localStorage.getItem("prompt_manager_recents");
@@ -126,28 +128,15 @@ async function initData() {
     }
   }
   
-  // 1. 항상 서버의 prompts_data.json 최신 버전을 먼저 가져오려고 시도합니다.
-  try {
-    const response = await fetch("prompts_data.json?t=" + Date.now());
-    if (response.ok) {
-      state.prompts = await response.json();
-      saveData();
-    } else {
-      throw new Error("Server response not ok");
-    }
-  } catch (e) {
-    console.warn("prompts_data.json 서버 로드 실패. 로컬 캐시를 사용합니다.", e);
-    if (localPrompts) {
-      try {
-        state.prompts = JSON.parse(localPrompts);
-      } catch (err) {
-        state.prompts = [...DEFAULT_PROMPTS];
-        saveData();
-      }
-    } else {
+  // 1. 로컬 캐시 우선 동기 로딩 (빠른 화면 전환 목적)
+  if (localPrompts) {
+    try {
+      state.prompts = JSON.parse(localPrompts);
+    } catch (err) {
       state.prompts = [...DEFAULT_PROMPTS];
-      saveData();
     }
+  } else {
+    state.prompts = [...DEFAULT_PROMPTS];
   }
   
   if (localRecents) {
@@ -158,93 +147,124 @@ async function initData() {
     }
   }
   
-  // 2. 항상 서버의 warehouse_data.json 최신 버전을 먼저 가져오려고 시도합니다.
-  try {
-    const response = await fetch("warehouse_data.json?t=" + Date.now());
-    if (response.ok) {
-      const data = await response.json();
-      state.warehouseItems = Array.isArray(data) ? data : (data.value || []);
+  const localWarehouse = localStorage.getItem("prompt_manager_warehouse_data");
+  if (localWarehouse) {
+    try {
+      state.warehouseItems = JSON.parse(localWarehouse);
       state.warehouseLoaded = true;
-      saveWarehouseData();
-    } else {
-      throw new Error("Server response not ok");
-    }
-  } catch (e) {
-    console.warn("warehouse_data.json 서버 로드 실패. 로컬 캐시를 사용합니다.", e);
-    const localWarehouse = localStorage.getItem("prompt_manager_warehouse_data");
-    const warehouseInitialized = localStorage.getItem("prompt_manager_warehouse_initialized");
-    if (localWarehouse && warehouseInitialized) {
-      try {
-        const data = JSON.parse(localWarehouse);
-        state.warehouseItems = Array.isArray(data) ? data : (data.value || []);
-        state.warehouseLoaded = true;
-      } catch (err) {
-        state.warehouseItems = [];
-        state.warehouseLoaded = false;
-      }
-    } else {
+    } catch (e) {
       state.warehouseItems = [];
       state.warehouseLoaded = false;
     }
   }
   
-  // 3. 항상 서버의 lm_warehouse_data.json 최신 버전을 먼저 가져오려고 시도합니다.
-  try {
-    const response = await fetch("lm_warehouse_data.json?t=" + Date.now());
-    if (response.ok) {
-      const data = await response.json();
-      state.lmWarehouseItems = Array.isArray(data) ? data : (data.value || []);
+  const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
+  if (localLMWarehouse) {
+    try {
+      state.lmWarehouseItems = JSON.parse(localLMWarehouse);
       state.lmWarehouseLoaded = true;
-      saveLMWarehouseData();
-    } else {
-      throw new Error("Server response not ok");
-    }
-  } catch (e) {
-    console.warn("lm_warehouse_data.json 서버 로드 실패. 로컬 캐시를 사용합니다.", e);
-    const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
-    const lmWarehouseInitialized = localStorage.getItem("prompt_manager_lm_warehouse_initialized");
-    if (localLMWarehouse && lmWarehouseInitialized) {
-      try {
-        const data = JSON.parse(localLMWarehouse);
-        state.lmWarehouseItems = Array.isArray(data) ? data : (data.value || []);
-        state.lmWarehouseLoaded = true;
-      } catch (err) {
-        state.lmWarehouseItems = [];
-        state.lmWarehouseLoaded = false;
-      }
-    } else {
+    } catch (e) {
       state.lmWarehouseItems = [];
       state.lmWarehouseLoaded = false;
     }
   }
+
+  const localFavShare = localStorage.getItem("prompt_manager_fav_share_data");
+  if (localFavShare) {
+    try {
+      state.favShareItems = JSON.parse(localFavShare);
+      state.favShareLoaded = true;
+    } catch (e) {
+      state.favShareItems = [];
+      state.favShareLoaded = false;
+    }
+  }
   
-  // 4. 항상 서버의 fav_share_data.json 최신 버전을 먼저 가져오려고 시도합니다.
+  // 2. 비동기로 서버 최신 JSON 파일 데이터를 가져와서 자동 덮어쓰기 (SWR 패턴)
+  syncFromServer(true);
+}
+
+let lastSyncTime = 0;
+
+// 서버 JSON 파일로부터 최신 데이터 비동기 동기화 (기기 간 실시간 갱신용)
+async function syncFromServer(force = false) {
+  // 5초 쓰로틀링 (단, 초기 실행 등 force = true 시 생략)
+  if (!force && (Date.now() - lastSyncTime < 5000)) return;
+  lastSyncTime = Date.now();
+  
+  let updated = false;
+  
+  // prompts_data.json 동기화
+  try {
+    const response = await fetch("prompts_data.json?t=" + Date.now());
+    if (response.ok) {
+      const serverPrompts = await response.json();
+      if (JSON.stringify(state.prompts) !== JSON.stringify(serverPrompts)) {
+        state.prompts = serverPrompts;
+        saveData();
+        updated = true;
+      }
+    }
+  } catch (e) {
+    console.warn("prompts_data.json 자동 갱신 실패", e);
+  }
+  
+  // warehouse_data.json 동기화
+  try {
+    const response = await fetch("warehouse_data.json?t=" + Date.now());
+    if (response.ok) {
+      const data = await response.json();
+      const serverItems = Array.isArray(data) ? data : (data.value || []);
+      if (JSON.stringify(state.warehouseItems) !== JSON.stringify(serverItems)) {
+        state.warehouseItems = serverItems;
+        state.warehouseLoaded = true;
+        saveWarehouseData();
+        updated = true;
+      }
+    }
+  } catch (e) {
+    console.warn("warehouse_data.json 자동 갱신 실패", e);
+  }
+  
+  // lm_warehouse_data.json 동기화
+  try {
+    const response = await fetch("lm_warehouse_data.json?t=" + Date.now());
+    if (response.ok) {
+      const data = await response.json();
+      const serverItems = Array.isArray(data) ? data : (data.value || []);
+      if (JSON.stringify(state.lmWarehouseItems) !== JSON.stringify(serverItems)) {
+        state.lmWarehouseItems = serverItems;
+        state.lmWarehouseLoaded = true;
+        saveLMWarehouseData();
+        updated = true;
+      }
+    }
+  } catch (e) {
+    console.warn("lm_warehouse_data.json 자동 갱신 실패", e);
+  }
+  
+  // fav_share_data.json 동기화
   try {
     const response = await fetch("fav_share_data.json?t=" + Date.now());
     if (response.ok) {
       const data = await response.json();
-      state.favShareItems = Array.isArray(data) ? data : (data.value || []);
-      state.favShareLoaded = true;
-      saveFavShareData();
-    } else {
-      throw new Error("Server response not ok");
+      const serverItems = Array.isArray(data) ? data : (data.value || []);
+      if (JSON.stringify(state.favShareItems) !== JSON.stringify(serverItems)) {
+        state.favShareItems = serverItems;
+        state.favShareLoaded = true;
+        saveFavShareData();
+        updated = true;
+      }
     }
   } catch (e) {
-    console.warn("fav_share_data.json 서버 로드 실패. 로컬 캐시를 사용합니다.", e);
-    const localFavShare = localStorage.getItem("prompt_manager_fav_share_data");
-    const favShareInitialized = localStorage.getItem("prompt_manager_fav_share_initialized");
-    if (localFavShare && favShareInitialized) {
-      try {
-        const data = JSON.parse(localFavShare);
-        state.favShareItems = Array.isArray(data) ? data : (data.value || []);
-        state.favShareLoaded = true;
-      } catch (err) {
-        state.favShareItems = [];
-        state.favShareLoaded = false;
-      }
-    } else {
-      state.favShareItems = [];
-      state.favShareLoaded = false;
+    console.warn("fav_share_data.json 자동 갱신 실패", e);
+  }
+  
+  // 변경 사항이 있을 시 화면 즉시 새로고침 및 안내 토스트 노출
+  if (updated) {
+    renderApp();
+    if (!force) {
+      showToast("서버의 최신 데이터로 동기화되었습니다.", "success", "refresh-cw");
     }
   }
 }
@@ -2326,6 +2346,17 @@ function setupEventListeners() {
   document.getElementById("github-config-modal").addEventListener("click", (e) => {
     if (e.target === document.getElementById("github-config-modal")) {
       closeGithubConfigModal();
+    }
+  });
+
+  // 자동 데이터 동기화 이벤트 등록 (다른 기기에서 탭 포커스 / 화면 재진입 시 갱신)
+  window.addEventListener("focus", () => {
+    syncFromServer();
+  });
+  
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      syncFromServer();
     }
   });
 }
