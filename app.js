@@ -87,7 +87,9 @@ let state = {
   warehouseItems: [],
   warehouseLoaded: false,
   lmWarehouseItems: [],
-  lmWarehouseLoaded: false
+  lmWarehouseLoaded: false,
+  favShareItems: [],
+  favShareLoaded: false
 };
 
 // ==========================================================================
@@ -213,6 +215,36 @@ async function initData() {
     } else {
       state.lmWarehouseItems = [];
       state.lmWarehouseLoaded = false;
+    }
+  }
+  
+  // 4. 항상 서버의 fav_share_data.json 최신 버전을 먼저 가져오려고 시도합니다.
+  try {
+    const response = await fetch("fav_share_data.json?t=" + Date.now());
+    if (response.ok) {
+      const data = await response.json();
+      state.favShareItems = Array.isArray(data) ? data : (data.value || []);
+      state.favShareLoaded = true;
+      saveFavShareData();
+    } else {
+      throw new Error("Server response not ok");
+    }
+  } catch (e) {
+    console.warn("fav_share_data.json 서버 로드 실패. 로컬 캐시를 사용합니다.", e);
+    const localFavShare = localStorage.getItem("prompt_manager_fav_share_data");
+    const favShareInitialized = localStorage.getItem("prompt_manager_fav_share_initialized");
+    if (localFavShare && favShareInitialized) {
+      try {
+        const data = JSON.parse(localFavShare);
+        state.favShareItems = Array.isArray(data) ? data : (data.value || []);
+        state.favShareLoaded = true;
+      } catch (err) {
+        state.favShareItems = [];
+        state.favShareLoaded = false;
+      }
+    } else {
+      state.favShareItems = [];
+      state.favShareLoaded = false;
     }
   }
 }
@@ -356,16 +388,26 @@ function renderApp() {
     document.getElementById("prompts-main-view").classList.add("hidden");
     document.getElementById("warehouse-main-view").classList.remove("hidden");
     document.getElementById("lm-warehouse-main-view").classList.add("hidden");
+    document.getElementById("fav-share-main-view").classList.add("hidden");
     renderWarehouseGrid();
   } else if (state.currentFilter === "lm-warehouse") {
     document.getElementById("prompts-main-view").classList.add("hidden");
     document.getElementById("warehouse-main-view").classList.add("hidden");
     document.getElementById("lm-warehouse-main-view").classList.remove("hidden");
+    document.getElementById("fav-share-main-view").classList.add("hidden");
     renderLMWarehouseGrid();
+  } else if (state.currentFilter === "fav-share") {
+    document.getElementById("prompts-main-view").classList.add("hidden");
+    document.getElementById("warehouse-main-view").classList.add("hidden");
+    document.getElementById("lm-warehouse-main-view").classList.add("hidden");
+    document.getElementById("fav-share-main-view").classList.remove("hidden");
+    renderSidebar();
+    renderFavShareGrid();
   } else {
     document.getElementById("prompts-main-view").classList.remove("hidden");
     document.getElementById("warehouse-main-view").classList.add("hidden");
     document.getElementById("lm-warehouse-main-view").classList.add("hidden");
+    document.getElementById("fav-share-main-view").classList.add("hidden");
     
     renderSidebar();
     renderPromptGrid();
@@ -1831,6 +1873,8 @@ function setupEventListeners() {
         closeWarehouseModal();
       } else if (document.getElementById("lm-warehouse-modal").classList.contains("active")) {
         closeLMWarehouseModal();
+      } else if (document.getElementById("fav-share-modal").classList.contains("active")) {
+        closeFavShareModal();
       } else if (document.getElementById("github-config-modal").classList.contains("active")) {
         closeGithubConfigModal();
       } else if (document.getElementById("detail-drawer").classList.contains("active")) {
@@ -2104,6 +2148,29 @@ function setupEventListeners() {
     await ensureWarehouseLoaded();
     selectQuickFilter("warehouse");
   });
+
+  // Favorites Share Menu Selection
+  document.getElementById("nav-fav-share").addEventListener("click", async (e) => {
+    e.preventDefault();
+    await ensureFavShareLoaded();
+    selectQuickFilter("fav-share");
+  });
+
+  // Favorites Share Item Add Modal Toggle & Buttons
+  document.getElementById("btn-new-fav-share-item").addEventListener("click", () => openFavShareModal());
+  document.getElementById("btn-sync-fav-share").addEventListener("click", syncFavShareToServer);
+  document.getElementById("btn-export-fav-share").addEventListener("click", exportFavShareData);
+  document.getElementById("btn-copy-fav-share-json").addEventListener("click", copyFavShareJson);
+  document.getElementById("btn-fav-share-modal-close").addEventListener("click", closeFavShareModal);
+  document.getElementById("btn-fav-share-modal-cancel").addEventListener("click", closeFavShareModal);
+  document.getElementById("fav-share-modal").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("fav-share-modal")) {
+      closeFavShareModal();
+    }
+  });
+
+  // Favorites Share Submit
+  document.getElementById("fav-share-form").addEventListener("submit", handleFavShareFormSubmit);
 
   // Warehouse Item Add Modal Toggle
   document.getElementById("btn-new-warehouse-item").addEventListener("click", () => openWarehouseModal());
@@ -2476,6 +2543,11 @@ function renderAdminUI() {
   const navWarehouse = document.getElementById("nav-warehouse");
   const navLMWarehouse = document.getElementById("nav-lm-warehouse");
   
+  const btnSyncFavShare = document.getElementById("btn-sync-fav-share");
+  const btnExportFavShare = document.getElementById("btn-export-fav-share");
+  const btnCopyFavShareJson = document.getElementById("btn-copy-fav-share-json");
+  const btnNewFavShareItem = document.getElementById("btn-new-fav-share-item");
+  
   if (!statusBar) return;
   
   if (state.isAdmin) {
@@ -2488,6 +2560,11 @@ function renderAdminUI() {
     if (btnSyncPrompts) btnSyncPrompts.style.display = "inline-flex";
     if (navWarehouse) navWarehouse.style.display = "block";
     if (navLMWarehouse) navLMWarehouse.style.display = "block";
+    
+    if (btnSyncFavShare) btnSyncFavShare.style.display = "inline-flex";
+    if (btnExportFavShare) btnExportFavShare.style.display = "inline-flex";
+    if (btnCopyFavShareJson) btnCopyFavShareJson.style.display = "inline-flex";
+    if (btnNewFavShareItem) btnNewFavShareItem.style.display = "inline-flex";
   } else {
     statusBar.classList.remove("admin-active");
     statusText.textContent = "일반 사용자 모드";
@@ -2510,6 +2587,11 @@ function renderAdminUI() {
         selectQuickFilter("all");
       }
     }
+    
+    if (btnSyncFavShare) btnSyncFavShare.style.display = "none";
+    if (btnExportFavShare) btnExportFavShare.style.display = "none";
+    if (btnCopyFavShareJson) btnCopyFavShareJson.style.display = "none";
+    if (btnNewFavShareItem) btnNewFavShareItem.style.display = "none";
   }
   
   // Drawer buttons control
@@ -3062,4 +3144,251 @@ function handleDeepLink() {
       showToast("공유된 프롬프트를 찾을 수 없습니다.", "error", "alert-circle");
     }
   }
+}
+
+// ==========================================================================
+// FAVORITES SHARE CONTROLLERS & GRID RENDER
+// ==========================================================================
+function saveFavShareData() {
+  try {
+    localStorage.setItem("prompt_manager_fav_share_data", JSON.stringify(state.favShareItems));
+    localStorage.setItem("prompt_manager_fav_share_initialized", "true");
+  } catch (e) {
+    console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성):", e);
+  }
+}
+
+async function ensureFavShareLoaded() {
+  if (state.favShareLoaded) return;
+  
+  const localFavShare = localStorage.getItem("prompt_manager_fav_share_data");
+  const favShareInitialized = localStorage.getItem("prompt_manager_fav_share_initialized");
+  if (localFavShare && favShareInitialized) {
+    try {
+      const data = JSON.parse(localFavShare);
+      state.favShareItems = Array.isArray(data) ? data : (data.value || []);
+      state.favShareLoaded = true;
+      return;
+    } catch (e) {
+      console.error("로컬 즐겨찾기 데이터 파싱 실패", e);
+    }
+  }
+  
+  try {
+    showToast("서버에서 즐겨찾기 데이터를 로드하는 중...", "info", "refresh-cw");
+    const response = await fetch("fav_share_data.json?t=" + Date.now());
+    if (response.ok) {
+      const data = await response.json();
+      state.favShareItems = Array.isArray(data) ? data : (data.value || []);
+      try {
+        saveFavShareData();
+        localStorage.setItem("prompt_manager_fav_share_initialized", "true");
+      } catch (storageError) {
+        console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성). 데이터는 메모리에서 유지됩니다.", storageError);
+      }
+      showToast("즐겨찾기 데이터를 성공적으로 로드했습니다.", "success", "check");
+    } else {
+      state.favShareItems = [];
+    }
+  } catch (e) {
+    console.warn("fav_share_data.json 로드 실패. 빈 배열로 시작합니다.", e);
+    state.favShareItems = [];
+  }
+  state.favShareLoaded = true;
+}
+
+function openFavShareModal(editingId = null) {
+  const form = document.getElementById("fav-share-form");
+  form.reset();
+  
+  document.getElementById("fav-id").value = "";
+  
+  const modalTitle = document.getElementById("fav-share-modal-title");
+  const submitBtn = document.getElementById("btn-fav-share-modal-submit");
+  
+  if (editingId && typeof editingId === "string") {
+    const item = state.favShareItems.find(x => x.id === editingId);
+    if (!item) return;
+    
+    modalTitle.textContent = "즐겨찾기 수정";
+    submitBtn.textContent = "수정하기";
+    
+    document.getElementById("fav-id").value = item.id;
+    document.getElementById("fav-title").value = item.title;
+    document.getElementById("fav-url").value = item.url;
+    document.getElementById("fav-desc").value = item.desc || "";
+  } else {
+    modalTitle.textContent = "새 즐겨찾기 등록";
+    submitBtn.textContent = "등록하기";
+  }
+  
+  document.getElementById("fav-share-modal").classList.add("active");
+  setTimeout(() => document.getElementById("fav-title").focus(), 150);
+}
+
+function closeFavShareModal() {
+  document.getElementById("fav-share-modal").classList.remove("active");
+}
+
+function handleFavShareFormSubmit(e) {
+  e.preventDefault();
+  
+  const id = document.getElementById("fav-id").value;
+  const title = document.getElementById("fav-title").value.trim();
+  const url = document.getElementById("fav-url").value.trim();
+  const desc = document.getElementById("fav-desc").value.trim();
+  
+  if (!title || !url) {
+    showToast("필수 입력 필드를 채워주세요.", "error", "alert-circle");
+    return;
+  }
+  
+  const isEditing = id !== "";
+  
+  if (isEditing) {
+    const idx = state.favShareItems.findIndex(item => item.id === id);
+    if (idx !== -1) {
+      state.favShareItems[idx] = {
+        ...state.favShareItems[idx],
+        title,
+        url,
+        desc,
+        updatedAt: new Date().toISOString()
+      };
+      showToast("즐겨찾기 정보가 수정되었습니다.", "success", "bookmark");
+    }
+  } else {
+    const newItem = {
+      id: "fav-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9),
+      title,
+      url,
+      desc,
+      createdAt: new Date().toISOString()
+    };
+    state.favShareItems.push(newItem);
+    showToast("즐겨찾기가 새로 등록되었습니다.", "success", "bookmark");
+  }
+  
+  saveFavShareData();
+  closeFavShareModal();
+  renderFavShareGrid();
+}
+
+function deleteFavShareItem(id) {
+  if (confirm("정말 이 즐겨찾기를 삭제하시겠습니까?")) {
+    state.favShareItems = state.favShareItems.filter(item => item.id !== id);
+    saveFavShareData();
+    renderFavShareGrid();
+    showToast("즐겨찾기가 정상적으로 삭제되었습니다.", "info", "trash-2");
+  }
+}
+
+function renderFavShareGrid() {
+  const grid = document.getElementById("fav-share-grid");
+  const emptyState = document.getElementById("fav-share-empty-state");
+  const items = [...state.favShareItems];
+  
+  if (items.length === 0) {
+    grid.innerHTML = "";
+    emptyState.style.display = "flex";
+    return;
+  }
+  
+  emptyState.style.display = "none";
+  grid.innerHTML = "";
+  
+  // Sort items desc (newest first)
+  items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "prompt-card";
+    
+    // Admin Edit/Delete buttons html
+    const adminActionsHtml = state.isAdmin 
+      ? `<div style="display: flex; gap: 6px;">
+           <button class="btn-icon text-primary fav-edit-btn" title="수정하기" style="padding: 4px;">
+             <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
+           </button>
+           <button class="btn-icon text-danger fav-delete-btn" title="삭제하기" style="padding: 4px;">
+             <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+           </button>
+         </div>`
+      : "";
+      
+    card.innerHTML = `
+      <div class="card-body" style="padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 140px; justify-content: space-between;">
+        <div>
+          <h3 class="card-title" style="font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--text-main); margin-bottom: 6px;">
+            ${escapeHtml(item.title)}
+          </h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0; word-break: break-all;">
+            ${escapeHtml(item.desc || "상세 설명이 없습니다.")}
+          </p>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); word-break: break-all; margin-top: 4px;">
+          링크: <span style="opacity: 0.8;">${escapeHtml(item.url)}</span>
+        </div>
+      </div>
+      <div class="card-footer" style="padding: 12px 18px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-card);">
+        <a href="${item.url}" target="_blank" class="btn btn-primary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 8px;">
+          <i data-lucide="external-link" style="width: 13px; height: 13px;"></i> 바로가기
+        </a>
+        ${adminActionsHtml}
+      </div>
+    `;
+    
+    // Event listeners for admin actions
+    if (state.isAdmin) {
+      card.querySelector(".fav-edit-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        openFavShareModal(item.id);
+      });
+      card.querySelector(".fav-delete-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        deleteFavShareItem(item.id);
+      });
+    }
+    
+    grid.appendChild(card);
+  });
+  
+  lucide.createIcons();
+}
+
+async function syncFavShareToServer() {
+  await ensureFavShareLoaded();
+  let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
+  
+  if (config && config.owner && config.repo) {
+    if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 즐겨찾기 데이터를 저장하시겠습니까?`)) {
+      await uploadFileToGitHub("fav_share_data.json", state.favShareItems);
+    } else {
+      openGithubConfigModal(async () => {
+        if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
+          await uploadFileToGitHub("fav_share_data.json", state.favShareItems);
+        }
+      });
+    }
+  } else {
+    openGithubConfigModal(async () => {
+      await uploadFileToGitHub("fav_share_data.json", state.favShareItems);
+    });
+  }
+}
+
+async function exportFavShareData() {
+  await ensureFavShareLoaded();
+  downloadJsonFile("fav_share_data.json", state.favShareItems);
+}
+
+async function copyFavShareJson() {
+  await ensureFavShareLoaded();
+  const dataStr = JSON.stringify(state.favShareItems, null, 2);
+  navigator.clipboard.writeText(dataStr).then(() => {
+    showToast("즐겨찾기 데이터(JSON)가 클립보드에 복사되었습니다!", "success", "copy");
+  }).catch(err => {
+    console.error(err);
+    showToast("복사에 실패했습니다. 권한을 확인해주세요.", "error", "alert-circle");
+  });
 }
