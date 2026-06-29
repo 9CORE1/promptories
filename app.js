@@ -3260,6 +3260,7 @@ function openFavShareModal(editingId = null) {
   form.reset();
   
   document.getElementById("fav-id").value = "";
+  document.getElementById("fav-category").value = "";
   
   const modalTitle = document.getElementById("fav-share-modal-title");
   const submitBtn = document.getElementById("btn-fav-share-modal-submit");
@@ -3273,6 +3274,7 @@ function openFavShareModal(editingId = null) {
     
     document.getElementById("fav-id").value = item.id;
     document.getElementById("fav-title").value = item.title;
+    document.getElementById("fav-category").value = item.category || "";
     document.getElementById("fav-url").value = item.url;
     document.getElementById("fav-desc").value = item.desc || "";
   } else {
@@ -3293,10 +3295,11 @@ function handleFavShareFormSubmit(e) {
   
   const id = document.getElementById("fav-id").value;
   const title = document.getElementById("fav-title").value.trim();
+  const category = document.getElementById("fav-category").value.trim();
   const url = document.getElementById("fav-url").value.trim();
   const desc = document.getElementById("fav-desc").value.trim();
   
-  if (!title || !url) {
+  if (!title || !url || !category) {
     showToast("필수 입력 필드를 채워주세요.", "error", "alert-circle");
     return;
   }
@@ -3309,6 +3312,7 @@ function handleFavShareFormSubmit(e) {
       state.favShareItems[idx] = {
         ...state.favShareItems[idx],
         title,
+        category,
         url,
         desc,
         updatedAt: new Date().toISOString()
@@ -3319,6 +3323,7 @@ function handleFavShareFormSubmit(e) {
     const newItem = {
       id: "fav-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9),
       title,
+      category,
       url,
       desc,
       createdAt: new Date().toISOString()
@@ -3342,73 +3347,110 @@ function deleteFavShareItem(id) {
 }
 
 function renderFavShareGrid() {
-  const grid = document.getElementById("fav-share-grid");
+  const container = document.getElementById("fav-share-container");
   const emptyState = document.getElementById("fav-share-empty-state");
   const items = [...state.favShareItems];
   
   if (items.length === 0) {
-    grid.innerHTML = "";
+    if (container) container.innerHTML = "";
     emptyState.style.display = "flex";
     return;
   }
   
   emptyState.style.display = "none";
-  grid.innerHTML = "";
+  if (container) container.innerHTML = "";
   
   // Sort items desc (newest first)
   items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   
+  // Group by category
+  const groups = {};
   items.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "prompt-card";
+    const cat = (item.category || "미지정").trim();
+    if (!groups[cat]) {
+      groups[cat] = [];
+    }
+    groups[cat].push(item);
+  });
+  
+  // Sort category names alphabetically (put "미지정" at the end)
+  const categories = Object.keys(groups).sort((a, b) => {
+    if (a === "미지정") return 1;
+    if (b === "미지정") return -1;
+    return a.localeCompare(b);
+  });
+  
+  categories.forEach(category => {
+    const section = document.createElement("div");
+    section.className = "fav-category-section";
+    section.style.marginBottom = "32px";
     
-    // Admin Edit/Delete buttons html
-    const adminActionsHtml = state.isAdmin 
-      ? `<div style="display: flex; gap: 6px;">
-           <button class="btn-icon text-primary fav-edit-btn" title="수정하기" style="padding: 4px;">
-             <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
-           </button>
-           <button class="btn-icon text-danger fav-delete-btn" title="삭제하기" style="padding: 4px;">
-             <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-           </button>
-         </div>`
-      : "";
-      
-    card.innerHTML = `
-      <div class="card-body" style="padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 140px; justify-content: space-between;">
-        <div>
-          <h3 class="card-title" style="font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--text-main); margin-bottom: 6px;">
-            ${escapeHtml(item.title)}
-          </h3>
-          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0; word-break: break-all;">
-            ${escapeHtml(item.desc || "상세 설명이 없습니다.")}
-          </p>
-        </div>
-        <div style="font-size: 11px; color: var(--text-muted); word-break: break-all; margin-top: 4px;">
-          링크: <span style="opacity: 0.8;">${escapeHtml(item.url)}</span>
-        </div>
-      </div>
-      <div class="card-footer" style="padding: 12px 18px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-card);">
-        <a href="${item.url}" target="_blank" class="btn btn-primary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 8px;">
-          <i data-lucide="external-link" style="width: 13px; height: 13px;"></i> 바로가기
-        </a>
-        ${adminActionsHtml}
+    section.innerHTML = `
+      <h3 style="font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">
+        <i data-lucide="folder" style="width: 15px; height: 15px; color: var(--accent-primary);"></i>
+        <span>${escapeHtml(category)}</span>
+        <span style="font-size: 11px; font-weight: 500; color: var(--text-muted); margin-left: 4px;">(${groups[category].length})</span>
+      </h3>
+      <div class="fav-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
       </div>
     `;
     
-    // Event listeners for admin actions
-    if (state.isAdmin) {
-      card.querySelector(".fav-edit-btn").addEventListener("click", (e) => {
-        e.stopPropagation();
-        openFavShareModal(item.id);
-      });
-      card.querySelector(".fav-delete-btn").addEventListener("click", (e) => {
-        e.stopPropagation();
-        deleteFavShareItem(item.id);
-      });
-    }
+    const grid = section.querySelector(".fav-grid");
     
-    grid.appendChild(card);
+    groups[category].forEach(item => {
+      const card = document.createElement("div");
+      card.className = "fav-card";
+      
+      // Admin Edit/Delete buttons html
+      const adminActionsHtml = state.isAdmin 
+        ? `<div style="display: flex; gap: 6px;">
+             <button class="btn-icon text-primary fav-edit-btn" title="수정하기" style="padding: 4px; width: 28px; height: 28px; border-radius: 6px;">
+               <i data-lucide="edit-3" style="width: 13px; height: 13px;"></i>
+             </button>
+             <button class="btn-icon text-danger fav-delete-btn" title="삭제하기" style="padding: 4px; width: 28px; height: 28px; border-radius: 6px;">
+               <i data-lucide="trash-2" style="width: 13px; height: 13px;"></i>
+             </button>
+           </div>`
+        : "";
+        
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+          <h3 style="font-size: 14px; font-weight: 700; color: var(--text-main); word-break: keep-all; line-height: 1.4; margin: 0;">
+            ${escapeHtml(item.title)}
+          </h3>
+        </div>
+        <div style="margin: 2px 0 6px;">
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.45; margin: 0; word-break: keep-all;">
+            ${escapeHtml(item.desc || "상세 설명이 없습니다.")}
+          </p>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); word-break: break-all; margin-top: 4px; opacity: 0.85;">
+          링크: <span style="color: var(--accent-primary);">${escapeHtml(item.url)}</span>
+        </div>
+        <div class="card-footer" style="padding-top: 8px; margin-top: 8px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: transparent;">
+          <a href="${item.url}" target="_blank" class="btn btn-primary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px;">
+            <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> 바로가기
+          </a>
+          ${adminActionsHtml}
+        </div>
+      `;
+      
+      // Event listeners for admin actions
+      if (state.isAdmin) {
+        card.querySelector(".fav-edit-btn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          openFavShareModal(item.id);
+        });
+        card.querySelector(".fav-delete-btn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteFavShareItem(item.id);
+        });
+      }
+      
+      grid.appendChild(card);
+    });
+    
+    if (container) container.appendChild(section);
   });
   
   lucide.createIcons();

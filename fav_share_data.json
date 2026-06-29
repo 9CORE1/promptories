@@ -4,6 +4,7 @@
     "title": "ChatGPT",
     "url": "https://chatgpt.com",
     "desc": "OpenAI의 대표적인 대화형 AI 서비스로, 다양한 프롬프트를 테스트하고 실행할 수 있습니다.",
+    "category": "AI 대화형 도구",
     "createdAt": "2026-06-29T00:00:00.000Z"
   },
   {
@@ -11,20 +12,7 @@
     "title": "Claude",
     "url": "https://claude.ai",
     "desc": "Anthropic의 대화형 AI 서비스로, 코딩 및 글쓰기 프롬프트 수행에 매우 탁월합니다.",
+    "category": "AI 대화형 도구",
     "createdAt": "2026-06-29T00:00:00.000Z"
-  },
-  {
-    "id": "fav-1782700439504-mii4qyjgx",
-    "title": "Arena Experience the frontier",
-    "url": "https://arena.ai/",
-    "desc": "프롬프트 A/B 테스트",
-    "createdAt": "2026-06-29T02:33:59.504Z"
-  },
-  {
-    "id": "fav-1782707739891-8ntz26a6n",
-    "title": "Gemini",
-    "url": "https://gemini.google.com/",
-    "desc": "Google Gemini",
-    "createdAt": "2026-06-29T04:35:39.891Z"
   }
 ]
