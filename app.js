@@ -1421,6 +1421,13 @@ function openGithubConfigModal(callback = null) {
   document.getElementById("github-repo").value = config.repo || "";
   document.getElementById("github-branch").value = config.branch || "";
   
+  // 설정 내용 삭제 버튼 제어 (기존 설정값이 있는 경우에만 표시)
+  const hasConfig = config.token || config.owner || config.repo;
+  const btnDelete = document.getElementById("btn-github-config-delete");
+  if (btnDelete) {
+    btnDelete.style.display = hasConfig ? "inline-block" : "none";
+  }
+  
   document.getElementById("github-config-modal").classList.add("active");
   setTimeout(() => document.getElementById("github-token").focus(), 150);
 }
@@ -1941,14 +1948,7 @@ function setupEventListeners() {
     }
   });
 
-  // Create Prompt triggers
-  document.getElementById("btn-new-prompt").addEventListener("click", () => {
-    if (!state.isAdmin) {
-      openEmailAuthModal(() => openModal());
-    } else {
-      openModal();
-    }
-  });
+
 
   // Email Auth Modal Events
   document.getElementById("btn-auth-close").addEventListener("click", closeEmailAuthModal);
@@ -2046,9 +2046,11 @@ function setupEventListeners() {
     });
   });
   
-  // Backup / Sync Actions
-  document.getElementById("btn-export").addEventListener("click", exportData);
-  document.getElementById("btn-sync-prompts").addEventListener("click", syncPromptsToServer);
+  // Backup / Sync Actions (All Prompts Page)
+  document.getElementById("btn-export-prompts-page").addEventListener("click", exportData);
+  document.getElementById("btn-sync-prompts-page").addEventListener("click", syncPromptsToServer);
+  document.getElementById("btn-copy-prompts-json").addEventListener("click", copyPromptsJson);
+  document.getElementById("btn-new-prompt-page").addEventListener("click", () => openModal());
   
   // Link sharing copies
   document.getElementById("btn-modal-share").addEventListener("click", () => {
@@ -2343,11 +2345,21 @@ function setupEventListeners() {
   });
 
   // GitHub Config Modal Events
+  document.getElementById("btn-github-config").addEventListener("click", () => openGithubConfigModal());
   document.getElementById("btn-github-config-close").addEventListener("click", closeGithubConfigModal);
   document.getElementById("btn-github-config-cancel").addEventListener("click", closeGithubConfigModal);
   document.getElementById("github-config-form").addEventListener("submit", handleSaveGithubConfig);
   document.getElementById("github-config-modal").addEventListener("click", (e) => {
     if (e.target === document.getElementById("github-config-modal")) {
+      closeGithubConfigModal();
+    }
+  });
+  
+  // GitHub 설정 삭제 버튼 이벤트
+  document.getElementById("btn-github-config-delete").addEventListener("click", () => {
+    if (confirm("저장된 모든 GitHub 연동 정보(토큰, Owner, Repo 등)를 로컬 스토리지에서 삭제하시겠습니까?")) {
+      localStorage.removeItem("prompt_manager_github_config");
+      showToast("GitHub 연동 설정이 완전히 삭제되었습니다.", "info", "trash-2");
       closeGithubConfigModal();
     }
   });
@@ -2572,10 +2584,14 @@ function renderAdminUI() {
   const statusBar = document.getElementById("admin-status-bar");
   const statusText = document.getElementById("admin-status-text");
   const lockIcon = document.getElementById("admin-lock-icon");
-  const btnExport = document.getElementById("btn-export");
-  const btnSyncPrompts = document.getElementById("btn-sync-prompts");
   const navWarehouse = document.getElementById("nav-warehouse");
   const navLMWarehouse = document.getElementById("nav-lm-warehouse");
+  const btnGithubConfig = document.getElementById("btn-github-config");
+  
+  const btnSyncPromptsPage = document.getElementById("btn-sync-prompts-page");
+  const btnExportPromptsPage = document.getElementById("btn-export-prompts-page");
+  const btnCopyPromptsJson = document.getElementById("btn-copy-prompts-json");
+  const btnNewPromptPage = document.getElementById("btn-new-prompt-page");
   
   const btnSyncFavShare = document.getElementById("btn-sync-fav-share");
   const btnExportFavShare = document.getElementById("btn-export-fav-share");
@@ -2590,10 +2606,14 @@ function renderAdminUI() {
     lockIcon.setAttribute("data-lucide", "unlock");
     
     // Show admin tools
-    if (btnExport) btnExport.style.display = "inline-flex";
-    if (btnSyncPrompts) btnSyncPrompts.style.display = "inline-flex";
     if (navWarehouse) navWarehouse.style.display = "block";
     if (navLMWarehouse) navLMWarehouse.style.display = "block";
+    if (btnGithubConfig) btnGithubConfig.style.display = "inline-flex";
+    
+    if (btnSyncPromptsPage) btnSyncPromptsPage.style.display = "inline-flex";
+    if (btnExportPromptsPage) btnExportPromptsPage.style.display = "inline-flex";
+    if (btnCopyPromptsJson) btnCopyPromptsJson.style.display = "inline-flex";
+    if (btnNewPromptPage) btnNewPromptPage.style.display = "inline-flex";
     
     if (btnSyncFavShare) btnSyncFavShare.style.display = "inline-flex";
     if (btnExportFavShare) btnExportFavShare.style.display = "inline-flex";
@@ -2605,8 +2625,7 @@ function renderAdminUI() {
     lockIcon.setAttribute("data-lucide", "lock");
     
     // Hide admin tools
-    if (btnExport) btnExport.style.display = "none";
-    if (btnSyncPrompts) btnSyncPrompts.style.display = "none";
+    if (btnGithubConfig) btnGithubConfig.style.display = "none";
     if (navWarehouse) {
       navWarehouse.style.display = "none";
       // Fallback to default prompts view if logged out while inside warehouse
@@ -2621,6 +2640,11 @@ function renderAdminUI() {
         selectQuickFilter("all");
       }
     }
+    
+    if (btnSyncPromptsPage) btnSyncPromptsPage.style.display = "none";
+    if (btnExportPromptsPage) btnExportPromptsPage.style.display = "none";
+    if (btnCopyPromptsJson) btnCopyPromptsJson.style.display = "none";
+    if (btnNewPromptPage) btnNewPromptPage.style.display = "none";
     
     if (btnSyncFavShare) btnSyncFavShare.style.display = "none";
     if (btnExportFavShare) btnExportFavShare.style.display = "none";
@@ -3421,6 +3445,16 @@ async function copyFavShareJson() {
   const dataStr = JSON.stringify(state.favShareItems, null, 2);
   navigator.clipboard.writeText(dataStr).then(() => {
     showToast("즐겨찾기 데이터(JSON)가 클립보드에 복사되었습니다!", "success", "copy");
+  }).catch(err => {
+    console.error(err);
+    showToast("복사에 실패했습니다. 권한을 확인해주세요.", "error", "alert-circle");
+  });
+}
+
+function copyPromptsJson() {
+  const dataStr = JSON.stringify(state.prompts, null, 2);
+  navigator.clipboard.writeText(dataStr).then(() => {
+    showToast("프롬프트 데이터(JSON)가 클립보드에 복사되었습니다!", "success", "copy");
   }).catch(err => {
     console.error(err);
     showToast("복사에 실패했습니다. 권한을 확인해주세요.", "error", "alert-circle");

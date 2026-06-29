@@ -45,10 +45,6 @@
             <i data-lucide="lock" id="admin-lock-icon"></i>
           </button>
         </div>
-        <button class="btn btn-primary btn-block" id="btn-new-prompt">
-          <i data-lucide="plus"></i>
-          <span>새 프롬프트 추가</span>
-        </button>
       </div>
       
       <nav class="sidebar-nav">
@@ -106,13 +102,9 @@
       
       <!-- Sidebar Footer Settings -->
       <div class="sidebar-footer">
-        <button class="btn btn-ghost btn-sm" id="btn-export" title="현재 전체 프롬프트 데이터를 JSON 파일로 다운로드합니다.">
-          <i data-lucide="download"></i>
-          <span>JSON 다운로드</span>
-        </button>
-        <button class="btn btn-ghost btn-sm" id="btn-sync-prompts" title="GitHub 서버의 prompts_data.json 파일 데이터로 동기화합니다.">
-          <i data-lucide="refresh-cw"></i>
-          <span>서버 업데이트</span>
+        <button class="btn btn-ghost btn-sm" id="btn-github-config" title="GitHub 연동 계정 및 토큰 설정을 변경합니다." style="display: none;">
+          <i data-lucide="settings"></i>
+          <span>GitHub 설정</span>
         </button>
       </div>
     </aside>
@@ -157,6 +149,31 @@
       <div class="content-scroll">
         <!-- Main Prompts Section -->
         <div id="prompts-main-view">
+          <div class="warehouse-header flex-between" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">프롬프트 라이브러리</h2>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">자주 사용하는 AI 프롬프트 템플릿과 실행 결과물을 확인하고 관리합니다.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" id="btn-sync-prompts-page" title="GitHub 서버의 prompts_data.json 파일 데이터로 동기화합니다." style="display: none;">
+                <i data-lucide="refresh-cw"></i>
+                <span>서버 업데이트</span>
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btn-export-prompts-page" title="현재 프롬프트 데이터를 prompts_data.json 파일로 내보냅니다." style="display: none;">
+                <i data-lucide="download"></i>
+                <span>JSON 다운로드</span>
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btn-copy-prompts-json" title="현재 프롬프트 데이터를 JSON 텍스트로 복사합니다." style="display: none;">
+                <i data-lucide="copy"></i>
+                <span>JSON 복사</span>
+              </button>
+              <button class="btn btn-primary btn-sm" id="btn-new-prompt-page" style="display: none;">
+                <i data-lucide="plus"></i>
+                <span>새 프롬프트 추가</span>
+              </button>
+            </div>
+          </div>
+          
           <div class="prompt-grid" id="prompt-grid">
             <!-- Dynamically populated -->
           </div>
@@ -719,6 +736,7 @@
           </div>
           
           <div class="modal-actions" style="margin-top: 20px;">
+            <button type="button" class="btn btn-secondary text-danger" id="btn-github-config-delete" style="margin-right: auto;" title="저장된 GitHub 연동 토큰 및 설정을 로컬 스토리지에서 삭제합니다.">설정 삭제</button>
             <button type="button" class="btn btn-secondary" id="btn-github-config-cancel">취소</button>
             <button type="submit" class="btn btn-primary" id="btn-github-config-save">설정 저장</button>
           </div>
