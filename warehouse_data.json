@@ -537,5 +537,29 @@
     "prompt": "GPT image 2 on chatGPT\n\nPrompt: \n\nTransform the reference photo into a whimsical folk flat illustration with doodle elements. Preserve the original composition and characters, but simplify all details into clean colorful flat shapes with a handmade childlike feel. Use pastel and vibrant colors, rosy cheeks, playful line art, cute decorative symbols, flowers, butterflies,birds, swirls, and cozy urban background details.￼",
     "image": "images/wh-1782705027888-vtsxd4hah.jpeg",
     "createdAt": "2026-06-29T03:50:27.888Z"
+  },
+  {
+    "id": "wh-1782705249119-bivtyqo50",
+    "title": "텍스트 아이콘 꾸미기",
+    "url": "https://x.com/Maercihh/status/2071100737896247337?s=20",
+    "prompt": "GPT image 2.0 on ChatGPT.\n\nPrompt:\n\n{\n  \"A high-fashion editorial poster featuring a stylish young woman sitting confidently on a simple wooden folding chair in a studio with a clean light gray background. She wears black rectangular sunglasses, an oversized black blazer over a black fitted top, relaxed gray wide-leg jeans, and chunky black-and-white platform sneakers. Her pose is confident and casual, legs spread slightly apart, one arm resting on the chair back and the other relaxed. Long straight dark hair, minimal makeup, calm expression. The image is mostly monochrome/black-and-white with selective orange accent elements around her. Surrounding the subject are bold hand-drawn graffiti doodles, motivational typography, arrows, lightning bolts, zigzags, spirals, sketch lines, and energetic marker-style strokes in black and orange. Large handwritten text elements read: 'DREAM BIG', 'STAY FOCUSED', and 'CREATE YOUR OWN PATH'. Poster design feels modern, youthful, streetwear-inspired, energetic, and motivational. High contrast, sharp details, clean cutout subject, graphic design composition balanced around the model.\",\n  \"negative_prompt\": \"blurry, low quality, extra limbs, distorted body, bad anatomy, messy text, unreadable typography, overexposed, oversaturated, duplicate elements, cluttered background, bad proportions, cartoonish face\",\n  \"style\": \"editorial fashion poster, street graphic design, modern typography collage\",\n  \"camera\": {\n    \"angle\": \"front view, slightly low angle\",\n    \"lens\": \"50mm\",\n    \"depth_of_field\": \"deep focus\"\n  },\n  \"lighting\": {\n    \"type\": \"soft studio lighting\",\n    \"quality\": \"clean, diffused, high contrast\"\n  },\n  \"composition\": {\n    \"aspect_ratio\": \"9:16\",\n    \"framing\": \"full body centered\",\n    \"background\": \"minimal light gray studio backdrop\"\n  },\n  \"render_settings\": {\n    \"quality\": \"ultra\",\n    \"sharpness\": \"high\",\n    \"photorealism\": \"high\",\n    \"stylization\": 250\n  }\n}",
+    "image": "images/wh-1782705249119-bivtyqo50.jpeg",
+    "createdAt": "2026-06-29T03:54:09.119Z"
+  },
+  {
+    "id": "wh-1782705284613-9w00af2lt",
+    "title": "팻캠 스타일",
+    "url": "https://x.com/Sairah_0/status/2071164486820753566?s=20",
+    "prompt": "GPT Image 2 On ChatGPT \n\nPrompt:\n\nFashion diary composed of three exaggerated fisheye smartphone photos. [HUMAN] wears a pale lavender zip hoodie beneath a dark forest overshirt, wide cream trousers and black loafers with white socks. Frame one: crouching inches from the lens with a playful smug grin. Frame two: stretching both arms toward the camera from a rooftop edge. Frame three: sitting on the floor of a convenience store aisle surrounded by colorful snacks. Rich lavender, forest green, cream and black palette. Authentic phone lens distortion, soft daylight, playful documentary aesthetic, subtle focus boxes and camera UI, aspect ratio 4:5.",
+    "image": "images/wh-1782705284613-9w00af2lt.jpeg",
+    "createdAt": "2026-06-29T03:54:44.613Z"
+  },
+  {
+    "id": "wh-1782705314736-xiv6i7hgt",
+    "title": "MUSIC player 스타일",
+    "url": "https://x.com/I_Athenaai/status/2071215048710865171?s=20",
+    "prompt": "Try this new prompt, you'll love it.￼\n\nPrompt: Lifestyle collage centered around one song obsession. [HUMAN] wears an oversized moss-green bomber over a washed oatmeal tee, black cargos and burnt orange headphones. Three photographs surround a floating Apple Music player: dancing alone at a subway platform captured with motion blur, dramatic front-camera selfie with closed eyes while listening, sitting against a concrete wall adjusting headphones, smiling toward sunlight. Cohesive palette of moss, oatmeal, graphite and burnt orange. Modern editorial smartphone photography, realistic iOS music widget, clean composition, aspect ratio 4:5.",
+    "image": "images/wh-1782705314736-xiv6i7hgt.jpeg",
+    "createdAt": "2026-06-29T03:55:14.736Z"
   }
 ]
