@@ -1982,6 +1982,7 @@ function setupEventListeners() {
   
   // Category dropdown combobox toggle
   document.getElementById("btn-toggle-new-category").addEventListener("click", toggleNewCategoryInput);
+  document.getElementById("btn-toggle-fav-new-category").addEventListener("click", toggleFavNewCategoryInput);
   
   // Modal Submit
   document.getElementById("prompt-form").addEventListener("submit", handleFormSubmit);
@@ -3255,12 +3256,87 @@ async function ensureFavShareLoaded() {
   state.favShareLoaded = true;
 }
 
+function populateFavCategoriesDropdown(selectedValue = "") {
+  const select = document.getElementById("fav-category");
+  const inputNew = document.getElementById("fav-category-new");
+  const btn = document.getElementById("btn-toggle-fav-new-category");
+  
+  if (!select) return;
+  
+  // 1. Get unique categories
+  const categories = [...new Set(state.favShareItems.map(item => (item.category || "").trim()))]
+    .filter(cat => cat !== "")
+    .sort();
+  
+  // 2. Clear options except the first one
+  select.innerHTML = '<option value="" disabled selected>선택하세요</option>';
+  
+  categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    select.appendChild(option);
+  });
+  
+  // Reset visibility
+  select.classList.remove("hidden");
+  select.required = true;
+  inputNew.classList.add("hidden");
+  inputNew.required = false;
+  inputNew.value = "";
+  
+  btn.innerHTML = `<i data-lucide="plus"></i>`;
+  btn.title = "새 카테고리 추가";
+  
+  // Select value if provided and exists
+  if (selectedValue) {
+    if (categories.includes(selectedValue)) {
+      select.value = selectedValue;
+    } else {
+      // If selectedValue is new, show text input
+      select.classList.add("hidden");
+      select.required = false;
+      inputNew.classList.remove("hidden");
+      inputNew.required = true;
+      inputNew.value = selectedValue;
+      btn.innerHTML = `<i data-lucide="list"></i>`;
+      btn.title = "목록에서 선택";
+    }
+  } else {
+    select.value = "";
+  }
+  lucide.createIcons();
+}
+
+function toggleFavNewCategoryInput() {
+  const select = document.getElementById("fav-category");
+  const inputNew = document.getElementById("fav-category-new");
+  const btn = document.getElementById("btn-toggle-fav-new-category");
+  
+  if (inputNew.classList.contains("hidden")) {
+    select.classList.add("hidden");
+    select.required = false;
+    inputNew.classList.remove("hidden");
+    inputNew.required = true;
+    inputNew.focus();
+    btn.innerHTML = `<i data-lucide="list"></i>`;
+    btn.title = "목록에서 선택";
+  } else {
+    select.classList.remove("hidden");
+    select.required = true;
+    inputNew.classList.add("hidden");
+    inputNew.required = false;
+    btn.innerHTML = `<i data-lucide="plus"></i>`;
+    btn.title = "새 카테고리 추가";
+  }
+  lucide.createIcons();
+}
+
 function openFavShareModal(editingId = null) {
   const form = document.getElementById("fav-share-form");
   form.reset();
   
   document.getElementById("fav-id").value = "";
-  document.getElementById("fav-category").value = "";
   
   const modalTitle = document.getElementById("fav-share-modal-title");
   const submitBtn = document.getElementById("btn-fav-share-modal-submit");
@@ -3274,12 +3350,15 @@ function openFavShareModal(editingId = null) {
     
     document.getElementById("fav-id").value = item.id;
     document.getElementById("fav-title").value = item.title;
-    document.getElementById("fav-category").value = item.category || "";
     document.getElementById("fav-url").value = item.url;
     document.getElementById("fav-desc").value = item.desc || "";
+    
+    populateFavCategoriesDropdown(item.category || "");
   } else {
     modalTitle.textContent = "새 즐겨찾기 등록";
     submitBtn.textContent = "등록하기";
+    
+    populateFavCategoriesDropdown("");
   }
   
   document.getElementById("fav-share-modal").classList.add("active");
@@ -3295,7 +3374,18 @@ function handleFavShareFormSubmit(e) {
   
   const id = document.getElementById("fav-id").value;
   const title = document.getElementById("fav-title").value.trim();
-  const category = document.getElementById("fav-category").value.trim();
+  
+  // Category determination (dropdown vs new text input)
+  const selectCat = document.getElementById("fav-category").value;
+  const newCatInput = document.getElementById("fav-category-new");
+  let category = "";
+  
+  if (newCatInput && !newCatInput.classList.contains("hidden")) {
+    category = newCatInput.value.trim();
+  } else {
+    category = selectCat;
+  }
+  
   const url = document.getElementById("fav-url").value.trim();
   const desc = document.getElementById("fav-desc").value.trim();
   
