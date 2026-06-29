@@ -14,5 +14,13 @@
     "desc": "Anthropic의 대화형 AI 서비스로, 코딩 및 글쓰기 프롬프트 수행에 매우 탁월합니다.",
     "category": "AI 대화형 도구",
     "createdAt": "2026-06-29T00:00:00.000Z"
+  },
+  {
+    "id": "fav-1782708260281-eak5iw4mv",
+    "title": "Gemini",
+    "category": "AI 대화형 도구",
+    "url": "https://gemini.google.com/app",
+    "desc": "Google Gemini",
+    "createdAt": "2026-06-29T04:44:20.281Z"
   }
 ]
