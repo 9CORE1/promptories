@@ -2830,7 +2830,7 @@ function renderWarehouseGrid() {
       
     // Footer button rendering
     const linkBtnHtml = item.url 
-      ? `<a href="${item.url}" target="_blank" class="btn btn-secondary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px;">
+      ? `<a href="${item.url}" target="_blank" class="btn btn-primary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px;">
            <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> 바로가기
          </a>`
       : `<span style="font-size: 11px; color: var(--text-muted);">링크 없음</span>`;
@@ -3067,7 +3067,7 @@ function renderLMWarehouseGrid() {
       
     // Footer button rendering
     const linkBtnHtml = item.url 
-      ? `<a href="${item.url}" target="_blank" class="btn btn-secondary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px;">
+      ? `<a href="${item.url}" target="_blank" class="btn btn-primary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px;">
            <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> 바로가기
          </a>`
       : `<span style="font-size: 11px; color: var(--text-muted);">링크 없음</span>`;
