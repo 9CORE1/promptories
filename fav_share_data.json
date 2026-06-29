@@ -12,5 +12,12 @@
     "url": "https://claude.ai",
     "desc": "Anthropic의 대화형 AI 서비스로, 코딩 및 글쓰기 프롬프트 수행에 매우 탁월합니다.",
     "createdAt": "2026-06-29T00:00:00.000Z"
+  },
+  {
+    "id": "fav-1782700439504-mii4qyjgx",
+    "title": "Arena Experience the frontier",
+    "url": "https://arena.ai/",
+    "desc": "프롬프트 A/B 테스트",
+    "createdAt": "2026-06-29T02:33:59.504Z"
   }
 ]
