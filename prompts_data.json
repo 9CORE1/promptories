@@ -84,21 +84,5 @@
     "usageCount": 0,
     "createdAt": "2026-06-25T08:14:27.254Z",
     "updatedAt": "2026-06-25T08:14:27.254Z"
-  },
-  {
-    "id": "prompt-1782707483294-6hyrrlkao",
-    "title": "test",
-    "category": "이미지",
-    "tags": [
-      "test"
-    ],
-    "description": "tse",
-    "recommendedModel": "",
-    "promptText": "tset",
-    "outputText": "tes",
-    "outputImage": "images/prompt-1782707483294-6hyrrlkao.jpeg",
-    "usageCount": 0,
-    "createdAt": "2026-06-29T04:31:23.294Z",
-    "updatedAt": "2026-06-29T04:31:23.294Z"
   }
 ]
