@@ -188,6 +188,9 @@ let lastSyncTime = 0;
 
 // 서버 JSON 파일로부터 최신 데이터 비동기 동기화 (기기 간 실시간 갱신용)
 async function syncFromServer(force = false) {
+  // 관리자 모드인 경우 서버 데이터로 로컬 데이터를 덮어쓰지 않음 (로컬 편집 내용 보호)
+  if (state.isAdmin) return;
+
   // 5초 쓰로틀링 (단, 초기 실행 등 force = true 시 생략)
   if (!force && (Date.now() - lastSyncTime < 5000)) return;
   lastSyncTime = Date.now();
