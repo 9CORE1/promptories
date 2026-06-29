@@ -22,5 +22,13 @@
     "url": "https://gemini.google.com/app",
     "desc": "Google Gemini",
     "createdAt": "2026-06-29T04:44:20.281Z"
+  },
+  {
+    "id": "fav-1782708964806-oe5j859r6",
+    "title": "Arena AI",
+    "category": "추천 사이트",
+    "url": "https://arena.ai/",
+    "desc": "The Official AI Ranking & LLM Leaderboard",
+    "createdAt": "2026-06-29T04:56:04.806Z"
   }
 ]
