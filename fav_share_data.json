@@ -38,5 +38,21 @@
     "url": "https://blog.secondbrush.co.kr/",
     "desc": "데일리 프롬프트\n메일링 서비스",
     "createdAt": "2026-06-30T03:55:49.188Z"
+  },
+  {
+    "id": "fav-1782882760448-3wg74lgib",
+    "title": "Google NotebookLM",
+    "category": "AI 추천 서비스",
+    "url": "https://notebooklm.google/",
+    "desc": "NotebookLM",
+    "createdAt": "2026-07-01T05:12:40.448Z"
+  },
+  {
+    "id": "fav-1782882921629-4yff5ic4a",
+    "title": "genspark.ai",
+    "category": "AI 추천 서비스",
+    "url": "https://www.genspark.ai/",
+    "desc": "젠스파크 AI",
+    "createdAt": "2026-07-01T05:15:21.629Z"
   }
 ]
