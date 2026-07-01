@@ -101,5 +101,90 @@
     "usageCount": 0,
     "createdAt": "2026-07-01T06:13:10.240Z",
     "updatedAt": "2026-07-01T06:59:16.387Z"
+  },
+  {
+    "id": "prompt-1782889360485-phekv647b",
+    "title": "[기본형] 원페이지 스크롤 웹사이트",
+    "category": "웹페이지",
+    "tags": [
+      "HTML",
+      "웹페이지"
+    ],
+    "description": "[기본형] 원페이지 스크롤 웹사이트 뼈대 요청 프롬프트",
+    "recommendedModel": "Gemini 1.5 Flash",
+    "promptText": "나는 GitHub Pages로 배포할 개인 포트폴리오 웹사이트를 만들려고 해. \n아래 기획 내용을 바탕으로 전체적인 웹사이트의 뼈대가 되는 단일 HTML 파일과 스타일을 위한 CSS 코드를 작성해 줘. \n스크롤을 내리면서 모든 메뉴를 볼 수 있는 '원페이지 스크롤' 형태로 만들어줘.\n\n[기획 워크시트 내용 입력]\n- 목적 및 타깃 독자: [ 예: 프리랜서 개발자 외주 수주 목적 / 잠재 클라이언트 타깃 ]\n- 메인 슬로건: [ 예: 복잡한 비즈니스 로직을 깔끔한 코드로 해결합니다. ]\n- 메뉴 구성: [ 예: Home, About, Skills, Projects, Contact ]\n- 디자인 스타일 키워드: [ 예: 개발자 감성의 깔끔한 다크모드, 미니멀리즘 ]\n- 레이아웃 방식: [ 예: 프로젝트 리스트는 2x3 바둑판 Grid 형태 ]\n- 구현 방식: [ 예: 순수 HTML / CSS / JavaScript ]\n\n위 조건에 맞는 기본 레이아웃과 반응형(모바일 지원)이 반영된 코드를 짜줘.",
+    "outputText": "",
+    "outputImage": "images/prompt-1782889360485-phekv647b.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-01T07:02:40.485Z",
+    "updatedAt": "2026-07-01T07:02:58.900Z"
+  },
+  {
+    "id": "prompt-1782889449575-xqi9k8v0o",
+    "title": "[디자인 집중형] 현대적 UI 프롬프트",
+    "category": "웹페이지",
+    "tags": [
+      "HTML",
+      "웹페이지"
+    ],
+    "description": "[디자인 집중형] Tailwind CSS 활용 현대적 UI 프롬프트",
+    "recommendedModel": "Gemini 1.5 Flash",
+    "promptText": "AI인 너를 실력 있는 웹 프론트엔드 UI/UX 디자이너라고 생각하고 요청할게.\nGitHub Pages에 배포할 포트폴리오 웹사이트를 제작 중이야. 별도의 CSS 파일 없이 CDN 방식으로 Tailwind CSS를 활용한 단일 HTML 코드를 작성해 주면 좋겠어. \n\n내가 워크시트에 정리한 비주얼 콘셉트와 정보는 다음과 같아.\n\n[기획 워크시트 내용 입력]\n- 메인 슬로건: [ 예: 사용자 경험을 먼저 생각하는 프론트엔드 디자이너 OOO입니다. ]\n- 메뉴 구성: [ 예: Intro, Profile, Portfolio, Contact ]\n- 디자인 스타일 키워드: [ 예: 화이트 톤의 깔끔하고 화사한 무드, 세련된 타이포그래피 ]\n- 보유 기술 스택: [ 예: Figma, HTML/CSS, React, Tailwind CSS ]\n- 프로젝트 리스트 레이아웃: [ 예: 좌측에 프로젝트 썸네일 이미지, 우측에 텍스트 설명이 교차로 나오는 List 형태 ]\n\n요즘 트렌드에 맞는 여백(Padding)과 세련된 애니메이션 효과(Hover 등)가 들어간 모던한 UI 코드를 생성해 줘.",
+    "outputText": "",
+    "outputImage": "images/prompt-1782889449575-xqi9k8v0o.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-01T07:04:09.575Z",
+    "updatedAt": "2026-07-01T07:04:09.575Z"
+  },
+  {
+    "id": "prompt-1782889504388-awp301f3l",
+    "title": "[React/Next.js 개발자용] 구조화 프롬프트",
+    "category": "웹페이지",
+    "tags": [
+      "HTML",
+      "웹페이지"
+    ],
+    "description": "[React/Next.js 개발자용] 컴포넌트 기반 구조화 프롬프트",
+    "recommendedModel": "Gemini 1.5 Flash",
+    "promptText": "나는 GitHub Pages로 Static Export(정적 배포)할 예정인 React 포트폴리오 웹사이트를 개발하려고 해. \n아래 워크시트 기획안을 바탕으로 컴포넌트 구조를 설계하고, 메인 페이지(`App.jsx` 또는 `page.jsx`)와 각 섹션별 컴포넌트 코드를 구조적으로 짜줘.\n\n[기획 워크시트 내용 입력]\n- 메뉴 구성 (컴포넌트 분할 기준): [ 예: Hero, AboutMe, TechStack, ProjectList, ContactForm ]\n- 디자인 스타일 및 구현 방식: [ 예: React + Tailwind CSS를 활용한 미니멀한 다크모드 ]\n- 프로젝트 데이터 예시: \n  [ 예: 프로젝트 1 - 이름: AI 다이어리 / 기술: React, Node.js / 내용: AI 기반 감정 분석 일기장 ]\n  [ 예: 프로젝트 2 - 이름: 오픈마켓 클론 / 기술: JavaScript / 내용: 상태 관리를 활용한 쇼핑몰 ]\n\n가장 먼저 프로젝트 전체의 디렉토리 구조(폴더 구조)를 제안해 주고, 메인 페이지와 주요 컴포넌트 코드를 작성해 줘.",
+    "outputText": "",
+    "outputImage": "images/prompt-1782889504388-awp301f3l.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-01T07:05:04.388Z",
+    "updatedAt": "2026-07-01T07:05:04.388Z"
+  },
+  {
+    "id": "prompt-1782889566777-socv49zzu",
+    "title": "[스토리텔링형] 프로젝트 강조 프롬프트",
+    "category": "웹페이지",
+    "tags": [
+      "HTML",
+      "웹페이지"
+    ],
+    "description": "[스토리텔링형] 프로젝트 트래블슈팅 강조 프롬프트",
+    "recommendedModel": "Gemini 1.5 Flash",
+    "promptText": "내 포트폴리오 웹사이트에서 가장 중요한 건 '프로젝트 상세 섹션'이야. \n단순히 결과물만 보여주는 게 아니라, 내가 겪은 문제와 해결 과정(Troubleshooting)이 잘 드러나도록 가독성 높은 HTML/CSS 레이아웃을 짜줬으면 해. \n내가 워크시트에 적은 프로젝트 정보를 보기 좋게 시각화할 수 있는 템플릿 코드를 만들어줘.\n\n[기획 워크시트 내용 입력]\n- 프로젝트 리스트 구성:\n  * 프로젝트명: [ 예: 기업 협업 프리랜서 매칭 플랫폼 ]\n  * 사용 기술: [ 예: Vue.js, Firebase ]\n  * 나의 역할: [ 예: 프론트엔드 UI 개발 및 실시간 채팅 기능 구현 ]\n  * 핵심 문제 및 해결 과정 (중요): [ 예: Firebase 실시간 리스너 과다 호출 문제 해결 과정 ]\n  * 성과 및 배운 점: [ 예: 데이터 호출 비용 40% 절감 ]\n\n인사담당자가 이 트래블슈팅 내용을 한눈에 쉽게 읽을 수 있도록 카드 레이아웃이나 토글(Accordion) 형태를 활용한 UI 코드를 제안해 줘.",
+    "outputText": "",
+    "outputImage": "images/prompt-1782889566777-socv49zzu.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-01T07:06:06.777Z",
+    "updatedAt": "2026-07-01T07:06:06.777Z"
+  },
+  {
+    "id": "prompt-1782889609266-a2eqlcqfm",
+    "title": "[인터랙티브형] 폼 중심 프롬프트",
+    "category": "웹페이지",
+    "tags": [
+      "HTML",
+      "웹페이지"
+    ],
+    "description": "[인터랙티브형] 미니멀 액션 및 연락처 폼 중심 프롬프트",
+    "recommendedModel": "Gemini 1.5 Flash",
+    "promptText": "GitHub Pages로 배포할 포트폴리오 사이트의 레이아웃을 잡고 있어. 방문자가 사이트를 둘러보고 나에게 쉽게 연락(외주 문의나 커피챗 제안)을 보낼 수 있도록 Contact 섹션과 이력서 다운로드 버튼이 강조된 페이지를 만들고 싶어.\n\n아래 기획 내용에 맞춰서 깔끔한 단일 페이지 코드를 짜줘.\n\n[기획 워크시트 내용 입력]\n- 기본 인적 사항 & 링크: [ 예: 이메일(test@email.com), GitHub(github.com/user), LinkedIn 링크 ]\n- 목적 및 타깃: [ 예: 프리랜서 외주 문의 유도 / 스타트업 대표 및 기획자 타깃 ]\n- 메인 슬로건: [ 예: 아이디어를 현실적인 웹서비스로 빠르게 구현해 드립니다. ]\n- 메뉴 구성: [ Home -> Projects -> Contact ]\n\nContact 섹션에는 사용자가 입력할 수 있는 폼(이름, 이메일, 내용 입력 칸)의 UI를 예쁘게 만들어 주고, 이메일 링크(`mailto:`)나 외부 주소로 연결되는 버튼들이 직관적으로 보이게 CSS 스타일을 적용해 줘.",
+    "outputText": "",
+    "outputImage": "images/prompt-1782889609266-a2eqlcqfm.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-01T07:06:49.266Z",
+    "updatedAt": "2026-07-01T07:06:49.266Z"
   }
 ]
