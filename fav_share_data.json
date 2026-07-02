@@ -62,5 +62,14 @@
     "url": "https://github.com/",
     "desc": "깃허브",
     "createdAt": "2026-07-01T08:02:05.329Z"
+  },
+  {
+    "id": "fav-1783000237445-v4fdzx7dv",
+    "title": "안티그래비티",
+    "category": "AI 추천 서비스",
+    "url": "https://antigravity.google/",
+    "desc": "안티그래비티\n안티그래비티 CLI",
+    "createdAt": "2026-07-02T13:50:37.445Z",
+    "updatedAt": "2026-07-02T13:51:04.636Z"
   }
 ]
