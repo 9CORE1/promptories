@@ -87,5 +87,13 @@
     "url": "https://mycolor.space/",
     "desc": "특정 색상값과 어울리는 색상들 추천",
     "createdAt": "2026-07-06T03:46:13.954Z"
+  },
+  {
+    "id": "fav-1783472323662-c0g09fxj3",
+    "title": "무브먼트 프롬프트",
+    "category": "컬러 추천 사이트",
+    "url": "https://aicameramovements.com/",
+    "desc": "AI 영상 제작에 필요한 카메라 무브먼트 프롬프트 웹사이트",
+    "createdAt": "2026-07-08T00:58:43.662Z"
   }
 ]
