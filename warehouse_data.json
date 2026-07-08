@@ -665,5 +665,29 @@
     "prompt": "GPT image 2 on Chatgpt \n\nPrompt:\nA playful minimalist product advertisement on a clean pure white background. A realistic human hand enters from the top-left corner, gently holding and lifting an oversized food or beverage item at a slight diagonal angle. The product appears massive compared to the tiny character.\n\nA cute chibi-style cartoon child is desperately hugging and pulling the giant product with both hands, feet sliding backward across the floor, creating a funny tug-of-war effect. The child has exaggerated facial expressions with wide eyes, tears of panic, flushed cheeks, sweat droplets, speed lines, motion blur marks, and tiny dust clouds behind the feet to emphasize effort.\n\nA hand-drawn comic speech bubble above the character reads:\n\"Don't finish it yet!!\"\n\nThe cartoon character is illustrated with clean black outlines, soft pastel colors, expressive anime-inspired features, oversized head, tiny body, and dynamic action pose.\n\nThe food/drink is ultra-realistic with highly detailed textures, fresh ingredients, vibrant colors, and premium commercial food photography lighting. The realistic object contrasts beautifully against the cute 2D illustration.\n\nMinimal composition, lots of negative space, bright high-key lighting, soft shadows, modern advertising aesthetic, kawaii illustration mixed with photorealistic product photography, playful social media campaign style, premium commercial quality, ultra-detailed, 8K.",
     "image": "images/wh-1783472581024-r1gnod7rn.jpeg",
     "createdAt": "2026-07-08T01:03:01.024Z"
+  },
+  {
+    "id": "wh-1783473328409-x6k2a2et8",
+    "title": "이미지 업스케일링",
+    "url": "https://x.com/eyishazyer/status/2073859462239035426?s=20",
+    "prompt": "To 4k Image Upscaler prompt\n\nThe prompt is also work for restoration of missing details and most important the colour bits with lighting.\n\nPROMPT:\nRestore and enhance an old damaged photo. Remove scratches, stains, and noise. Reconstruct faded or torn areas while preserving original details. Slightly sharpen the image for better clarity, but keep it realistic. Apply natural and era-appropriate colors to skin, hair, and clothing. Use a soft, balanced background color without being too striking. The final result should look like an old photo that has been realistically restored and colorized, while respecting its original appearance.",
+    "image": "images/wh-1783473328409-x6k2a2et8.jpeg",
+    "createdAt": "2026-07-08T01:15:28.409Z"
+  },
+  {
+    "id": "wh-1783473367217-a2dvkn967",
+    "title": "카드 스타일",
+    "url": "https://x.com/SimplyAnnisa/status/2074087596746330464?s=20",
+    "prompt": "GPT image 2 on ChatGPT \n\nPROMPT:\n\nBold graphic screen-print illustration of [HUMAN] face in profile, tightly interwoven with three stylized [ANIMAL], rendered in a limited palette of [COLOR1], [COLOR2], and [COLOR3]. Thick overlapping linework with visible halftone and rough ink-texture grain throughout, mimicking a hand-pulled riso or silkscreen print with slight color misregistration. Large graphic eyes shared between the face and the animal forms, flat bold shapes with no gradients, high contrast negative space, folk-art / vintage poster aesthetic, surreal compositional overlap between human and animal features, [COLOR3] paper background with a thin rounded-corner border, editorial illustration style.",
+    "image": "images/wh-1783473367217-a2dvkn967.jpeg",
+    "createdAt": "2026-07-08T01:16:07.217Z"
+  },
+  {
+    "id": "wh-1783473419066-pd5g82e97",
+    "title": "얼굴 주위 서클 무늬",
+    "url": "https://x.com/Sairah_0/status/2074030356152599016?s=20",
+    "prompt": "GPT Image 2 On ChatGPT \n\nPrompt:\n\nA clean, modern editorial fashion portrait of a young woman standing confidently against a vibrant sky-blue gradient background. She wears an oversized camel-brown blazer over a cobalt blue crew-neck shirt, with a relaxed fit and minimalist styling. Soft natural daylight illuminates her face, creating smooth skin, subtle highlights, and gentle shadows. She has a calm, friendly expression with a slight smile, looking directly into the camera.\n\nBehind her head is a large hand-drawn circular halo made of thin white or pastel pink geometric doodle lines, giving a playful celestial effect. White sketch outlines trace the edges of her blazer and clothing, blending illustration with photography. Floating pastel smiley-face stickers, tiny sparkling stars, abstract blue organic shapes, and delicate scribble lines are scattered throughout the composition. The design mixes realistic portrait photography with whimsical graphic elements, creating a cheerful, creative, Gen Z editorial aesthetic.\n\nColor palette: sky blue, cyan, camel brown, cobalt blue, white, blush pink. Minimalist composition, centered framing, clean negative space, ultra-realistic facial details, soft cinematic lighting, high-end fashion campaign, graphic design overlay, modern branding aesthetic, crisp focus, premium quality, Adobe Illustrator-inspired doodle accents, magazine cover style, 8K resolution.",
+    "image": "images/wh-1783473419066-pd5g82e97.jpeg",
+    "createdAt": "2026-07-08T01:16:59.066Z"
   }
 ]
