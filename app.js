@@ -640,6 +640,35 @@ function renderSidebar() {
       tagsList.appendChild(chip);
     });
     
+  // Adjust visible tags to prevent scrollbar and half-cut tags
+  requestAnimationFrame(adjustVisibleTags);
+}
+
+// Dynamically show/hide tags in collapsed state to prevent sidebar scrollbars and half-cut chips
+function adjustVisibleTags() {
+  const tagsList = document.getElementById("tags-list");
+  const sidebarNav = document.querySelector(".sidebar-nav");
+  if (!tagsList || !sidebarNav) return;
+
+  const chips = Array.from(tagsList.children);
+  if (chips.length === 0) return;
+
+  // 1. Reset display styles to calculate natural scrollHeight
+  chips.forEach(chip => {
+    chip.style.display = "";
+  });
+
+  const isCollapsed = tagsList.classList.contains("collapsed");
+  if (isCollapsed) {
+    // Hide tags from the end one by one until the sidebar scrollHeight matches its clientHeight
+    // We always keep at least 3 chips visible so it doesn't look completely empty
+    for (let i = chips.length - 1; i >= 3; i--) {
+      if (sidebarNav.scrollHeight <= sidebarNav.clientHeight) {
+        break;
+      }
+      chips[i].style.display = "none";
+    }
+  }
 }
 
 // Helper to return class name based on AI model brand
@@ -2611,6 +2640,7 @@ function setupEventListeners() {
         tagsList.classList.add("collapsed");
         btnMoreTags.textContent = "더보기";
       }
+      adjustVisibleTags();
     });
   }
 
@@ -2877,6 +2907,7 @@ function setupEventListeners() {
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+      adjustVisibleTags();
       if (state.currentFilter === "warehouse") {
         renderWarehouseGrid();
       } else if (state.currentFilter === "video-warehouse") {
