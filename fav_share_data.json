@@ -114,5 +114,19 @@
     "url": "https://9core1.github.io/promptories/video_prompt/index.html",
     "desc": "영상 프롬프트 생성기",
     "createdAt": "2026-07-08T06:54:21.688Z"
+  },
+  {
+    "id": "config-category-order",
+    "title": "Config - Category Order",
+    "url": "",
+    "desc": "",
+    "category": "",
+    "categoryOrder": [
+      "AI 대화형 도구",
+      "AI 추천 서비스",
+      "콘텐츠 제작 관련 사이트",
+      "추천 사이트"
+    ],
+    "createdAt": "2026-07-08T08:52:49.895Z"
   }
 ]
