@@ -630,7 +630,6 @@ function renderSidebar() {
   tagsList.innerHTML = "";
   Object.entries(tagCounts)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 15) // Top 15 tags
     .forEach(([tag, count]) => {
       const chip = document.createElement("span");
       chip.className = `tag-chip ${state.currentTagFilter === tag ? "active" : ""}`;
@@ -2597,6 +2596,23 @@ function setupEventListeners() {
       closeFavShareModal();
     }
   });
+
+  // Sidebar More Tags Toggle Listener
+  const btnMoreTags = document.getElementById("btn-more-tags");
+  if (btnMoreTags) {
+    btnMoreTags.addEventListener("click", () => {
+      const tagsList = document.getElementById("tags-list");
+      if (tagsList.classList.contains("collapsed")) {
+        tagsList.classList.remove("collapsed");
+        tagsList.classList.add("expanded");
+        btnMoreTags.textContent = "접기";
+      } else {
+        tagsList.classList.remove("expanded");
+        tagsList.classList.add("collapsed");
+        btnMoreTags.textContent = "더보기";
+      }
+    });
+  }
 
   // Favorites Share Submit
   document.getElementById("fav-share-form").addEventListener("submit", handleFavShareFormSubmit);

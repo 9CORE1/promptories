@@ -98,9 +98,12 @@
         <div class="nav-section">
           <h3 class="nav-section-title">
             <span>인기 태그</span>
-            <i data-lucide="tag"></i>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="btn-more-tags" style="font-size: 10px; font-weight: 600; color: var(--accent-primary); cursor: pointer; text-transform: none; letter-spacing: 0;">더보기</span>
+              <i data-lucide="tag"></i>
+            </div>
           </h3>
-          <div class="tag-cloud" id="tags-list">
+          <div class="tag-cloud collapsed" id="tags-list">
             <!-- Dynamically populated -->
           </div>
         </div>

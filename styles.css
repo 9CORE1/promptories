@@ -245,6 +245,17 @@ body {
   flex-wrap: wrap;
   gap: 6px;
   padding: 8px 12px;
+  transition: all 0.3s ease;
+}
+
+.tag-cloud.collapsed {
+  max-height: 85px;
+  overflow: hidden;
+}
+
+.tag-cloud.expanded {
+  max-height: none;
+  overflow: visible;
 }
 
 .tag-chip {
