@@ -4348,19 +4348,16 @@ function renderFavShareGrid() {
         
       card.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
-          <h3 style="font-size: 14px; font-weight: 700; color: var(--text-main); word-break: keep-all; line-height: 1.4; margin: 0;">
+          <h3 style="font-size: 14px; font-weight: 700; color: var(--text-main); word-break: keep-all; line-height: 1.4; margin: 0; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
             ${escapeHtml(item.title)}
           </h3>
         </div>
-        <div style="margin: 2px 0 6px;">
-          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.45; margin: 0; word-break: keep-all;">
+        <div style="margin: 2px 0 6px; flex-grow: 1;">
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.45; margin: 0; word-break: keep-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
             ${escapeHtml(item.desc || "상세 설명이 없습니다.")}
           </p>
         </div>
-        <div style="font-size: 11px; color: var(--text-muted); word-break: break-all; margin-top: 4px; opacity: 0.85;">
-          링크: <span style="color: var(--accent-primary);">${escapeHtml(item.url)}</span>
-        </div>
-        <div class="card-footer" style="padding-top: 8px; margin-top: 8px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: transparent;">
+        <div class="card-footer" style="padding-top: 8px; margin-top: auto; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: transparent;">
           <a href="${item.url}" target="_blank" class="btn btn-primary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px;">
             <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> 바로가기
           </a>

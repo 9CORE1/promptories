@@ -1801,7 +1801,8 @@ body {
   padding: 14px 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  height: 125px; /* Fixed height for uniform layouts */
+  justify-content: space-between; /* Anchor footer to bottom */
   cursor: pointer;
   position: relative;
   transition: var(--transition-smooth);
