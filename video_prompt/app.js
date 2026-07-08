@@ -798,6 +798,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     updatePreview();
                     updateStepCompletedState(id);
                 });
+
+                // Auto-append '초' for video length if only numbers are entered on blur
+                if (id === 'step1-length') {
+                    inputEl.addEventListener('blur', (e) => {
+                        const val = e.target.value.trim();
+                        if (val && /^\d+$/.test(val)) {
+                            const formattedVal = val + '초';
+                            e.target.value = formattedVal;
+                            formData[id] = formattedVal;
+                            updatePreview();
+                            updateStepCompletedState(id);
+                        }
+                    });
+                }
             }
         });
 
@@ -1026,6 +1040,10 @@ document.addEventListener('DOMContentLoaded', () => {
             let value;
             if (hasVal) {
                 value = formData[id].trim();
+                // Auto-append '초' if it's only numbers
+                if (id === 'step1-length' && /^\d+$/.test(value)) {
+                    value += '초';
+                }
             } else if (f.required) {
                 value = `[필수입력: ${f.label} 미입력]`;
             } else {
@@ -1067,7 +1085,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let replacedHtml;
             if (hasVal) {
-                const cleanVal = value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                let cleanVal = value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                // Auto-append '초' if it's only numbers
+                if (id === 'step1-length' && /^\d+$/.test(cleanVal.trim())) {
+                    cleanVal = cleanVal.trim() + '초';
+                }
                 replacedHtml = `<span class="highlight-token" title="${cleanTokenName}">${cleanVal}</span>`;
             } else if (f.required) {
                 replacedHtml = `<span class="empty-token" style="color:var(--color-accent); border:1px dashed var(--color-accent); box-shadow: 0 0 5px rgba(239, 68, 68, 0.2);">{${cleanTokenName} (필수)}</span>`;
