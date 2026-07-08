@@ -160,17 +160,6 @@ async function initData() {
     }
   }
   
-  const localVideoWarehouse = localStorage.getItem("prompt_manager_video_warehouse_data");
-  if (localVideoWarehouse) {
-    try {
-      state.videoWarehouseItems = JSON.parse(localVideoWarehouse);
-      state.videoWarehouseLoaded = true;
-    } catch (e) {
-      state.videoWarehouseItems = [];
-      state.videoWarehouseLoaded = false;
-    }
-  }
-  
   const localLMWarehouse = localStorage.getItem("prompt_manager_lm_warehouse_data");
   if (localLMWarehouse) {
     try {
@@ -179,6 +168,17 @@ async function initData() {
     } catch (e) {
       state.lmWarehouseItems = [];
       state.lmWarehouseLoaded = false;
+    }
+  }
+
+  const localVideoWarehouse = localStorage.getItem("prompt_manager_video_warehouse_data");
+  if (localVideoWarehouse) {
+    try {
+      state.videoWarehouseItems = JSON.parse(localVideoWarehouse);
+      state.videoWarehouseLoaded = true;
+    } catch (e) {
+      state.videoWarehouseItems = [];
+      state.videoWarehouseLoaded = false;
     }
   }
 
@@ -242,23 +242,6 @@ async function syncFromServer(force = false) {
     console.warn("warehouse_data.json 자동 갱신 실패", e);
   }
   
-  // video_warehouse_data.json 동기화
-  try {
-    const response = await fetch("video_warehouse_data.json?t=" + Date.now());
-    if (response.ok) {
-      const data = await response.json();
-      const serverItems = Array.isArray(data) ? data : (data.value || []);
-      if (JSON.stringify(state.videoWarehouseItems) !== JSON.stringify(serverItems)) {
-        state.videoWarehouseItems = serverItems;
-        state.videoWarehouseLoaded = true;
-        saveVideoWarehouseData();
-        updated = true;
-      }
-    }
-  } catch (e) {
-    console.warn("video_warehouse_data.json 자동 갱신 실패", e);
-  }
-  
   // lm_warehouse_data.json 동기화
   try {
     const response = await fetch("lm_warehouse_data.json?t=" + Date.now());
@@ -274,6 +257,23 @@ async function syncFromServer(force = false) {
     }
   } catch (e) {
     console.warn("lm_warehouse_data.json 자동 갱신 실패", e);
+  }
+
+  // video_warehouse_data.json 동기화
+  try {
+    const response = await fetch("video_warehouse_data.json?t=" + Date.now());
+    if (response.ok) {
+      const data = await response.json();
+      const serverItems = Array.isArray(data) ? data : (data.value || []);
+      if (JSON.stringify(state.videoWarehouseItems) !== JSON.stringify(serverItems)) {
+        state.videoWarehouseItems = serverItems;
+        state.videoWarehouseLoaded = true;
+        saveVideoWarehouseData();
+        updated = true;
+      }
+    }
+  } catch (e) {
+    console.warn("video_warehouse_data.json 자동 갱신 실패", e);
   }
   
   // fav_share_data.json 동기화
@@ -342,45 +342,6 @@ async function ensureWarehouseLoaded() {
   state.warehouseLoaded = true;
 }
 
-async function ensureVideoWarehouseLoaded() {
-  if (state.videoWarehouseLoaded) return;
-  
-  const localVideoWarehouse = localStorage.getItem("prompt_manager_video_warehouse_data");
-  const videoWarehouseInitialized = localStorage.getItem("prompt_manager_video_warehouse_initialized");
-  if (localVideoWarehouse && videoWarehouseInitialized) {
-    try {
-      const data = JSON.parse(localVideoWarehouse);
-      state.videoWarehouseItems = Array.isArray(data) ? data : (data.value || []);
-      state.videoWarehouseLoaded = true;
-      return;
-    } catch (e) {
-      console.error("로컬 영상 프롬프트 창고 데이터 파싱 실패", e);
-    }
-  }
-  
-  try {
-    showToast("서버에서 영상 프롬프트 창고 데이터를 로드하는 중...", "info", "refresh-cw");
-    const response = await fetch("video_warehouse_data.json?t=" + Date.now());
-    if (response.ok) {
-      const data = await response.json();
-      state.videoWarehouseItems = Array.isArray(data) ? data : (data.value || []);
-      try {
-        saveVideoWarehouseData();
-        localStorage.setItem("prompt_manager_video_warehouse_initialized", "true");
-      } catch (storageError) {
-        console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성). 데이터는 메모리에서 유지됩니다.", storageError);
-      }
-      showToast("영상 프롬프트 창고 데이터를 성공적으로 로드했습니다.", "success", "check");
-    } else {
-      state.videoWarehouseItems = [];
-    }
-  } catch (e) {
-    console.warn("video_warehouse_data.json 로드 실패. 빈 배열로 시작합니다.", e);
-    state.videoWarehouseItems = [];
-  }
-  state.videoWarehouseLoaded = true;
-}
-
 async function ensureLMWarehouseLoaded() {
   if (state.lmWarehouseLoaded) return;
   
@@ -420,6 +381,54 @@ async function ensureLMWarehouseLoaded() {
   state.lmWarehouseLoaded = true;
 }
 
+async function ensureVideoWarehouseLoaded() {
+  if (state.videoWarehouseLoaded) return;
+  
+  const localVideoWarehouse = localStorage.getItem("prompt_manager_video_warehouse_data");
+  const videoWarehouseInitialized = localStorage.getItem("prompt_manager_video_warehouse_initialized");
+  if (localVideoWarehouse && videoWarehouseInitialized) {
+    try {
+      const data = JSON.parse(localVideoWarehouse);
+      state.videoWarehouseItems = Array.isArray(data) ? data : (data.value || []);
+      state.videoWarehouseLoaded = true;
+      return;
+    } catch (e) {
+      console.error("로컬 영상 창고 데이터 파싱 실패", e);
+    }
+  }
+  
+  try {
+    showToast("서버에서 영상 창고 데이터를 로드하는 중...", "info", "refresh-cw");
+    const response = await fetch("video_warehouse_data.json?t=" + Date.now());
+    if (response.ok) {
+      const data = await response.json();
+      state.videoWarehouseItems = Array.isArray(data) ? data : (data.value || []);
+      try {
+        saveVideoWarehouseData();
+        localStorage.setItem("prompt_manager_video_warehouse_initialized", "true");
+      } catch (storageError) {
+        console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성). 데이터는 메모리에서 유지됩니다.", storageError);
+      }
+      showToast("영상 창고 데이터를 성공적으로 로드했습니다.", "success", "check");
+    } else {
+      state.videoWarehouseItems = [];
+    }
+  } catch (e) {
+    console.warn("video_warehouse_data.json 로드 실패. 빈 배열로 시작합니다.", e);
+    state.videoWarehouseItems = [];
+  }
+  state.videoWarehouseLoaded = true;
+}
+
+function saveVideoWarehouseData() {
+  try {
+    localStorage.setItem("prompt_manager_video_warehouse_data", JSON.stringify(state.videoWarehouseItems));
+    localStorage.setItem("prompt_manager_video_warehouse_initialized", "true");
+  } catch (e) {
+    console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성):", e);
+  }
+}
+
 // Save current prompts state to localStorage
 function saveData() {
   try {
@@ -433,15 +442,6 @@ function saveWarehouseData() {
   try {
     localStorage.setItem("prompt_manager_warehouse_data", JSON.stringify(state.warehouseItems));
     localStorage.setItem("prompt_manager_warehouse_initialized", "true");
-  } catch (e) {
-    console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성):", e);
-  }
-}
-
-function saveVideoWarehouseData() {
-  try {
-    localStorage.setItem("prompt_manager_video_warehouse_data", JSON.stringify(state.videoWarehouseItems));
-    localStorage.setItem("prompt_manager_video_warehouse_initialized", "true");
   } catch (e) {
     console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성):", e);
   }
@@ -754,8 +754,8 @@ function selectQuickFilter(filterType) {
     const navWh = document.getElementById("nav-warehouse");
     if (navWh) navWh.classList.add("active");
   } else if (filterType === "video-warehouse") {
-    const navVideoWh = document.getElementById("nav-video-warehouse");
-    if (navVideoWh) navVideoWh.classList.add("active");
+    const navVidWh = document.getElementById("nav-video-warehouse");
+    if (navVidWh) navVidWh.classList.add("active");
   } else if (filterType === "lm-warehouse") {
     const navLmWh = document.getElementById("nav-lm-warehouse");
     if (navLmWh) navLmWh.classList.add("active");
@@ -867,19 +867,19 @@ function renderTemplate(text, values) {
 function openDetailDrawer(id) {
   const isWarehouse = id.startsWith("wh-");
   const isLMWarehouse = id.startsWith("lm-wh-");
-  const isVideoWarehouse = id.startsWith("video-wh-");
+  const isVideoWarehouse = id.startsWith("vid-wh-");
   state.activePromptId = id;
   renderAdminUI();
   
   if (isWarehouse || isLMWarehouse || isVideoWarehouse) {
-    const item = isVideoWarehouse
-      ? state.videoWarehouseItems.find(x => x.id === id)
-      : (isLMWarehouse 
-        ? state.lmWarehouseItems.find(x => x.id === id)
-        : state.warehouseItems.find(x => x.id === id));
+    const item = isLMWarehouse 
+      ? state.lmWarehouseItems.find(x => x.id === id)
+      : (isVideoWarehouse
+          ? state.videoWarehouseItems.find(x => x.id === id)
+          : state.warehouseItems.find(x => x.id === id));
     if (!item) return;
     
-    document.getElementById("detail-category").textContent = isVideoWarehouse ? "영상 프롬프트 창고" : (isLMWarehouse ? "LM스타일 창고" : "프롬프트 창고");
+    document.getElementById("detail-category").textContent = isLMWarehouse ? "LM스타일 창고" : (isVideoWarehouse ? "영상 프롬프트 창고" : "프롬프트 창고");
     document.getElementById("detail-title").textContent = item.title;
     
     // Description section toggler (Show URL as clickable link)
@@ -1481,28 +1481,6 @@ async function exportWarehouseData() {
   downloadJsonFile("warehouse_data.json", state.warehouseItems);
 }
 
-async function exportVideoWarehouseData() {
-  await ensureVideoWarehouseLoaded();
-  
-  const { items, count, newImages } = await lightweightWarehouseItems(state.videoWarehouseItems, false);
-  
-  if (count > 0) {
-    state.videoWarehouseItems = items;
-    saveVideoWarehouseData();
-    renderVideoWarehouseGrid();
-    
-    // Download new images
-    newImages.forEach(img => {
-      downloadBase64Image(img.filename, img.base64);
-    });
-    
-    showToast(`${count}개의 새로운 이미지가 경량화(다운로드)되었습니다.`, "success", "image");
-  }
-  
-  // Download updated JSON file of local state
-  downloadJsonFile("video_warehouse_data.json", state.videoWarehouseItems);
-}
-
 async function exportLMWarehouseData() {
   await ensureLMWarehouseLoaded();
   
@@ -1523,6 +1501,28 @@ async function exportLMWarehouseData() {
   
   // Download updated JSON file of local state
   downloadJsonFile("lm_warehouse_data.json", state.lmWarehouseItems);
+}
+
+async function exportVideoWarehouseData() {
+  await ensureVideoWarehouseLoaded();
+  
+  const { items, count, newImages } = await lightweightWarehouseItems(state.videoWarehouseItems, false);
+  
+  if (count > 0) {
+    state.videoWarehouseItems = items;
+    saveVideoWarehouseData();
+    renderVideoWarehouseGrid();
+    
+    // Download new images
+    newImages.forEach(img => {
+      downloadBase64Image(img.filename, img.base64);
+    });
+    
+    showToast(`${count}개의 새로운 이미지가 경량화(다운로드)되었습니다.`, "success", "image");
+  }
+  
+  // Download updated JSON file of local state
+  downloadJsonFile("video_warehouse_data.json", state.videoWarehouseItems);
 }
 
 // GitHub 연동 모달 관련 상태
@@ -1742,89 +1742,6 @@ async function syncWarehouseToServer() {
   }
 }
 
-async function syncVideoWarehouseToServer() {
-  await ensureVideoWarehouseLoaded();
-  let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
-  
-  if (config && config.owner && config.repo) {
-    if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 영상 프롬프트 창고 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
-      
-      // Perform lightweighting first!
-      const { items, count, newImages } = await lightweightWarehouseItems(state.videoWarehouseItems, false);
-      
-      if (count > 0) {
-        state.videoWarehouseItems = items;
-        saveVideoWarehouseData();
-        renderVideoWarehouseGrid();
-        
-        try {
-          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
-          for (let img of newImages) {
-            await uploadImageToGitHub(img.path, img.base64);
-          }
-          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
-        } catch (err) {
-          console.error(err);
-          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
-          return; // Stop if image upload fails
-        }
-      }
-      
-      await uploadFileToGitHub("video_warehouse_data.json", state.videoWarehouseItems);
-    } else {
-      openGithubConfigModal(async () => {
-        if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
-          // Perform lightweighting first!
-          const { items, count, newImages } = await lightweightWarehouseItems(state.videoWarehouseItems, false);
-          
-          if (count > 0) {
-            state.videoWarehouseItems = items;
-            saveVideoWarehouseData();
-            renderVideoWarehouseGrid();
-            
-            try {
-              showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
-              for (let img of newImages) {
-                await uploadImageToGitHub(img.path, img.base64);
-              }
-              showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
-            } catch (err) {
-              console.error(err);
-              showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
-              return;
-            }
-          }
-          await uploadFileToGitHub("video_warehouse_data.json", state.videoWarehouseItems);
-        }
-      });
-    }
-  } else {
-    openGithubConfigModal(async () => {
-      // Perform lightweighting first!
-      const { items, count, newImages } = await lightweightWarehouseItems(state.videoWarehouseItems, false);
-      
-      if (count > 0) {
-        state.videoWarehouseItems = items;
-        saveVideoWarehouseData();
-        renderVideoWarehouseGrid();
-        
-        try {
-          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
-          for (let img of newImages) {
-            await uploadImageToGitHub(img.path, img.base64);
-          }
-          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
-        } catch (err) {
-          console.error(err);
-          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
-          return;
-        }
-      }
-      await uploadFileToGitHub("video_warehouse_data.json", state.videoWarehouseItems);
-    });
-  }
-}
-
 async function syncLMWarehouseToServer() {
   await ensureLMWarehouseLoaded();
   let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
@@ -1904,6 +1821,89 @@ async function syncLMWarehouseToServer() {
         }
       }
       await uploadFileToGitHub("lm_warehouse_data.json", state.lmWarehouseItems);
+    });
+  }
+}
+
+async function syncVideoWarehouseToServer() {
+  await ensureVideoWarehouseLoaded();
+  let config = JSON.parse(localStorage.getItem("prompt_manager_github_config"));
+  
+  if (config && config.owner && config.repo) {
+    if (confirm(`GitHub 저장소 (${config.owner}/${config.repo})의 ${config.branch || 'main'} 브랜치에 현재 영상 프롬프트 창고 데이터를 저장하시겠습니까?\n\n[확인]을 누르면 저장이 진행되며, [취소]를 누르면 설정을 변경할 수 있습니다.`)) {
+      
+      // Perform lightweighting first!
+      const { items, count, newImages } = await lightweightWarehouseItems(state.videoWarehouseItems, false);
+      
+      if (count > 0) {
+        state.videoWarehouseItems = items;
+        saveVideoWarehouseData();
+        renderVideoWarehouseGrid();
+        
+        try {
+          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+          for (let img of newImages) {
+            await uploadImageToGitHub(img.path, img.base64);
+          }
+          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+        } catch (err) {
+          console.error(err);
+          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+          return; // Stop if image upload fails
+        }
+      }
+      
+      await uploadFileToGitHub("video_warehouse_data.json", state.videoWarehouseItems);
+    } else {
+      openGithubConfigModal(async () => {
+        if (confirm("새로 저장된 설정으로 동기화를 바로 진행하시겠습니까?")) {
+          // Perform lightweighting first!
+          const { items, count, newImages } = await lightweightWarehouseItems(state.videoWarehouseItems, false);
+          
+          if (count > 0) {
+            state.videoWarehouseItems = items;
+            saveVideoWarehouseData();
+            renderVideoWarehouseGrid();
+            
+            try {
+              showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+              for (let img of newImages) {
+                await uploadImageToGitHub(img.path, img.base64);
+              }
+              showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+            } catch (err) {
+              console.error(err);
+              showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+              return;
+            }
+          }
+          await uploadFileToGitHub("video_warehouse_data.json", state.videoWarehouseItems);
+        }
+      });
+    }
+  } else {
+    openGithubConfigModal(async () => {
+      // Perform lightweighting first!
+      const { items, count, newImages } = await lightweightWarehouseItems(state.videoWarehouseItems, false);
+      
+      if (count > 0) {
+        state.videoWarehouseItems = items;
+        saveVideoWarehouseData();
+        renderVideoWarehouseGrid();
+        
+        try {
+          showToast("새로운 이미지 파일들을 GitHub에 업로드 중...", "info", "refresh-cw");
+          for (let img of newImages) {
+            await uploadImageToGitHub(img.path, img.base64);
+          }
+          showToast(`${count}개의 이미지가 GitHub에 업로드되었습니다.`, "success", "image");
+        } catch (err) {
+          console.error(err);
+          showToast(`이미지 업로드 중 오류 발생: ${err.message}`, "error", "alert-triangle");
+          return;
+        }
+      }
+      await uploadFileToGitHub("video_warehouse_data.json", state.videoWarehouseItems);
     });
   }
 }
@@ -2001,22 +2001,22 @@ async function copyWarehouseJson() {
   });
 }
 
-async function copyVideoWarehouseJson() {
-  await ensureVideoWarehouseLoaded();
-  const dataStr = JSON.stringify(state.videoWarehouseItems, null, 2);
+async function copyLMWarehouseJson() {
+  await ensureLMWarehouseLoaded();
+  const dataStr = JSON.stringify(state.lmWarehouseItems, null, 2);
   navigator.clipboard.writeText(dataStr).then(() => {
-    showToast("영상 프롬프트 창고 데이터(JSON)가 클립보드에 복사되었습니다! 메모장에 붙여넣고 저장하세요.", "success", "copy");
+    showToast("LM스타일 창고 데이터(JSON)가 클립보드에 복사되었습니다! 메모장에 붙여넣고 저장하세요.", "success", "copy");
   }).catch(err => {
     console.error(err);
     showToast("복사에 실패했습니다. 권한을 확인해주세요.", "error", "alert-circle");
   });
 }
 
-async function copyLMWarehouseJson() {
-  await ensureLMWarehouseLoaded();
-  const dataStr = JSON.stringify(state.lmWarehouseItems, null, 2);
+async function copyVideoWarehouseJson() {
+  await ensureVideoWarehouseLoaded();
+  const dataStr = JSON.stringify(state.videoWarehouseItems, null, 2);
   navigator.clipboard.writeText(dataStr).then(() => {
-    showToast("LM스타일 창고 데이터(JSON)가 클립보드에 복사되었습니다! 메모장에 붙여넣고 저장하세요.", "success", "copy");
+    showToast("영상 프롬프트 창고 데이터(JSON)가 클립보드에 복사되었습니다! 메모장에 붙여넣고 저장하세요.", "success", "copy");
   }).catch(err => {
     console.error(err);
     showToast("복사에 실패했습니다. 권한을 확인해주세요.", "error", "alert-circle");
@@ -2112,8 +2112,6 @@ function setupEventListeners() {
         closeModal();
       } else if (document.getElementById("warehouse-modal").classList.contains("active")) {
         closeWarehouseModal();
-      } else if (document.getElementById("video-warehouse-modal").classList.contains("active")) {
-        closeVideoWarehouseModal();
       } else if (document.getElementById("lm-warehouse-modal").classList.contains("active")) {
         closeLMWarehouseModal();
       } else if (document.getElementById("fav-share-modal").classList.contains("active")) {
@@ -2210,7 +2208,7 @@ function setupEventListeners() {
     if (state.activePromptId) {
       if (state.activePromptId.startsWith("lm-wh-")) {
         openLMWarehouseModal(state.activePromptId);
-      } else if (state.activePromptId.startsWith("video-wh-")) {
+      } else if (state.activePromptId.startsWith("vid-wh-")) {
         openVideoWarehouseModal(state.activePromptId);
       } else if (state.activePromptId.startsWith("wh-")) {
         openWarehouseModal(state.activePromptId);
@@ -2224,7 +2222,7 @@ function setupEventListeners() {
     if (state.activePromptId) {
       if (state.activePromptId.startsWith("lm-wh-")) {
         deleteLMWarehouseItem(state.activePromptId);
-      } else if (state.activePromptId.startsWith("video-wh-")) {
+      } else if (state.activePromptId.startsWith("vid-wh-")) {
         deleteVideoWarehouseItem(state.activePromptId);
       } else if (state.activePromptId.startsWith("wh-")) {
         deleteWarehouseItem(state.activePromptId);
@@ -2431,6 +2429,29 @@ function setupEventListeners() {
   // Warehouse Submit
   document.getElementById("warehouse-form").addEventListener("submit", handleWarehouseFormSubmit);
 
+  // Video Prompt Warehouse Menu Selection
+  document.getElementById("nav-video-warehouse").addEventListener("click", async (e) => {
+    e.preventDefault();
+    await ensureVideoWarehouseLoaded();
+    selectQuickFilter("video-warehouse");
+  });
+
+  // Video Warehouse Item Add Modal Toggle
+  document.getElementById("btn-new-video-warehouse-item").addEventListener("click", () => openVideoWarehouseModal());
+  document.getElementById("btn-sync-video-warehouse").addEventListener("click", syncVideoWarehouseToServer);
+  document.getElementById("btn-export-video-warehouse").addEventListener("click", exportVideoWarehouseData);
+  document.getElementById("btn-copy-video-warehouse-json").addEventListener("click", copyVideoWarehouseJson);
+  document.getElementById("btn-video-warehouse-modal-close").addEventListener("click", closeVideoWarehouseModal);
+  document.getElementById("btn-video-warehouse-modal-cancel").addEventListener("click", closeVideoWarehouseModal);
+  document.getElementById("video-warehouse-modal").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("video-warehouse-modal")) {
+      closeVideoWarehouseModal();
+    }
+  });
+
+  // Video Warehouse Submit
+  document.getElementById("video-warehouse-form").addEventListener("submit", handleVideoWarehouseFormSubmit);
+
   // Warehouse Image upload zone trigger
   const whUploadZone = document.getElementById("wh-image-upload-zone");
   const whFileInput = document.getElementById("wh-image-input");
@@ -2485,29 +2506,6 @@ function setupEventListeners() {
     showToast("첨부 이미지가 제거되었습니다.", "info", "x-circle");
   });
 
-  // Video Warehouse Menu Selection
-  document.getElementById("nav-video-warehouse").addEventListener("click", async (e) => {
-    e.preventDefault();
-    await ensureVideoWarehouseLoaded();
-    selectQuickFilter("video-warehouse");
-  });
-
-  // Video Warehouse Item Add Modal Toggle
-  document.getElementById("btn-new-video-warehouse-item").addEventListener("click", () => openVideoWarehouseModal());
-  document.getElementById("btn-sync-video-warehouse").addEventListener("click", syncVideoWarehouseToServer);
-  document.getElementById("btn-export-video-warehouse").addEventListener("click", exportVideoWarehouseData);
-  document.getElementById("btn-copy-video-warehouse-json").addEventListener("click", copyVideoWarehouseJson);
-  document.getElementById("btn-video-warehouse-modal-close").addEventListener("click", closeVideoWarehouseModal);
-  document.getElementById("btn-video-warehouse-modal-cancel").addEventListener("click", closeVideoWarehouseModal);
-  document.getElementById("video-warehouse-modal").addEventListener("click", (e) => {
-    if (e.target === document.getElementById("video-warehouse-modal")) {
-      closeVideoWarehouseModal();
-    }
-  });
-
-  // Video Warehouse Submit
-  document.getElementById("video-warehouse-form").addEventListener("submit", handleVideoWarehouseFormSubmit);
-
   // Video Warehouse Image upload zone trigger
   const videoWhUploadZone = document.getElementById("video-wh-image-upload-zone");
   const videoWhFileInput = document.getElementById("video-wh-image-input");
@@ -2536,10 +2534,10 @@ function setupEventListeners() {
     }
   });
 
-  // Global paste hook for video warehouse modal too
+  // Global paste hook for Video warehouse modal
   window.addEventListener("paste", (e) => {
     const videoWhModal = document.getElementById("video-warehouse-modal");
-    if (!videoWhModal.classList.contains("active")) return;
+    if (!videoWhModal || !videoWhModal.classList.contains("active")) return;
 
     const items = (e.clipboardData || e.originalEvent.clipboardData).items;
     for (let i = 0; i < items.length; i++) {
@@ -3211,243 +3209,6 @@ function renderWarehouseGrid() {
 }
 
 // ==========================================================================
-// VIDEO PROMPT WAREHOUSE CONTROLLERS
-// ==========================================================================
-function openVideoWarehouseModal(editingId = null) {
-  const form = document.getElementById("video-warehouse-form");
-  form.reset();
-  
-  // Reset preview fields
-  document.getElementById("video-wh-id").value = "";
-  document.getElementById("video-wh-image-data").value = "";
-  document.getElementById("video-wh-image-preview").src = "";
-  document.getElementById("video-wh-image-preview-container").classList.add("hidden");
-  document.getElementById("video-wh-upload-placeholder").classList.remove("hidden");
-  
-  const modalTitle = document.getElementById("video-warehouse-modal-title");
-  const submitBtn = document.getElementById("btn-video-warehouse-modal-submit");
-  
-  if (editingId && typeof editingId === "string") {
-    const item = state.videoWarehouseItems.find(x => x.id === editingId);
-    if (!item) return;
-    
-    modalTitle.textContent = "영상 자료 수정";
-    submitBtn.textContent = "수정하기";
-    
-    document.getElementById("video-wh-id").value = item.id;
-    document.getElementById("video-wh-title").value = item.title;
-    document.getElementById("video-wh-url").value = item.url || "";
-    document.getElementById("video-wh-prompt").value = item.prompt || "";
-    
-    if (item.image) {
-      document.getElementById("video-wh-image-data").value = item.image;
-      document.getElementById("video-wh-image-preview").src = item.image;
-      document.getElementById("video-wh-image-preview-container").classList.remove("hidden");
-      document.getElementById("video-wh-upload-placeholder").classList.add("hidden");
-    }
-    
-    closeDetailDrawer();
-  } else {
-    modalTitle.textContent = "새 영상 자료 등록";
-    submitBtn.textContent = "등록하기";
-  }
-  
-  document.getElementById("video-warehouse-modal").classList.add("active");
-  setTimeout(() => document.getElementById("video-wh-title").focus(), 150);
-}
-
-function closeVideoWarehouseModal() {
-  document.getElementById("video-warehouse-modal").classList.remove("active");
-}
-
-function handleVideoWarehouseImageUpload(file) {
-  if (!file.type.startsWith("image/")) {
-    showToast("이미지 파일만 첨부할 수 있습니다.", "error", "alert-circle");
-    return;
-  }
-  
-  showToast("이미지를 압축 및 변환 중...", "info", "refresh-cw");
-  
-  compressImage(file, (base64Str) => {
-    document.getElementById("video-wh-image-data").value = base64Str;
-    document.getElementById("video-wh-image-preview").src = base64Str;
-    document.getElementById("video-wh-image-preview-container").classList.remove("hidden");
-    document.getElementById("video-wh-upload-placeholder").classList.add("hidden");
-    showToast("캡처 이미지가 임시 등록되었습니다!", "success", "image");
-  });
-}
-
-function handleVideoWarehouseFormSubmit(e) {
-  e.preventDefault();
-  
-  const id = document.getElementById("video-wh-id").value;
-  const title = document.getElementById("video-wh-title").value.trim();
-  const url = document.getElementById("video-wh-url").value.trim();
-  const prompt = document.getElementById("video-wh-prompt").value.trim();
-  const imageData = document.getElementById("video-wh-image-data").value;
-  
-  if (!imageData) {
-    showToast("캡처 이미지를 첨부해주세요.", "error", "alert-circle");
-    return;
-  }
-  
-  const isEditing = id !== "";
-  
-  if (isEditing) {
-    const idx = state.videoWarehouseItems.findIndex(item => item.id === id);
-    if (idx !== -1) {
-      state.videoWarehouseItems[idx] = {
-        ...state.videoWarehouseItems[idx],
-        title,
-        url,
-        prompt,
-        image: imageData,
-        updatedAt: new Date().toISOString()
-      };
-      showToast("영상 자료가 수정되었습니다.", "success", "archive");
-    }
-  } else {
-    const newItem = {
-      id: "video-wh-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9),
-      title,
-      url,
-      prompt,
-      image: imageData,
-      createdAt: new Date().toISOString()
-    };
-    state.videoWarehouseItems.push(newItem);
-    showToast("영상 프롬프트 창고에 자료가 등록되었습니다.", "success", "archive");
-  }
-  
-  saveVideoWarehouseData();
-  closeVideoWarehouseModal();
-  renderVideoWarehouseGrid();
-  
-  if (isEditing) {
-    setTimeout(() => {
-      openDetailDrawer(id);
-    }, 300);
-  }
-}
-
-function deleteVideoWarehouseItem(id) {
-  if (confirm("정말 이 영상 자료를 삭제하시겠습니까?")) {
-    state.videoWarehouseItems = state.videoWarehouseItems.filter(item => item.id !== id);
-    saveVideoWarehouseData();
-    closeDetailDrawer();
-    renderVideoWarehouseGrid();
-    showToast("자료가 정상적으로 삭제되었습니다.", "info", "trash-2");
-  }
-}
-
-function renderVideoWarehouseGrid() {
-  const grid = document.getElementById("video-warehouse-grid");
-  const emptyState = document.getElementById("video-warehouse-empty-state");
-  const items = [...state.videoWarehouseItems];
-  
-  if (items.length === 0) {
-    grid.innerHTML = "";
-    emptyState.style.display = "flex";
-    return;
-  }
-  
-  emptyState.style.display = "none";
-  grid.innerHTML = "";
-  
-  // Sort items desc (newest first)
-  items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  
-  items.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "prompt-card";
-    
-    // Thumbnail section
-    const imageHtml = item.image 
-      ? `<div class="card-thumbnail-container" style="height: 160px; overflow: hidden; border-radius: 8px; position: relative; cursor: zoom-in;">
-           <img src="${item.image}" alt="${escapeHtml(item.title)}" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-smooth);">
-           <div class="image-overlay-info"><i data-lucide="zoom-in"></i> 클릭하여 확대</div>
-         </div>`
-      : "";
-      
-    // Footer button rendering
-    const linkBtnHtml = item.url 
-      ? `<a href="${item.url}" target="_blank" class="btn btn-primary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px;">
-           <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> 바로가기
-         </a>`
-      : `<span style="font-size: 11px; color: var(--text-muted);">링크 없음</span>`;
-      
-    card.innerHTML = `
-      <div class="card-body" style="padding: 14px; display: flex; flex-direction: column; gap: 10px;">
-        ${imageHtml}
-        <h3 class="card-title" style="font-size: 14px; font-weight: 600; line-height: 1.4; height: auto; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-          ${escapeHtml(item.title)}
-        </h3>
-        ${item.prompt ? `
-          <div class="card-prompt-section" style="margin-top: 6px; padding: 10px; background-color: var(--bg-main); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px;">
-            <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-              <span>연관 프롬프트</span>
-              <button type="button" class="btn-copy-wh-prompt" style="background: none; border: none; padding: 2px 6px; color: var(--accent-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--font-sans); font-weight: 500; background-color: rgba(79, 70, 229, 0.08); border-radius: 4px; transition: var(--transition-fast);">
-                <i data-lucide="copy" style="width: 11px; height: 11px;"></i> 복사
-              </button>
-            </div>
-            <pre style="font-size: 12px; color: var(--text-main); font-family: var(--font-mono); white-space: pre-wrap; word-break: break-all; margin: 0; max-height: 80px; overflow-y: auto; line-height: 1.5; padding: 2px 0;">${escapeHtml(item.prompt)}</pre>
-          </div>
-        ` : ""}
-      </div>
-      <div class="card-footer" style="padding: 10px 14px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-card);">
-        ${linkBtnHtml}
-        <button class="btn-icon text-danger wh-delete-btn" title="삭제하기" style="padding: 4px;">
-          <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-        </button>
-      </div>
-    `;
-    
-    // Click events
-    if (item.image) {
-      card.querySelector(".card-thumbnail-container").addEventListener("click", (e) => {
-        e.stopPropagation();
-        const lightboxModal = document.getElementById("lightbox-modal");
-        const lightboxImage = document.getElementById("lightbox-image");
-        lightboxImage.src = item.image;
-        lightboxModal.classList.add("active");
-      });
-    }
-
-    // Copy prompt event
-    const copyBtn = card.querySelector(".btn-copy-wh-prompt");
-    if (copyBtn) {
-      copyBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        navigator.clipboard.writeText(item.prompt).then(() => {
-          showToast("프롬프트가 복사되었습니다!", "success", "check");
-        }).catch(err => {
-          showToast("복사에 실패했습니다.", "error", "alert-circle");
-        });
-      });
-    }
-    
-    card.querySelector(".wh-delete-btn").addEventListener("click", (e) => {
-      e.stopPropagation();
-      deleteVideoWarehouseItem(item.id);
-    });
-
-    card.addEventListener("click", (e) => {
-      if (e.target.closest(".btn-copy-wh-prompt") || 
-          e.target.closest(".wh-delete-btn") || 
-          e.target.closest(".card-thumbnail-container") || 
-          e.target.closest("a")) {
-        return;
-      }
-      openDetailDrawer(item.id);
-    });
-    
-    grid.appendChild(card);
-  });
-  
-  lucide.createIcons();
-}
-
-// ==========================================================================
 // LM STYLE WAREHOUSE CONTROLLERS
 // ==========================================================================
 function openLMWarehouseModal(editingId = null) {
@@ -3666,6 +3427,233 @@ function renderLMWarehouseGrid() {
     card.querySelector(".wh-delete-btn").addEventListener("click", (e) => {
       e.stopPropagation();
       deleteLMWarehouseItem(item.id);
+    });
+
+    grid.appendChild(card);
+  });
+  
+  lucide.createIcons();
+}
+
+// ==========================================================================
+// VIDEO PROMPT WAREHOUSE CONTROLLERS
+// ==========================================================================
+function openVideoWarehouseModal(editingId = null) {
+  const form = document.getElementById("video-warehouse-form");
+  form.reset();
+  
+  // Reset preview fields
+  document.getElementById("video-wh-id").value = "";
+  document.getElementById("video-wh-image-data").value = "";
+  document.getElementById("video-wh-image-preview").src = "";
+  document.getElementById("video-wh-image-preview-container").classList.add("hidden");
+  document.getElementById("video-wh-upload-placeholder").classList.remove("hidden");
+  
+  const modalTitle = document.getElementById("video-warehouse-modal-title");
+  const submitBtn = document.getElementById("btn-video-warehouse-modal-submit");
+  
+  if (editingId && typeof editingId === "string") {
+    const item = state.videoWarehouseItems.find(x => x.id === editingId);
+    if (!item) return;
+    
+    modalTitle.textContent = "영상 프롬프트 자료 수정";
+    submitBtn.textContent = "수정하기";
+    
+    document.getElementById("video-wh-id").value = item.id;
+    document.getElementById("video-wh-title").value = item.title;
+    document.getElementById("video-wh-url").value = item.url || "";
+    document.getElementById("video-wh-prompt").value = item.prompt || "";
+    
+    if (item.image) {
+      document.getElementById("video-wh-image-data").value = item.image;
+      document.getElementById("video-wh-image-preview").src = item.image;
+      document.getElementById("video-wh-image-preview-container").classList.remove("hidden");
+      document.getElementById("video-wh-upload-placeholder").classList.add("hidden");
+    }
+    
+    closeDetailDrawer();
+  } else {
+    modalTitle.textContent = "새 영상 프롬프트 자료 등록";
+    submitBtn.textContent = "등록하기";
+  }
+  
+  document.getElementById("video-warehouse-modal").classList.add("active");
+  setTimeout(() => document.getElementById("video-wh-title").focus(), 150);
+}
+
+function closeVideoWarehouseModal() {
+  document.getElementById("video-warehouse-modal").classList.remove("active");
+}
+
+function handleVideoWarehouseImageUpload(file) {
+  if (!file.type.startsWith("image/")) {
+    showToast("이미지 파일만 첨부할 수 있습니다.", "error", "alert-circle");
+    return;
+  }
+  
+  showToast("이미지를 압축 및 변환 중...", "info", "refresh-cw");
+  
+  compressImage(file, (base64Str) => {
+    document.getElementById("video-wh-image-data").value = base64Str;
+    document.getElementById("video-wh-image-preview").src = base64Str;
+    document.getElementById("video-wh-image-preview-container").classList.remove("hidden");
+    document.getElementById("video-wh-upload-placeholder").classList.add("hidden");
+    showToast("캡처 이미지가 임시 등록되었습니다!", "success", "image");
+  });
+}
+
+function handleVideoWarehouseFormSubmit(e) {
+  e.preventDefault();
+  
+  const id = document.getElementById("video-wh-id").value;
+  const title = document.getElementById("video-wh-title").value.trim();
+  const url = document.getElementById("video-wh-url").value.trim();
+  const prompt = document.getElementById("video-wh-prompt").value.trim();
+  const imageData = document.getElementById("video-wh-image-data").value;
+  
+  if (!imageData) {
+    showToast("캡처 이미지를 첨부해주세요.", "error", "alert-circle");
+    return;
+  }
+  
+  const isEditing = id !== "";
+  
+  if (isEditing) {
+    const idx = state.videoWarehouseItems.findIndex(item => item.id === id);
+    if (idx !== -1) {
+      state.videoWarehouseItems[idx] = {
+        ...state.videoWarehouseItems[idx],
+        title,
+        url,
+        prompt,
+        image: imageData,
+        updatedAt: new Date().toISOString()
+      };
+      showToast("영상 프롬프트 자료가 수정되었습니다.", "success", "archive");
+    }
+  } else {
+    const newItem = {
+      id: "vid-wh-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9),
+      title,
+      url,
+      prompt,
+      image: imageData,
+      createdAt: new Date().toISOString()
+    };
+    state.videoWarehouseItems.push(newItem);
+    showToast("영상 프롬프트 창고에 자료가 등록되었습니다.", "success", "archive");
+  }
+  
+  saveVideoWarehouseData();
+  closeVideoWarehouseModal();
+  renderVideoWarehouseGrid();
+  
+  if (isEditing) {
+    setTimeout(() => {
+      openDetailDrawer(id);
+    }, 300);
+  }
+}
+
+function deleteVideoWarehouseItem(id) {
+  if (confirm("정말 이 자료를 삭제하시겠습니까?")) {
+    state.videoWarehouseItems = state.videoWarehouseItems.filter(item => item.id !== id);
+    saveVideoWarehouseData();
+    closeDetailDrawer();
+    renderVideoWarehouseGrid();
+    showToast("자료가 정상적으로 삭제되었습니다.", "info", "trash-2");
+  }
+}
+
+function renderVideoWarehouseGrid() {
+  const grid = document.getElementById("video-warehouse-grid");
+  const emptyState = document.getElementById("video-warehouse-empty-state");
+  const items = [...state.videoWarehouseItems];
+  
+  if (items.length === 0) {
+    grid.innerHTML = "";
+    emptyState.style.display = "flex";
+    return;
+  }
+  
+  emptyState.style.display = "none";
+  grid.innerHTML = "";
+  
+  // Sort items desc (newest first)
+  items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "prompt-card";
+    
+    // Thumbnail section
+    const imageHtml = item.image 
+      ? `<div class="card-thumbnail-container" style="height: 160px; overflow: hidden; border-radius: 8px; position: relative; cursor: zoom-in;">
+           <img src="${item.image}" alt="${escapeHtml(item.title)}" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-smooth);">
+           <div class="image-overlay-info"><i data-lucide="zoom-in"></i> 클릭하여 확대</div>
+         </div>`
+      : "";
+      
+    // Footer button rendering
+    const linkBtnHtml = item.url 
+      ? `<a href="${item.url}" target="_blank" class="btn btn-primary btn-xs" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px;">
+           <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> 바로가기
+         </a>`
+      : `<span style="font-size: 11px; color: var(--text-muted);">링크 없음</span>`;
+      
+    card.innerHTML = `
+      <div class="card-body" style="padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+        ${imageHtml}
+        <h3 class="card-title" style="font-size: 14px; font-weight: 600; line-height: 1.4; height: auto; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+          ${escapeHtml(item.title)}
+        </h3>
+        ${item.prompt ? `
+          <div class="card-prompt-section" style="margin-top: 6px; padding: 10px; background-color: var(--bg-main); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+              <span>연관 프롬프트</span>
+              <button type="button" class="btn-copy-wh-prompt" style="background: none; border: none; padding: 2px 6px; color: var(--accent-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--font-sans); font-weight: 500; background-color: rgba(79, 70, 229, 0.08); border-radius: 4px; transition: var(--transition-fast);">
+                <i data-lucide="copy" style="width: 11px; height: 11px;"></i> 복사
+              </button>
+            </div>
+            <pre style="font-size: 12px; color: var(--text-main); font-family: var(--font-mono); white-space: pre-wrap; word-break: break-all; margin: 0; max-height: 80px; overflow-y: auto; line-height: 1.5; padding: 2px 0;">${escapeHtml(item.prompt)}</pre>
+          </div>
+        ` : ""}
+      </div>
+      <div class="card-footer" style="padding: 10px 14px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-card);">
+        ${linkBtnHtml}
+        <button class="btn-icon text-danger wh-delete-btn" title="삭제하기" style="padding: 4px;">
+          <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+        </button>
+      </div>
+    `;
+    
+    // Click events
+    if (item.image) {
+      card.querySelector(".card-thumbnail-container").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const lightboxModal = document.getElementById("lightbox-modal");
+        const lightboxImage = document.getElementById("lightbox-image");
+        lightboxImage.src = item.image;
+        lightboxModal.classList.add("active");
+      });
+    }
+
+    // Copy prompt event
+    const copyBtn = card.querySelector(".btn-copy-wh-prompt");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(item.prompt).then(() => {
+          showToast("프롬프트가 복사되었습니다!", "success", "check");
+        }).catch(err => {
+          showToast("복사에 실패했습니다.", "error", "alert-circle");
+        });
+      });
+    }
+    
+    card.querySelector(".wh-delete-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteVideoWarehouseItem(item.id);
     });
 
     card.addEventListener("click", (e) => {

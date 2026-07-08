@@ -14,5 +14,78 @@
     "desc": "Anthropic의 대화형 AI 서비스로, 코딩 및 글쓰기 프롬프트 수행에 매우 탁월합니다.",
     "category": "AI 대화형 도구",
     "createdAt": "2026-06-29T00:00:00.000Z"
+  },
+  {
+    "id": "fav-1782708260281-eak5iw4mv",
+    "title": "Gemini",
+    "category": "AI 대화형 도구",
+    "url": "https://gemini.google.com/app",
+    "desc": "Google Gemini",
+    "createdAt": "2026-06-29T04:44:20.281Z"
+  },
+  {
+    "id": "fav-1782708964806-oe5j859r6",
+    "title": "Arena AI",
+    "category": "추천 사이트",
+    "url": "https://arena.ai/",
+    "desc": "The Official AI Ranking & LLM Leaderboard",
+    "createdAt": "2026-06-29T04:56:04.806Z"
+  },
+  {
+    "id": "fav-1782791749188-q17d6jj9l",
+    "title": "Daily Prompt",
+    "category": "추천 사이트",
+    "url": "https://blog.secondbrush.co.kr/",
+    "desc": "데일리 프롬프트\n메일링 서비스",
+    "createdAt": "2026-06-30T03:55:49.188Z"
+  },
+  {
+    "id": "fav-1782882760448-3wg74lgib",
+    "title": "Google NotebookLM",
+    "category": "AI 추천 서비스",
+    "url": "https://notebooklm.google/",
+    "desc": "NotebookLM",
+    "createdAt": "2026-07-01T05:12:40.448Z"
+  },
+  {
+    "id": "fav-1782882921629-4yff5ic4a",
+    "title": "genspark.ai",
+    "category": "AI 추천 서비스",
+    "url": "https://www.genspark.ai/",
+    "desc": "젠스파크 AI",
+    "createdAt": "2026-07-01T05:15:21.629Z"
+  },
+  {
+    "id": "fav-1782892925329-0e59gk8bp",
+    "title": "github",
+    "category": "추천 사이트",
+    "url": "https://github.com/",
+    "desc": "깃허브",
+    "createdAt": "2026-07-01T08:02:05.329Z"
+  },
+  {
+    "id": "fav-1783000237445-v4fdzx7dv",
+    "title": "안티그래비티",
+    "category": "AI 추천 서비스",
+    "url": "https://antigravity.google/",
+    "desc": "안티그래비티\n안티그래비티 CLI",
+    "createdAt": "2026-07-02T13:50:37.445Z",
+    "updatedAt": "2026-07-02T13:51:04.636Z"
+  },
+  {
+    "id": "fav-1783309512691-a2e7ak71m",
+    "title": "Colorable",
+    "category": "컬러 추천 사이트",
+    "url": "https://colorable.jxnblk.com/",
+    "desc": "배경색과 텍스트색상 제안",
+    "createdAt": "2026-07-06T03:45:12.691Z"
+  },
+  {
+    "id": "fav-1783309573954-jls0vfdp0",
+    "title": "ColorSpcace",
+    "category": "컬러 추천 사이트",
+    "url": "https://mycolor.space/",
+    "desc": "특정 색상값과 어울리는 색상들 추천",
+    "createdAt": "2026-07-06T03:46:13.954Z"
   }
 ]

@@ -5,8 +5,8 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 if ([string]::IsNullOrEmpty($scriptPath)) { $scriptPath = Get-Location }
 
 $warehouseFile = Join-Path $scriptPath "warehouse_data.json"
-$videoWarehouseFile = Join-Path $scriptPath "video_warehouse_data.json"
 $lmWarehouseFile = Join-Path $scriptPath "lm_warehouse_data.json"
+$videoWarehouseFile = Join-Path $scriptPath "video_warehouse_data.json"
 $promptsFile = Join-Path $scriptPath "prompts_data.json"
 $imagesDir = Join-Path $scriptPath "images"
 $checkpointFile = Join-Path $scriptPath "conversion_checkpoint.json"
@@ -116,8 +116,8 @@ $whConverted = Convert-Base64ToImage -jsonFilePath $warehouseFile -name "Prompt 
 if ($whConverted) { $allConverted += $whConverted }
 
 # video_warehouse_data.json 처리
-$videoConverted = Convert-Base64ToImage -jsonFilePath $videoWarehouseFile -name "Video Prompt Warehouse (video_warehouse_data.json)"
-if ($videoConverted) { $allConverted += $videoConverted }
+$vidConverted = Convert-Base64ToImage -jsonFilePath $videoWarehouseFile -name "Video Prompt Warehouse (video_warehouse_data.json)"
+if ($vidConverted) { $allConverted += $vidConverted }
 
 # lm_warehouse_data.json 처리
 $lmConverted = Convert-Base64ToImage -jsonFilePath $lmWarehouseFile -name "LM Style Warehouse (lm_warehouse_data.json)"
