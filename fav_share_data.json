@@ -106,5 +106,13 @@
     "url": "https://www.meigen.ai/?category=videos",
     "desc": "Nano Banana, GPT Image 2 및 기타 모델로 이미지를 생성하기 위한 10,000개 이상의 프롬프트를 가진 웹사이트",
     "createdAt": "2026-07-08T01:19:45.569Z"
+  },
+  {
+    "id": "fav-1783493661688-l4zvpzjrb",
+    "title": "video_prompt_creator",
+    "category": "콘텐츠 제작 관련 사이트",
+    "url": "https://9core1.github.io/promptories/video_prompt/index.html",
+    "desc": "영상 프롬프트 생성기",
+    "createdAt": "2026-07-08T06:54:21.688Z"
   }
 ]
