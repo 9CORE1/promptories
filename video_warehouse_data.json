@@ -78,5 +78,13 @@
     "prompt": "Amira Zairi\n@azed_ai\n·\n2025년 7월 29일\nFirst step: generating images\n\nTo be honest, I created these images a month ago, as you can see, I imagined the story and tried to create each shot to be animated as a single shot, but not anymore, with this workflow we'll be able to get more than one shot in the same 5s video, which is insane 🤯 🤩\n\nHere's how I created these:\n- I uploaded my image and my cat's to GPT-4o\n- I asked it to create images in a 3D Pixar-like style\n- I just used natural language to describe what the girl is doing\n\nAs I told you, I created these a month ago, but today I used only 5 images to get this 30s video\n\n------------\nSecond step: upscaling the images\n\nThis step is optional, but since we're going to animate the images in 480p, it's better to upscale them before.\n\nI used \n@Magnific_AI\n's precision, and I must tell you that it's amazing, as you can see 😍 🔥\n\nIf you want to try it, you can use my affiliate link:\nhttps://magnific.ai/?via=AZ\n\n\n---------\nThird step: Animating the images\n\nI used Seedance 1.0 pro on \n@Freepik\n, since it's free for sub users till the end of the month, and it worked like magic 🤩🔥\n\nIt's a simple process; you just need to\n- Upload the images\n- Write the prompt\n\nHere is the trick you need to use cuts and transitions in your prompt to direct your scenes. For now, only Veo3 and seedance are doing that perfectly.\n\nSo the prompt should be something like this:\nwide shot of a little girl walking to the grocery store\n\n[cut] close-up of her hand pushing the door\n\n[cut] close-up of her feet stepping inside\n\n[cut] over the shoulder shot of the cheese section in the store\n\n\n----------\nFinal Step: Editing\n\nNow it’s time to bring everything together in your editing software, whether you’re using DaVinci Resolve, CapCut, or any other tool. Add background music, adjust the pacing, and sprinkle in some visual effects if you like.\n\nAnd that’s it! A simple and powerful way to create stunning short films with amazing results.",
     "image": "images/vid-wh-1783473036404-rh9c31c4b.jpeg",
     "createdAt": "2026-07-08T01:10:36.404Z"
+  },
+  {
+    "id": "vid-wh-1783473163499-tipgl21ag",
+    "title": "영상 제작하기",
+    "url": "https://x.com/runthistown5416/status/2073824799843823731?s=20",
+    "prompt": "1- 클로드(Claude)를 열고 예절참 영화들 속 가장 터무니없는 드라마 장면들을 리스트업해달라고 시키고\n2- 그 아이디어를 http://frutti.ai에 붙여넣으면 60초짜리 편집된 과일 비디오들을 만들어줘\n3- 틱톡 + 인스타에 공유하고\n4- 광고 수익을 먹고 살아",
+    "image": "images/vid-wh-1783473163499-tipgl21ag.jpeg",
+    "createdAt": "2026-07-08T01:12:43.499Z"
   }
 ]
