@@ -86,10 +86,13 @@ let state = {
   isAdmin: false,                 // 관리자 모드 인증 여부
   warehouseItems: [],
   warehouseLoaded: false,
+  warehousePage: 1,
   videoWarehouseItems: [],
   videoWarehouseLoaded: false,
+  videoWarehousePage: 1,
   lmWarehouseItems: [],
   lmWarehouseLoaded: false,
+  lmWarehousePage: 1,
   favShareItems: [],
   favShareLoaded: false
 };
@@ -744,6 +747,15 @@ function selectQuickFilter(filterType) {
   state.currentFilter = filterType;
   state.currentCategoryFilter = null;
   state.currentTagFilter = null;
+  
+  // Reset pages to 1 on menu selection
+  if (filterType === "warehouse") {
+    state.warehousePage = 1;
+  } else if (filterType === "video-warehouse") {
+    state.videoWarehousePage = 1;
+  } else if (filterType === "lm-warehouse") {
+    state.lmWarehousePage = 1;
+  }
   
   // Highlight in sidebar UI
   document.querySelectorAll(".nav-menu > li").forEach(li => {
@@ -2667,6 +2679,21 @@ function setupEventListeners() {
       syncFromServer();
     }
   });
+
+  // Handle window resize to recalculate pagination pages
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (state.currentFilter === "warehouse") {
+        renderWarehouseGrid();
+      } else if (state.currentFilter === "video-warehouse") {
+        renderVideoWarehouseGrid();
+      } else if (state.currentFilter === "lm-warehouse") {
+        renderLMWarehouseGrid();
+      }
+    }, 150);
+  });
 }
 
 // ==========================================================================
@@ -3101,6 +3128,73 @@ function deleteWarehouseItem(id) {
   }
 }
 
+// ==========================================================================
+// GRID PAGINATION HELPERS
+// ==========================================================================
+function getGridColumnCount(gridElement) {
+  if (gridElement) {
+    const computedCols = window.getComputedStyle(gridElement).gridTemplateColumns;
+    if (computedCols && computedCols !== 'none' && computedCols !== '0px') {
+      const cols = computedCols.split(' ').filter(x => x.trim() !== '').length;
+      if (cols > 0) return cols;
+    }
+    const width = gridElement.clientWidth || gridElement.parentElement.clientWidth || (window.innerWidth - 280 - 80);
+    if (width > 0) {
+      const cols = Math.floor((width + 24) / 344);
+      return Math.max(1, cols);
+    }
+  }
+  return 3;
+}
+
+function renderPagination(containerId, totalItems, currentPage, pageSize, onPageChangeCallback) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  
+  const totalPages = Math.ceil(totalItems / pageSize);
+  if (totalPages <= 1) {
+    container.innerHTML = "";
+    return;
+  }
+  
+  container.innerHTML = "";
+  
+  // Previous button
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "pagination-btn pagination-arrow";
+  prevBtn.innerHTML = `<i data-lucide="chevron-left"></i> 이전`;
+  if (currentPage === 1) {
+    prevBtn.disabled = true;
+  } else {
+    prevBtn.addEventListener("click", () => onPageChangeCallback(currentPage - 1));
+  }
+  container.appendChild(prevBtn);
+  
+  // Page numbers
+  for (let i = 1; i <= totalPages; i++) {
+    const pageBtn = document.createElement("button");
+    pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+    pageBtn.textContent = i;
+    if (i !== currentPage) {
+      pageBtn.addEventListener("click", () => onPageChangeCallback(i));
+    }
+    container.appendChild(pageBtn);
+  }
+  
+  // Next button
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "pagination-btn pagination-arrow";
+  nextBtn.innerHTML = `다음 <i data-lucide="chevron-right"></i>`;
+  if (currentPage === totalPages) {
+    nextBtn.disabled = true;
+  } else {
+    nextBtn.addEventListener("click", () => onPageChangeCallback(currentPage + 1));
+  }
+  container.appendChild(nextBtn);
+  
+  lucide.createIcons();
+}
+
 function renderWarehouseGrid() {
   const grid = document.getElementById("warehouse-grid");
   const emptyState = document.getElementById("warehouse-empty-state");
@@ -3109,6 +3203,7 @@ function renderWarehouseGrid() {
   if (items.length === 0) {
     grid.innerHTML = "";
     emptyState.style.display = "flex";
+    document.getElementById("warehouse-pagination").innerHTML = "";
     return;
   }
   
@@ -3118,7 +3213,18 @@ function renderWarehouseGrid() {
   // Sort items desc (newest first)
   items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   
-  items.forEach(item => {
+  // Slicing for pagination
+  const cols = getGridColumnCount(grid);
+  const pageSize = cols * 2;
+  const totalItems = items.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  if (state.warehousePage > totalPages) {
+    state.warehousePage = Math.max(1, totalPages);
+  }
+  const startIndex = (state.warehousePage - 1) * pageSize;
+  const paginatedItems = items.slice(startIndex, startIndex + pageSize);
+  
+  paginatedItems.forEach(item => {
     const card = document.createElement("div");
     card.className = "prompt-card";
     
@@ -3203,6 +3309,12 @@ function renderWarehouseGrid() {
     });
     
     grid.appendChild(card);
+  });
+  
+  renderPagination("warehouse-pagination", totalItems, state.warehousePage, pageSize, (newPage) => {
+    state.warehousePage = newPage;
+    renderWarehouseGrid();
+    document.getElementById("warehouse-main-view").scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   
   lucide.createIcons();
@@ -3346,6 +3458,7 @@ function renderLMWarehouseGrid() {
   if (items.length === 0) {
     grid.innerHTML = "";
     emptyState.style.display = "flex";
+    document.getElementById("lm-warehouse-pagination").innerHTML = "";
     return;
   }
   
@@ -3355,7 +3468,18 @@ function renderLMWarehouseGrid() {
   // Sort items desc (newest first)
   items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   
-  items.forEach(item => {
+  // Slicing for pagination
+  const cols = getGridColumnCount(grid);
+  const pageSize = cols * 2;
+  const totalItems = items.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  if (state.lmWarehousePage > totalPages) {
+    state.lmWarehousePage = Math.max(1, totalPages);
+  }
+  const startIndex = (state.lmWarehousePage - 1) * pageSize;
+  const paginatedItems = items.slice(startIndex, startIndex + pageSize);
+  
+  paginatedItems.forEach(item => {
     const card = document.createElement("div");
     card.className = "prompt-card";
     
@@ -3430,6 +3554,12 @@ function renderLMWarehouseGrid() {
     });
 
     grid.appendChild(card);
+  });
+  
+  renderPagination("lm-warehouse-pagination", totalItems, state.lmWarehousePage, pageSize, (newPage) => {
+    state.lmWarehousePage = newPage;
+    renderLMWarehouseGrid();
+    document.getElementById("lm-warehouse-main-view").scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   
   lucide.createIcons();
@@ -3573,6 +3703,7 @@ function renderVideoWarehouseGrid() {
   if (items.length === 0) {
     grid.innerHTML = "";
     emptyState.style.display = "flex";
+    document.getElementById("video-warehouse-pagination").innerHTML = "";
     return;
   }
   
@@ -3582,7 +3713,18 @@ function renderVideoWarehouseGrid() {
   // Sort items desc (newest first)
   items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   
-  items.forEach(item => {
+  // Slicing for pagination
+  const cols = getGridColumnCount(grid);
+  const pageSize = cols * 2;
+  const totalItems = items.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  if (state.videoWarehousePage > totalPages) {
+    state.videoWarehousePage = Math.max(1, totalPages);
+  }
+  const startIndex = (state.videoWarehousePage - 1) * pageSize;
+  const paginatedItems = items.slice(startIndex, startIndex + pageSize);
+  
+  paginatedItems.forEach(item => {
     const card = document.createElement("div");
     card.className = "prompt-card";
     
@@ -3667,6 +3809,12 @@ function renderVideoWarehouseGrid() {
     });
     
     grid.appendChild(card);
+  });
+  
+  renderPagination("video-warehouse-pagination", totalItems, state.videoWarehousePage, pageSize, (newPage) => {
+    state.videoWarehousePage = newPage;
+    renderVideoWarehouseGrid();
+    document.getElementById("video-warehouse-main-view").scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   
   lucide.createIcons();
