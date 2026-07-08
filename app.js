@@ -1,6 +1,18 @@
-// ==========================================================================
-// DEFAULT SAMPLE DATA
-// ==========================================================================
+function normalizeModelName(modelName) {
+  if (!modelName) return "";
+  const lower = modelName.toLowerCase().trim();
+  if (lower.includes("gpt") || lower.includes("openai") || lower.includes("chatgpt")) {
+    return "GPT";
+  }
+  if (lower.includes("gemini")) {
+    return "Gemini";
+  }
+  if (lower.includes("claude")) {
+    return "Claude";
+  }
+  return modelName;
+}
+
 const DEFAULT_PROMPTS = [
   {
     id: "default-email-translation",
@@ -10,7 +22,7 @@ const DEFAULT_PROMPTS = [
     promptText: "당신은 글로벌 IT 기업의 전문 번역가입니다. 다음 한국어 이메일 내용을 수신자({{수신자_관계}})에 알맞은 정중하고 자연스러운 비즈니스 영어 이메일로 번역해주세요.\n전문적인 톤앤매너를 유지하고, 비즈니스 이메일 표준 서식(인사말, 본문, 맺음말)을 갖추어 주세요.\n\n[이메일 본문]\n{{이메일_본문}}\n\n[추가 요청사항]\n{{추가_요청사항}}",
     outputText: "Subject: Inquiry Regarding the Partnership Proposal\n\nDear Mr. Smith,\n\nI hope this email finds you well.\nMy name is Min-su Kim, Project Manager of the Global Business Team at ABC Corp.\n\nI am writing to discuss the partnership proposal we received last week. We are very interested in collaborating on the upcoming integration project and would like to schedule a brief meeting next week to align on the next steps.\n\nPlease let us know your availability.\n\nSincerely,\nMin-su Kim\nProject Manager",
     description: "수신자와의 관계(예: 클라이언트, 협력업체, 사내동료)에 최적화하여 격식 있는 비즈니스 영어 이메일로 번역합니다.",
-    recommendedModel: "GPT-4o",
+    recommendedModel: "GPT",
     usageCount: 12,
     createdAt: "2026-06-24T00:00:00.000Z",
     updatedAt: "2026-06-24T00:00:00.000Z"
@@ -23,7 +35,7 @@ const DEFAULT_PROMPTS = [
     promptText: "다음 {{언어}} 코드를 가독성이 높고 효율적이며 Clean Code 원칙에 부합하도록 리팩토링해주세요.\n리팩토링 시 아래의 중점 개선 요구사항을 반영해주세요:\n\n1. 시간 및 공간 복잡도 최적화\n2. 모호한 변수명 및 함수명 가독성 개선\n3. 적절한 에러 핸들링 및 경계값 처리 추가\n4. 핵심 개선 내용에 대한 짧은 주석 및 설명 요약 제공\n\n[대상 코드]\n{{코드}}",
     outputText: "// [Refactored Javascript Example]\nasync function fetchUserData(userId) {\n  if (!userId) {\n    throw new Error(\"User ID is required to fetch data.\");\n  }\n  \n  try {\n    const response = await fetch(`/api/users/${userId}`);\n    if (!response.ok) {\n      throw new Error(`HTTP error! status: ${response.status}`);\n    }\n    \n    const userData = await response.json();\n    return userData;\n  } catch (error) {\n    console.error(`[Error] Failed to fetch data for user ${userId}:`, error);\n    return null; // Return gracefully or handle upstream\n  }\n}",
     description: "구현된 코드의 시간 복잡도와 클린 코드 관점에서의 가독성을 종합 개선해 줍니다.",
-    recommendedModel: "Claude 3.5 Sonnet",
+    recommendedModel: "Claude",
     usageCount: 8,
     createdAt: "2026-06-24T00:10:00.000Z",
     updatedAt: "2026-06-24T00:10:00.000Z"
@@ -36,7 +48,7 @@ const DEFAULT_PROMPTS = [
     promptText: "{{주제}}에 대한 매력적이고 정보가 알찬 블로그 포스팅 원고를 작성해주세요.\n주요 타겟층은 {{타겟_독자}}입니다.\n\n원고 작성 가이드라인:\n- 호기심을 이끌어내는 인트로 및 눈길을 끄는 소제목 3개 이상 구성\n- 독자에게 친근하게 다가가는 친절하고 부드러운 구어체 사용 (~해요, ~합니다)\n- 검색 최적화(SEO)를 고려하여 주요 키워드가 문맥 속에 자연스럽게 스며들도록 작성\n- 마지막 문단에 요약 정리 및 댓글 소통을 유도하는 질문 기입",
     outputText: "[제목] 코딩 입문자를 위한 필수 개발 도구 3가지 추천\n\n안녕하세요! 개발의 세계에 첫 발을 내딛으신 여러분, 환영합니다. \n처음 프로그래밍을 배울 때 어떤 도구부터 설치해야 할지 막막하셨죠? \n오늘인 입문자분들의 학습 속도를 2배로 올려줄 필수 개발 프로그램 3가지를 정리해 드립니다.\n...\n여러분은 이 중 어떤 프로그램을 주로 사용하시나요? 댓글로 함께 이야기를 나누어 보아요!",
     description: "소비자의 클릭을 유도하는 매력적인 블로그 마케팅 문안을 SEO 친화적으로 빌드합니다.",
-    recommendedModel: "GPT-4o",
+    recommendedModel: "GPT",
     usageCount: 15,
     createdAt: "2026-06-24T00:20:00.000Z",
     updatedAt: "2026-06-24T00:20:00.000Z"
@@ -49,7 +61,7 @@ const DEFAULT_PROMPTS = [
     promptText: "제시되는 긴 문장이나 문서를 직관적이고 빠르게 이해할 수 있도록 요약해주세요.\n결과는 반드시 다음 3단계 서식에 맞게 아웃풋을 고정해주시기 바랍니다:\n\n1. [3줄 요약]: 전체 텍스트에서 가장 중요한 핵심 내용 3문장으로 간추림.\n2. [상세 요약]: 주요 쟁점이나 포인트를 요점 기호(•)를 써서 구체적으로 5개 이하로 나열.\n3. [시사점 및 액션플랜]: 우리가 눈여겨보아야 할 주요 인사이트 혹은 행동 요령 1-2가지 작성.\n\n[대상 텍스트]\n{{대상_텍스트}}",
     outputText: "1. [3줄 요약]\n- 전 세계 리모트 워크 비율이 급속도로 늘고 있으나 협업 공백에 대한 우려도 증대되고 있음.\n- 기업들은 하이브리드 워크 모델을 통해 직원의 생산성과 대면 소통의 강점을 절충하는 추세임.\n- 이 성공 요인은 명확한 KPI와 자율성을 존중하는 팀 문화 구축에 있음.\n\n2. [상세 요약]\n• 직원의 70%가 하이브리드 워크가 일과 삶의 균형을 극대화한다고 답변.\n• 물리적 사무실은 소통과 소속감 형성을 위한 공동 공간으로 재정의되고 있음...\n\n3. [시사점]\n- 리더십 그룹은 문서화(Documentation) 프로세스를 투명하게 안착시키는 것이 중요함.",
     description: "뉴기사, 논문 초록, 회사 회의록 등 장문의 텍스트를 구조화된 3단계로 명료하게 요약합니다.",
-    recommendedModel: "Gemini 1.5 Flash",
+    recommendedModel: "Gemini",
     usageCount: 5,
     createdAt: "2026-06-24T00:30:00.000Z",
     updatedAt: "2026-06-24T00:30:00.000Z"
@@ -62,7 +74,7 @@ const DEFAULT_PROMPTS = [
     promptText: "당신은 {{지원_회사}}의 {{지원_직무}} 직무 채용을 담당하는 10년 차 테크니컬 면접관입니다.\n아래 제시된 저의 프로젝트 경험담 혹은 자기소개 답변을 분석해주세요.\n\n그 다음 냉철하고 구체적인 모의 면접을 제공해주세요:\n1. 답변에 대해 논리적으로 허점이 있거나 의문이 생기는 핵심 꼬리질문 3개 제시\n2. 제 답변에서 좋았던 부분과 피드백 (두괄식 구성, 구체적 정량 지표 제시 관점) 작성\n\n[자기소개 및 나의 경험담]\n{{경험담}}",
     outputText: "[면접관 피드백]\n프로젝트 당시 프론트엔드 최적화를 담당했다는 기술적 경험은 매력적입니다. 그러나 구체적인 렌더링 성능 지표(예: LCP 단축률 등)가 빠져 있어 기여도가 모호해 보일 수 있습니다.\n\n[핵심 꼬리 질문]\n1. 렌더링 성능을 개선하기 위해 어떤 Profiling 도구를 사용하셨으며 가장 유의미한 리소스 낭비 포인트는 무엇이었습니까?\n2. 이미지 지연 로딩 외에 번들 크기 축소(Bundle size reduction)를 위해 시도하신 기법이 있습니까?",
     description: "목표 기업 및 포지션 맞춤으로 냉철한 꼬리 질문과 이력서 스피치 교정 피드백을 제공합니다.",
-    recommendedModel: "Claude 3.5 Sonnet",
+    recommendedModel: "Claude",
     usageCount: 3,
     createdAt: "2026-06-24T00:40:00.000Z",
     updatedAt: "2026-06-24T00:40:00.000Z"
@@ -138,11 +150,20 @@ async function initData() {
   if (localPrompts) {
     try {
       state.prompts = JSON.parse(localPrompts);
+      state.prompts.forEach(p => {
+        p.recommendedModel = normalizeModelName(p.recommendedModel);
+      });
     } catch (err) {
       state.prompts = [...DEFAULT_PROMPTS];
+      state.prompts.forEach(p => {
+        p.recommendedModel = normalizeModelName(p.recommendedModel);
+      });
     }
   } else {
     state.prompts = [...DEFAULT_PROMPTS];
+    state.prompts.forEach(p => {
+      p.recommendedModel = normalizeModelName(p.recommendedModel);
+    });
   }
   
   if (localRecents) {
@@ -219,6 +240,9 @@ async function syncFromServer(force = false) {
     const response = await fetch("prompts_data.json?t=" + Date.now());
     if (response.ok) {
       const serverPrompts = await response.json();
+      serverPrompts.forEach(p => {
+        p.recommendedModel = normalizeModelName(p.recommendedModel);
+      });
       if (JSON.stringify(state.prompts) !== JSON.stringify(serverPrompts)) {
         state.prompts = serverPrompts;
         saveData();
@@ -436,6 +460,11 @@ function saveVideoWarehouseData() {
 // Save current prompts state to localStorage
 function saveData() {
   try {
+    if (state.prompts && Array.isArray(state.prompts)) {
+      state.prompts.forEach(p => {
+        p.recommendedModel = normalizeModelName(p.recommendedModel);
+      });
+    }
     localStorage.setItem("prompt_manager_data", JSON.stringify(state.prompts));
   } catch (e) {
     console.warn("로컬 스토리지 저장 실패 (용량 초과 가능성):", e);
@@ -612,7 +641,48 @@ function renderSidebar() {
       tagsList.appendChild(chip);
     });
     
-  lucide.createIcons();
+}
+
+// Helper to return class name based on AI model brand
+function getModelClass(modelName) {
+  if (!modelName) return "";
+  const lower = modelName.toLowerCase();
+  if (lower.includes("gpt")) return "model-gpt";
+  if (lower.includes("gemini")) return "model-gemini";
+  if (lower.includes("claude")) return "model-claude";
+  return "";
+}
+
+// Helper to return SVG markup based on AI model brand
+function getModelIconHtml(modelName) {
+  if (!modelName) return "";
+  const lowerName = modelName.toLowerCase();
+  
+  if (lowerName.includes("gpt") || lowerName.includes("openai") || lowerName.includes("chatgpt")) {
+    return `<svg class="model-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="none" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; color: #10a37f; fill: currentColor; margin-right: 4px;">
+      <path d="M474.123 209.81c11.525-34.577 7.569-72.423-10.838-103.904-27.696-48.168-83.433-72.94-137.794-61.414a127.14 127.14 0 00-95.475-42.49c-55.564 0-104.936 35.781-122.139 88.593-35.781 7.397-66.574 29.76-84.637 61.414-27.868 48.167-21.503 108.72 15.826 150.007-11.525 34.578-7.569 72.424 10.838 103.733 27.696 48.34 83.433 73.111 137.966 61.585 24.084 27.18 58.833 42.835 95.303 42.663 55.564 0 104.936-35.782 122.139-88.594 35.782-7.397 66.574-29.76 84.465-61.413 28.04-48.168 21.676-108.722-15.654-150.008v-.172zm-39.567-87.218c11.01 19.267 15.139 41.803 11.354 63.65-.688-.516-2.064-1.204-2.924-1.72l-101.152-58.49a16.965 16.965 0 00-16.687 0L206.621 194.5v-50.232l97.883-56.597c45.587-26.32 103.732-10.666 130.052 34.921zm-227.935 104.42l49.888-28.9 49.887 28.9v57.63l-49.887 28.9-49.888-28.9v-57.63zm23.223-191.81c22.364 0 43.867 7.742 61.07 22.02-.688.344-2.064 1.204-3.097 1.72L186.666 117.26c-5.161 2.925-8.258 8.43-8.258 14.45v136.934l-43.523-25.116V130.333c0-52.64 42.491-95.13 95.131-95.302l-.172.172zM52.14 168.697c11.182-19.268 28.557-34.062 49.544-41.803V247.14c0 6.02 3.097 11.354 8.258 14.45l118.354 68.295-43.695 25.288-97.711-56.425c-45.415-26.32-61.07-84.465-34.75-130.052zm26.665 220.71c-11.182-19.095-15.139-41.802-11.354-63.65.688.516 2.064 1.204 2.924 1.72l101.152 58.49a16.965 16.965 0 0016.687 0l118.354-68.467v50.232l-97.883 56.425c-45.587 26.148-103.732 10.665-130.052-34.75h.172zm204.54 87.39c-22.192 0-43.867-7.741-60.898-22.02a62.439 62.439 0 003.097-1.72l101.152-58.317c5.16-2.924 8.429-8.43 8.257-14.45V243.527l43.523 25.116v113.022c0 52.64-42.663 95.303-95.131 95.303v-.172zM461.22 343.303c-11.182 19.267-28.729 34.061-49.544 41.63V264.687c0-6.021-3.097-11.526-8.257-14.45L284.893 181.77l43.523-25.116 97.883 56.424c45.587 26.32 61.07 84.466 34.75 130.053l.172.172z" fill="currentColor" fill-rule="nonzero"/>
+    </svg>`;
+  }
+  if (lowerName.includes("gemini")) {
+    return `<svg class="model-logo" viewBox="0 0 65 65" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;">
+      <defs>
+        <linearGradient id="gemini-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#4893fc" />
+          <stop offset="50%" stop-color="#969dff" />
+          <stop offset="100%" stop-color="#bd99fe" />
+        </linearGradient>
+      </defs>
+      <path d="M32.447 0c.68 0 1.273.465 1.439 1.125a38.904 38.904 0 001.999 5.905c2.152 5 5.105 9.376 8.854 13.125 3.751 3.75 8.126 6.703 13.125 8.855a38.98 38.98 0 005.906 1.999c.66.166 1.124.758 1.124 1.438 0 .68-.464 1.273-1.125 1.439a38.902 38.902 0 00-5.905 1.999c-5 2.152-9.375 5.105-13.125 8.854-3.749 3.751-6.702 8.126-8.854 13.125a38.973 38.973 0 00-2 5.906 1.485 1.485 0 01-1.438 1.124c-.68 0-1.272-.464-1.438-1.125a38.913 38.913 0 00-2-5.905c-2.151-5-5.103-9.375-8.854-13.125-3.75-3.749-8.125-6.702-13.125-8.854a38.973 38.973 0 00-5.905-2A1.485 1.485 0 010 32.448c0-.68.465-1.272 1.125-1.438a38.903 38.903 0 005.905-2c5-2.151 9.376-5.104 13.125-8.854 3.75-3.749 6.703-8.125 8.855-13.125a38.972 38.972 0 001.999-5.905A1.485 1.485 0 0132.447 0z" fill="url(#gemini-logo-grad)"/>
+    </svg>`;
+  }
+  if (lowerName.includes("claude")) {
+    return `<svg class="model-logo" viewBox="0 0 512 509.64" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;">
+      <path fill="#D77655" d="M115.612 0h280.775C459.974 0 512 52.026 512 115.612v278.415c0 63.587-52.026 115.612-115.613 115.612H115.612C52.026 509.639 0 457.614 0 394.027V115.612C0 52.026 52.026 0 115.612 0z"/>
+      <path fill="#FCF2EE" fill-rule="nonzero" d="M142.27 316.619l73.655-41.326 1.238-3.589-1.238-1.996-3.589-.001-12.31-.759-42.084-1.138-36.498-1.516-35.361-1.896-8.897-1.895-8.34-10.995.859-5.484 7.482-5.03 10.717.935 23.683 1.617 35.537 2.452 25.782 1.517 38.193 3.968h6.064l.86-2.451-2.073-1.517-1.618-1.517-36.776-24.922-39.81-26.338-20.852-15.166-11.273-7.683-5.687-7.204-2.451-15.721 10.237-11.273 13.75.935 3.513.936 13.928 10.716 29.749 23.027 38.848 28.612 5.687 4.727 2.275-1.617.278-1.138-2.553-4.271-21.13-38.193-22.546-38.848-10.035-16.101-2.654-9.655c-.935-3.968-1.617-7.304-1.617-11.374l11.652-15.823 6.445-2.073 15.545 2.073 6.547 5.687 9.655 22.092 15.646 34.78 24.265 47.291 7.103 14.028 3.791 12.992 1.416 3.968 2.449-.001v-2.275l1.997-26.641 3.69-32.707 3.589-42.084 1.239-11.854 5.863-14.206 11.652-7.683 9.099 4.348 7.482 10.716-1.036 6.926-4.449 28.915-8.72 45.294-5.687 30.331h3.313l3.792-3.791 15.342-20.372 25.782-32.227 11.374-12.789 13.27-14.129 8.517-6.724 16.1-.001 11.854 17.617-5.307 18.199-16.581 21.029-13.75 17.819-19.716 26.54-12.309 21.231 1.138 1.694 2.932-.278 44.536-9.479 24.062-4.347 28.714-4.928 12.992 6.066 1.416 6.167-5.106 12.613-30.71 7.583-36.018 7.204-53.636 12.689-.657.48.758.935 24.164 2.275 10.337.556h25.301l47.114 3.514 12.309 8.139 7.381 9.959-1.238 7.583-18.957 9.655-25.579-6.066-59.702-14.205-20.474-5.106-2.83-.001v1.694l17.061 16.682 31.266 28.233 39.152 36.397 1.997 8.999-5.03 7.102-5.307-.758-34.401-25.883-13.27-11.651-30.053-25.302-1.996-.001v2.654l6.926 10.136 36.574 54.975 1.895 16.859-2.653 5.485-9.479 3.311-10.414-1.895-21.408-30.054-22.092-33.844-17.819-30.331-2.173 1.238-10.515 113.261-4.929 5.788-11.374 4.348-9.478-7.204-5.03-11.652 5.03-23.027 6.066-30.052 4.928-23.886 4.449-29.674 2.654-9.858-.177-.657-2.173.278-22.37 30.71-34.021 45.977-26.919 28.815-6.445 2.553-11.173-5.789 1.037-10.337 6.243-9.2 37.257-47.392 22.47-29.371 14.508-16.961-.101-2.451h-.859l-98.954 64.251-17.618 2.275-7.583-7.103.936-11.652 3.589-3.791 29.749-20.474-.101.102.024.101z"/></svg>`;
+  }
+  
+  // Generic / Other AI models: return standard cpu icon
+  return `<i data-lucide="cpu" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>`;
 }
 
 // Renders the central grid of cards
@@ -705,7 +775,7 @@ function renderPromptGrid() {
       <div class="card-header">
         <div class="card-meta-left">
           <span class="card-category">${p.category || "기타"}</span>
-          ${p.recommendedModel ? `<span class="card-model-badge"><i data-lucide="cpu"></i><span>${escapeHtml(p.recommendedModel)}</span></span>` : ""}
+          ${p.recommendedModel ? `<span class="card-model-badge ${getModelClass(p.recommendedModel)}">${getModelIconHtml(p.recommendedModel)}<span>${escapeHtml(p.recommendedModel)}</span></span>` : ""}
         </div>
       </div>
       <div class="card-body">
@@ -996,7 +1066,8 @@ function openDetailDrawer(id) {
     const modelSection = document.getElementById("detail-model-section");
     const modelElement = document.getElementById("detail-model");
     if (prompt.recommendedModel && prompt.recommendedModel.trim()) {
-      modelElement.innerHTML = `<i data-lucide="cpu" class="size-xs"></i><span>${escapeHtml(prompt.recommendedModel)}</span>`;
+      modelElement.className = `detail-model-badge ${getModelClass(prompt.recommendedModel)}`;
+      modelElement.innerHTML = `${getModelIconHtml(prompt.recommendedModel)}<span>${escapeHtml(prompt.recommendedModel)}</span>`;
       modelSection.style.display = "flex";
     } else {
       modelSection.style.display = "none";

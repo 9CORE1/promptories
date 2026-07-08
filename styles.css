@@ -1926,3 +1926,37 @@ body {
 #lm-warehouse-grid .prompt-card .card-footer {
   padding: 10px 18px !important;
 }
+
+/* AI Model Brand-Specific Color Badges */
+.card-model-badge.model-gpt {
+  color: #10a37f !important;
+  background-color: rgba(16, 163, 127, 0.08) !important;
+  border-color: rgba(16, 163, 127, 0.2) !important;
+}
+.detail-model-badge.model-gpt {
+  color: #10a37f !important;
+  background-color: rgba(16, 163, 127, 0.08) !important;
+  border-color: rgba(16, 163, 127, 0.2) !important;
+}
+
+.card-model-badge.model-gemini {
+  color: #6366f1 !important;
+  background-color: rgba(99, 102, 241, 0.08) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+.detail-model-badge.model-gemini {
+  color: #6366f1 !important;
+  background-color: rgba(99, 102, 241, 0.08) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+.card-model-badge.model-claude {
+  color: #d25f38 !important;
+  background-color: rgba(215, 118, 85, 0.08) !important;
+  border-color: rgba(215, 118, 85, 0.2) !important;
+}
+.detail-model-badge.model-claude {
+  color: #d25f38 !important;
+  background-color: rgba(215, 118, 85, 0.08) !important;
+  border-color: rgba(215, 118, 85, 0.2) !important;
+}
