@@ -98,5 +98,13 @@
     "desc": "AI 영상 제작에 필요한 카메라 무브먼트 프롬프트 웹사이트",
     "createdAt": "2026-07-08T00:58:43.662Z",
     "updatedAt": "2026-07-08T00:59:18.785Z"
+  },
+  {
+    "id": "fav-1783473585569-pno7tbn1r",
+    "title": "영상 이미지 프롬프트",
+    "category": "콘텐츠 제작 관련 사이트",
+    "url": "https://www.meigen.ai/?category=videos",
+    "desc": "Nano Banana, GPT Image 2 및 기타 모델로 이미지를 생성하기 위한 10,000개 이상의 프롬프트를 가진 웹사이트",
+    "createdAt": "2026-07-08T01:19:45.569Z"
   }
 ]
