@@ -597,22 +597,24 @@ function renderSidebar() {
   
   // Render Categories
   categoriesList.innerHTML = "";
-  Object.keys(categoryCounts).sort().forEach(cat => {
-    const li = document.createElement("li");
-    li.className = `nav-item ${state.currentCategoryFilter === cat ? "active" : ""}`;
-    li.innerHTML = `
-      <a href="#" class="nav-link">
-        <i data-lucide="folder-open"></i>
-        <span>${cat}</span>
-        <span class="badge">${categoryCounts[cat]}</span>
-      </a>
-    `;
-    li.addEventListener("click", (e) => {
-      e.preventDefault();
-      selectCategoryFilter(cat);
+  Object.entries(categoryCounts)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .forEach(([cat, count]) => {
+      const li = document.createElement("li");
+      li.className = `nav-item ${state.currentCategoryFilter === cat ? "active" : ""}`;
+      li.innerHTML = `
+        <a href="#" class="nav-link">
+          <i data-lucide="folder-open"></i>
+          <span>${cat}</span>
+          <span class="badge">${count}</span>
+        </a>
+      `;
+      li.addEventListener("click", (e) => {
+        e.preventDefault();
+        selectCategoryFilter(cat);
+      });
+      categoriesList.appendChild(li);
     });
-    categoriesList.appendChild(li);
-  });
   
   // Calculate tag counts
   const tagCounts = {};
