@@ -189,5 +189,22 @@
     "usageCount": 0,
     "createdAt": "2026-07-01T07:06:49.266Z",
     "updatedAt": "2026-07-08T02:10:24.356Z"
+  },
+  {
+    "id": "prompt-1783501203872-pfsuxsuv9",
+    "title": "노트북LM 디자인 프롬프트(Mono)",
+    "category": "노트북LM",
+    "tags": [
+      "NotebookLM",
+      "슬라이드"
+    ],
+    "description": "노트북LM에서 모노 디자인 적용",
+    "recommendedModel": "GPT",
+    "promptText": "Design Style:\nName: \"Monochrome Editorial Minimal\"\nConcept: \"モノクロ写真と極太コンデンスフォントを組み合わせた、雑誌風のミニマル・エディトリアルプレゼンデザイン\"\n\nCanvas:\nRatio: \"16:9\"\n\nMood:\n- Minimal\n- Editorial\n- Monochrome\n- Fashion\n- Modern\n- Clean\n- Bold\n- Magazine Inspired\n\nColor Palette:\nBackground:\nMain: \"#F4F4F2\"\nSoftGray: \"#E7E7E5\"\nWhite: \"#FFFFFF\"\n\nText:\nPrimary: \"#1A1A1A\"\nSecondary: \"#5C5C5C\"\nLight: \"#FFFFFF\"\n\nAccent:\nDarkGray: \"#2A2A2A\"\nCharcoal: \"#3A3A3A\"\nOlive: \"#8C8A63\"\n\nNeutral:\nGray: \"#CFCFCB\"\nLightGray: \"#E8E8E8\"\n\nTypography:\nHeading:\nFont: \"Ultra Condensed Sans\"\nWeight: \"800-900\"\nStyle:\n- \"bold condensed titles\"\n- \"editorial magazine typography\"\n- \"uppercase headlines\"\n- \"high contrast layout\"\n\nBody:\nFont: \"Modern Sans Serif\"\nWeight: \"400-500\"\nStyle:\n- \"minimal paragraph spacing\"\n- \"clean editorial readability\"\n- \"small elegant captions\"\n\nCaption:\nFont: \"Condensed Sans\"\nWeight: \"500\"\n\nLayout:\nOverall:\n- \"large negative space\"\n- \"clean editorial structure\"\n- \"modular image composition\"\n- \"asymmetric balance\"\n- \"minimalist magazine layout\"\n\nGrid:\nColumns: \"2-4 flexible columns\"\nMargin: \"wide margins\"\nAlignment: \"left aligned\"\n\nImages:\nStyle:\n- \"black and white photography\"\n- \"fashion editorial portraits\"\n- \"soft grain texture\"\n- \"high contrast monochrome\"\n- \"minimal documentary photography\"\n\nShape Language:\nMain:\n- \"solid rectangular blocks\"\n- \"horizontal dividers\"\n- \"thin vertical lines\"\n- \"minimal framing\"\n- \"boxed image compositions\"\n\nDecorative Elements:\nStyle:\n- \"thin separators\"\n- \"small page numbering\"\n- \"minimal labels\"\n- \"tiny editorial captions\"\n- \"subtle geometric bars\"\n\nSlide Types:\nCover:\nLayout:\n- \"huge centered condensed title\"\n- \"minimal subtitle\"\n- \"extreme whitespace\"\n- \"editorial cover composition\"\nStyle:\n- \"fashion magazine cover\"\n- \"clean monochrome branding\"\n\nIntroduction:\nLayout:\n- \"large title on left\"\n- \"portrait image on right\"\n- \"small supporting paragraph\"\n- \"minimal editorial spacing\"\n\nVisionMission:\nLayout:\n- \"split layout\"\n- \"large condensed headline\"\n- \"small monochrome images\"\n- \"minimal text blocks\"\n\nPortfolio:\nLayout:\n- \"gallery style composition\"\n- \"stacked photography blocks\"\n- \"large bold headline\"\n- \"editorial image rhythm\"\n\nProduct:\nLayout:\n- \"multiple cropped photos\"\n- \"horizontal image strip\"\n- \"large typography emphasis\"\n- \"minimal captions\"\n\nTeam:\nLayout:\n- \"3-column portrait grid\"\n- \"center aligned faces\"\n- \"minimal profile details\"\n- \"large title header\"\n\nFeedback:\nLayout:\n- \"quote and testimonial cards\"\n- \"small portrait thumbnails\"\n- \"editorial review structure\"\n\nContact:\nLayout:\n- \"large monochrome image\"\n- \"big bold contact title\"\n- \"minimal footer line\"\n- \"clean whitespace\"\n\nTableOfContents:\nLayout:\n- \"two-column menu layout\"\n- \"minimal section listing\"\n- \"large bold heading\"\n- \"editorial navigation feel\"\n\nInfographics:\nStyle:\n- \"minimal text-first charts\"\n- \"simple dividers\"\n- \"editorial table layouts\"\n- \"clean monochrome hierarchy\"\n\nButtons:\nStyle:\n- \"minimal outlined buttons\"\n- \"small editorial labels\"\n- \"clean rectangular UI\"\n\nRules:\n\n- \"背景はライトグレーを基調にする\"\n- \"写真はモノクロのみ使用する\"\n- \"タイトルは極太コンデンスフォントを使用する\"\n- \"余白を大きく取り、雑誌のようなレイアウトにする\"\n- \"文字組みは大胆かつミニマルにする\"\n- \"装飾は最小限に抑える\"\n- \"細いラインと矩形ブロックで構成する\"\n- \"ファッションブランドのルックブックのような雰囲気にする\"",
+    "outputText": "",
+    "outputImage": "images/prompt-1783501203872-pfsuxsuv9.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-08T09:00:03.872Z",
+    "updatedAt": "2026-07-08T09:00:03.872Z"
   }
 ]
