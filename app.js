@@ -2581,6 +2581,17 @@ function setupEventListeners() {
   document.getElementById("btn-copy-fav-share-json").addEventListener("click", copyFavShareJson);
   document.getElementById("btn-fav-share-modal-close").addEventListener("click", closeFavShareModal);
   document.getElementById("btn-fav-share-modal-cancel").addEventListener("click", closeFavShareModal);
+  
+  // Favorites Share Category Order Modal
+  document.getElementById("btn-fav-category-order").addEventListener("click", openFavCategoryOrderModal);
+  document.getElementById("btn-fav-category-order-modal-close").addEventListener("click", closeFavCategoryOrderModal);
+  document.getElementById("btn-fav-category-order-modal-cancel").addEventListener("click", closeFavCategoryOrderModal);
+  document.getElementById("btn-fav-category-order-modal-save").addEventListener("click", () => {
+    saveFavCategoryOrder(tempCategoryOrder);
+    closeFavCategoryOrderModal();
+    renderFavShareGrid();
+    showToast("카테고리 표시 순서가 저장되었습니다.", "success", "check");
+  });
   document.getElementById("fav-share-modal").addEventListener("click", (e) => {
     if (e.target === document.getElementById("fav-share-modal")) {
       closeFavShareModal();
@@ -3085,6 +3096,7 @@ function renderAdminUI() {
   const btnExportFavShare = document.getElementById("btn-export-fav-share");
   const btnCopyFavShareJson = document.getElementById("btn-copy-fav-share-json");
   const btnNewFavShareItem = document.getElementById("btn-new-fav-share-item");
+  const btnFavCategoryOrder = document.getElementById("btn-fav-category-order");
   
   if (!statusBar) return;
   
@@ -3108,6 +3120,7 @@ function renderAdminUI() {
     if (btnExportFavShare) btnExportFavShare.style.display = "inline-flex";
     if (btnCopyFavShareJson) btnCopyFavShareJson.style.display = "inline-flex";
     if (btnNewFavShareItem) btnNewFavShareItem.style.display = "inline-flex";
+    if (btnFavCategoryOrder) btnFavCategoryOrder.style.display = "inline-flex";
   } else {
     statusBar.classList.remove("admin-active");
     statusText.textContent = "일반 사용자 모드";
@@ -3146,6 +3159,7 @@ function renderAdminUI() {
     if (btnExportFavShare) btnExportFavShare.style.display = "none";
     if (btnCopyFavShareJson) btnCopyFavShareJson.style.display = "none";
     if (btnNewFavShareItem) btnNewFavShareItem.style.display = "none";
+    if (btnFavCategoryOrder) btnFavCategoryOrder.style.display = "none";
   }
   
   // Drawer buttons control
@@ -4107,7 +4121,7 @@ function populateFavCategoriesDropdown(selectedValue = "") {
   if (!select) return;
   
   // 1. Get unique categories
-  const categories = [...new Set(state.favShareItems.map(item => (item.category || "").trim()))]
+  const categories = [...new Set(state.favShareItems.filter(x => x.id !== "config-category-order").map(item => (item.category || "").trim()))]
     .filter(cat => cat !== "")
     .sort();
   
@@ -4282,7 +4296,7 @@ function deleteFavShareItem(id) {
 function renderFavShareGrid() {
   const container = document.getElementById("fav-share-container");
   const emptyState = document.getElementById("fav-share-empty-state");
-  const items = [...state.favShareItems];
+  const items = state.favShareItems.filter(p => p.id !== "config-category-order");
   
   if (items.length === 0) {
     if (container) container.innerHTML = "";
@@ -4306,12 +4320,30 @@ function renderFavShareGrid() {
     groups[cat].push(item);
   });
   
-  // Sort category names alphabetically (put "미지정" at the end)
-  const categories = Object.keys(groups).sort((a, b) => {
-    if (a === "미지정") return 1;
-    if (b === "미지정") return -1;
-    return a.localeCompare(b);
-  });
+  // Sort category names by saved order or fallback to default
+  const categories = Object.keys(groups);
+  const savedOrder = getFavCategoryOrder();
+  
+  if (savedOrder.length > 0) {
+    categories.sort((a, b) => {
+      const idxA = savedOrder.indexOf(a);
+      const idxB = savedOrder.indexOf(b);
+      if (idxA !== -1 && idxB !== -1) {
+        return idxA - idxB;
+      }
+      if (idxA !== -1) return -1;
+      if (idxB !== -1) return 1;
+      if (a === "미지정") return 1;
+      if (b === "미지정") return -1;
+      return a.localeCompare(b);
+    });
+  } else {
+    categories.sort((a, b) => {
+      if (a === "미지정") return 1;
+      if (b === "미지정") return -1;
+      return a.localeCompare(b);
+    });
+  }
   
   categories.forEach(category => {
     const section = document.createElement("div");
@@ -4384,6 +4416,134 @@ function renderFavShareGrid() {
   });
   
   lucide.createIcons();
+}
+
+// Get Category order from config item or local storage
+function getFavCategoryOrder() {
+  const configItem = state.favShareItems.find(x => x.id === "config-category-order");
+  if (configItem && configItem.categoryOrder) {
+    return configItem.categoryOrder;
+  }
+  const local = localStorage.getItem("prompt_manager_fav_category_order");
+  if (local) {
+    try {
+      return JSON.parse(local);
+    } catch(e) {}
+  }
+  return [];
+}
+
+// Save Category order to config item and local storage
+function saveFavCategoryOrder(order) {
+  localStorage.setItem("prompt_manager_fav_category_order", JSON.stringify(order));
+  
+  let configItem = state.favShareItems.find(x => x.id === "config-category-order");
+  if (configItem) {
+    configItem.categoryOrder = order;
+  } else {
+    configItem = {
+      id: "config-category-order",
+      title: "Config - Category Order",
+      url: "",
+      desc: "",
+      category: "",
+      categoryOrder: order,
+      createdAt: new Date().toISOString()
+    };
+    state.favShareItems.push(configItem);
+  }
+  saveFavShareData();
+}
+
+let tempCategoryOrder = [];
+
+function openFavCategoryOrderModal() {
+  const modal = document.getElementById("fav-category-order-modal");
+  
+  // Get currently active categories
+  const activeCategories = [...new Set(state.favShareItems
+    .filter(x => x.id !== "config-category-order")
+    .map(item => (item.category || "미지정").trim()))]
+    .filter(Boolean);
+    
+  // Load saved order
+  const savedOrder = getFavCategoryOrder();
+  
+  // Sort activeCategories by savedOrder index first
+  activeCategories.sort((a, b) => {
+    const idxA = savedOrder.indexOf(a);
+    const idxB = savedOrder.indexOf(b);
+    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+    if (idxA !== -1) return -1;
+    if (idxB !== -1) return 1;
+    return a.localeCompare(b);
+  });
+  
+  tempCategoryOrder = [...activeCategories];
+  renderCategoryOrderList();
+  
+  modal.classList.add("active");
+}
+
+function renderCategoryOrderList() {
+  const list = document.getElementById("fav-category-order-list");
+  list.innerHTML = "";
+  
+  if (tempCategoryOrder.length === 0) {
+    list.innerHTML = `<li style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">등록된 카테고리가 없습니다.</li>`;
+    return;
+  }
+  
+  tempCategoryOrder.forEach((cat, index) => {
+    const li = document.createElement("li");
+    li.setAttribute("data-category", cat);
+    li.style.display = "flex";
+    li.style.justifyContent = "space-between";
+    li.style.alignItems = "center";
+    li.style.padding = "10px 14px";
+    li.style.borderBottom = "1px solid var(--border-color)";
+    li.style.fontSize = "13px";
+    li.style.color = "var(--text-main)";
+    
+    li.innerHTML = `
+      <span style="font-weight: 600;">${escapeHtml(cat)}</span>
+      <div style="display: flex; gap: 4px;">
+        <button type="button" class="btn-icon btn-category-up" style="padding: 2px; width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-main);" title="위로 이동">
+          <i data-lucide="chevron-up" style="width: 14px; height: 14px;"></i>
+        </button>
+        <button type="button" class="btn-icon btn-category-down" style="padding: 2px; width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-main);" title="아래로 이동">
+          <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+        </button>
+      </div>
+    `;
+    
+    // Up/Down button events
+    li.querySelector(".btn-category-up").addEventListener("click", () => {
+      if (index > 0) {
+        const temp = tempCategoryOrder[index - 1];
+        tempCategoryOrder[index - 1] = tempCategoryOrder[index];
+        tempCategoryOrder[index] = temp;
+        renderCategoryOrderList();
+      }
+    });
+    
+    li.querySelector(".btn-category-down").addEventListener("click", () => {
+      if (index < tempCategoryOrder.length - 1) {
+        const temp = tempCategoryOrder[index + 1];
+        tempCategoryOrder[index + 1] = tempCategoryOrder[index];
+        tempCategoryOrder[index] = temp;
+        renderCategoryOrderList();
+      }
+    });
+    
+    list.appendChild(li);
+  });
+  
+  lucide.createIcons();
+}
+
+function closeFavCategoryOrderModal() {
+  document.getElementById("fav-category-order-modal").classList.remove("active");
 }
 
 async function syncFavShareToServer() {

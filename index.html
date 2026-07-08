@@ -350,6 +350,10 @@
                 <i data-lucide="copy"></i>
                 <span>JSON 복사</span>
               </button>
+              <button class="btn btn-secondary btn-sm" id="btn-fav-category-order" style="display: none;">
+                <i data-lucide="list-ordered"></i>
+                <span>순서 변경</span>
+              </button>
               <button class="btn btn-primary btn-sm" id="btn-new-fav-share-item" style="display: none;">
                 <i data-lucide="plus"></i>
                 <span>새 즐겨찾기 등록</span>
@@ -774,6 +778,35 @@
             <button type="submit" class="btn btn-primary" id="btn-fav-share-modal-submit">등록하기</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Favorites Share Category Order Modal -->
+    <div class="modal-overlay" id="fav-category-order-modal">
+      <div class="modal-container modal-sm">
+        <div class="modal-header">
+          <h2>카테고리 순서 변경</h2>
+          <button class="btn-icon" id="btn-fav-category-order-modal-close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        
+        <div class="modal-form" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+          <p style="font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.5;">
+            카테고리 이름을 선택한 후 우측의 위/아래 버튼으로 표시 순서를 조정할 수 있습니다.
+          </p>
+          
+          <div style="border: 1px solid var(--border-color); border-radius: 10px; max-height: 250px; overflow-y: auto; background-color: var(--bg-card);">
+            <ul id="fav-category-order-list" style="list-style: none; padding: 0; margin: 0;">
+              <!-- Dynamically populated category items -->
+            </ul>
+          </div>
+          
+          <div class="modal-actions" style="margin-top: 8px;">
+            <button type="button" class="btn btn-secondary" id="btn-fav-category-order-modal-cancel">취소</button>
+            <button type="button" class="btn btn-primary" id="btn-fav-category-order-modal-save">저장하기</button>
+          </div>
+        </div>
       </div>
     </div>
 
