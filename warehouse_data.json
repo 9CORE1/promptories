@@ -617,5 +617,13 @@
     "prompt": "GPT Image 2 On ChatGPT \n\nPrompt:\n\nCreate a simple and cute Korean doodled editorial illustration based on [Topic].\n\nStyle:\nhand-drawn doodle cartoon,\nminimal editorial infographic illustration,\nclean black ink outlines,\nslightly imperfect sketchy lines,\nflat 2D composition,\nminimal line art,\nlarge clean white negative space,\nsoft warm pastel accent colors only.\n\nScene:\ndesign a cozy everyday moment around [Topic] featuring me\nUse a simple background with only essential objects and props related to the topic.\n\nCharacter:\ncute simplified proportions,\nminimal facial features,\nsmall relaxed smile,\nnatural pose,\nsimple casual outfit,\nrestrained doodle character style.\n\nComposition:\nvertical 3:4 ratio,\neye-level view,\nmain subject placed on one side or lower area,\nlarge empty space on the opposite side,\nsparse and airy layout.\n\nObjects:\nminimal doodle-style props such as books, coffee cups, plants, umbrellas, signs, clouds, hearts, notes, windows, etc.\n\nTypography:\nadd small English handwritten text in the empty space.\n\nMood:\ncalm, cozy, warm, quiet, cute.\n\nAvoid:\nwatercolor painting,\nanime style,\nrealistic lighting,\ncinematic rendering,\ncomplex perspective,\nhigh detail,\ndense composition,\nluxury poster mood,\npainterly textures,\nover-rendered characters.",
     "image": "images/wh-1783297942957-brdqwf3i4.jpeg",
     "createdAt": "2026-07-06T00:32:22.957Z"
+  },
+  {
+    "id": "wh-1783471633196-sgh0bs87i",
+    "title": "세필 스케치 스타일",
+    "url": "https://x.com/MissDelulu9/status/2074486062857195903?s=20",
+    "prompt": "Made with ChatGPT \n\nPrompt:\n\nMinimalist black-and-white fashion pencil drawing of a woman shown in perfect quarter profile, hair swept up into a casual messy updo, black rimmed glasses on her head, round earrings hanging from the ear, wearing an oversized relaxed-fit blazer with an open notched collar and draped silhouette, elegant upright quarter-profile pose.\n\nReading a fashion magazine and holding the magazine with one hand, the other hand is holding a glass of iced latte, pure flat white background with paper texture, rendered entirely in confident and rough flowing black pencil sketch with no shading, no colour fill, no cross-hatching, rough pencil lines of varying weight for contour and detail, lips suggested with a single curved line, delicate fine lines for hair texture, modern editorial fashion pencil sketch portrait, chic and minimal mood with effortless Parisian-cool confidence, edge-to-edge sharp focus throughout,",
+    "image": "images/wh-1783471633196-sgh0bs87i.jpeg",
+    "createdAt": "2026-07-08T00:47:13.196Z"
   }
 ]
