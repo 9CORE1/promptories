@@ -184,6 +184,9 @@
             <!-- Dynamically populated -->
           </div>
           
+          <!-- Pagination -->
+          <div class="pagination-container" id="prompt-pagination"></div>
+          
           <!-- Empty State -->
           <div class="empty-state" id="empty-state" style="display: none;">
             <div class="empty-icon">
@@ -493,20 +496,14 @@
           </div>
           
           <div class="form-group">
-            <label for="form-model">권장 AI 모델 <span class="muted">(선택 또는 직접 입력)</span></label>
-            <input type="text" id="form-model" list="models-list" placeholder="예: GPT-4o, Claude 3.5 Sonnet 등" autocomplete="off">
-            <datalist id="models-list">
-              <option value="GPT-4o"></option>
-              <option value="GPT-4 Turbo"></option>
-              <option value="GPT-3.5 Turbo"></option>
-              <option value="Claude 3.5 Sonnet"></option>
-              <option value="Claude 3 Opus"></option>
-              <option value="Claude 3 Haiku"></option>
-              <option value="Gemini 1.5 Pro"></option>
-              <option value="Gemini 1.5 Flash"></option>
-              <option value="Llama 3 (Meta)"></option>
-              <option value="Local Model (Ollama)"></option>
-            </datalist>
+            <label for="form-model-select">권장 AI 모델 <span class="muted">(선택 또는 직접 입력)</span></label>
+            <select id="form-model-select">
+              <option value="GPT">GPT</option>
+              <option value="Gemini">Gemini</option>
+              <option value="Claude">Claude</option>
+              <option value="기타">기타 (직접 입력)</option>
+            </select>
+            <input type="text" id="form-model-custom" placeholder="AI 모델명을 직접 입력해주세요." autocomplete="off" style="margin-top: 8px; display: none;">
           </div>
 
           

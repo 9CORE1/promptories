@@ -83,6 +83,7 @@ let state = {
   searchQuery: "",
   activePromptId: null,
   recentPromptIds: [],
+  promptsPage: 1,
   isAdmin: false,                 // 관리자 모드 인증 여부
   warehouseItems: [],
   warehouseLoaded: false,
@@ -674,13 +675,25 @@ function renderPromptGrid() {
   if (filtered.length === 0) {
     grid.innerHTML = "";
     emptyState.style.display = "flex";
+    document.getElementById("prompt-pagination").innerHTML = "";
     return;
   }
   
   emptyState.style.display = "none";
   grid.innerHTML = "";
   
-  filtered.forEach(p => {
+  // Slicing for pagination
+  const cols = getGridColumnCount(grid);
+  const pageSize = cols * 3; // 3 rows
+  const totalItems = filtered.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  if (state.promptsPage > totalPages) {
+    state.promptsPage = Math.max(1, totalPages);
+  }
+  const startIndex = (state.promptsPage - 1) * pageSize;
+  const paginated = filtered.slice(startIndex, startIndex + pageSize);
+  
+  paginated.forEach(p => {
     const card = document.createElement("div");
     card.className = "prompt-card";
     card.setAttribute("data-id", p.id);
@@ -735,6 +748,12 @@ function renderPromptGrid() {
     grid.appendChild(card);
   });
   
+  renderPagination("prompt-pagination", totalItems, state.promptsPage, pageSize, (newPage) => {
+    state.promptsPage = newPage;
+    renderPromptGrid();
+    document.getElementById("prompt-grid").scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  
   lucide.createIcons();
 }
 
@@ -749,6 +768,7 @@ function selectQuickFilter(filterType) {
   state.currentTagFilter = null;
   
   // Reset pages to 1 on menu selection
+  state.promptsPage = 1;
   if (filterType === "warehouse") {
     state.warehousePage = 1;
   } else if (filterType === "video-warehouse") {
@@ -780,6 +800,7 @@ function selectQuickFilter(filterType) {
 }
 
 function selectCategoryFilter(category) {
+  state.promptsPage = 1;
   // If clicked again, toggle it off
   if (state.currentCategoryFilter === category) {
     state.currentCategoryFilter = null;
@@ -796,6 +817,7 @@ function selectCategoryFilter(category) {
 }
 
 function selectTagFilter(tag) {
+  state.promptsPage = 1;
   if (state.currentTagFilter === tag) {
     state.currentTagFilter = null;
   } else {
@@ -1097,7 +1119,23 @@ function openModal(editingId = null, sharedState = null) {
     document.getElementById("form-category").value = prompt.category;
     document.getElementById("form-tags").value = (prompt.tags || []).join(", ");
     document.getElementById("form-desc").value = prompt.description || "";
-    document.getElementById("form-model").value = prompt.recommendedModel || "";
+    
+    // Set recommended model fields
+    const modelVal = prompt.recommendedModel || "";
+    if (["GPT", "Gemini", "Claude"].includes(modelVal)) {
+      document.getElementById("form-model-select").value = modelVal;
+      document.getElementById("form-model-custom").style.display = "none";
+      document.getElementById("form-model-custom").value = "";
+    } else if (modelVal === "") {
+      document.getElementById("form-model-select").value = "GPT";
+      document.getElementById("form-model-custom").style.display = "none";
+      document.getElementById("form-model-custom").value = "";
+    } else {
+      document.getElementById("form-model-select").value = "기타";
+      document.getElementById("form-model-custom").style.display = "block";
+      document.getElementById("form-model-custom").value = modelVal;
+    }
+    
     document.getElementById("form-prompt").value = prompt.promptText;
     document.getElementById("form-output").value = prompt.outputText || "";
     
@@ -1127,13 +1165,32 @@ function openModal(editingId = null, sharedState = null) {
     
     document.getElementById("form-tags").value = sharedState.tags || "";
     document.getElementById("form-desc").value = sharedState.description || "";
-    document.getElementById("form-model").value = sharedState.recommendedModel || "";
+    
+    // Set recommended model fields
+    const modelVal = sharedState.recommendedModel || "";
+    if (["GPT", "Gemini", "Claude"].includes(modelVal)) {
+      document.getElementById("form-model-select").value = modelVal;
+      document.getElementById("form-model-custom").style.display = "none";
+      document.getElementById("form-model-custom").value = "";
+    } else if (modelVal === "") {
+      document.getElementById("form-model-select").value = "GPT";
+      document.getElementById("form-model-custom").style.display = "none";
+      document.getElementById("form-model-custom").value = "";
+    } else {
+      document.getElementById("form-model-select").value = "기타";
+      document.getElementById("form-model-custom").style.display = "block";
+      document.getElementById("form-model-custom").value = modelVal;
+    }
+    
     document.getElementById("form-prompt").value = sharedState.promptText || "";
     document.getElementById("form-output").value = sharedState.outputText || "";
   } else {
     // ADD MODE
     document.getElementById("modal-title").textContent = "새 프롬프트 추가";
     document.getElementById("prompt-id").value = "";
+    document.getElementById("form-model-select").value = "GPT";
+    document.getElementById("form-model-custom").style.display = "none";
+    document.getElementById("form-model-custom").value = "";
   }
   
   // Show copy share link button in modal always
@@ -1203,7 +1260,15 @@ function handleFormSubmit(e) {
     .filter(t => t !== "");
     
   const description = document.getElementById("form-desc").value.trim();
-  const recommendedModel = document.getElementById("form-model").value.trim();
+  
+  const modelSelect = document.getElementById("form-model-select").value;
+  let recommendedModel = "";
+  if (modelSelect === "기타") {
+    recommendedModel = document.getElementById("form-model-custom").value.trim();
+  } else {
+    recommendedModel = modelSelect;
+  }
+  
   const promptText = document.getElementById("form-prompt").value.trim();
   const outputText = document.getElementById("form-output").value.trim();
   const outputImage = document.getElementById("form-image-data").value;
@@ -1250,6 +1315,7 @@ function handleFormSubmit(e) {
       updatedAt: new Date().toISOString()
     };
     state.prompts.push(newPrompt);
+    state.promptsPage = 1;
     showToast("새 프롬프트가 추가되었습니다.", "success", "check");
   }
   
@@ -2075,6 +2141,7 @@ function setupEventListeners() {
   document.getElementById("btn-clear-filters").addEventListener("click", () => {
     state.currentCategoryFilter = null;
     state.currentTagFilter = null;
+    state.promptsPage = 1;
     renderApp();
   });
   
@@ -2084,6 +2151,7 @@ function setupEventListeners() {
   
   searchInput.addEventListener("input", (e) => {
     state.searchQuery = e.target.value;
+    state.promptsPage = 1;
     if (state.searchQuery.trim().length > 0) {
       searchClear.style.display = "block";
     } else {
@@ -2095,10 +2163,28 @@ function setupEventListeners() {
   searchClear.addEventListener("click", () => {
     searchInput.value = "";
     state.searchQuery = "";
+    state.promptsPage = 1;
     searchClear.style.display = "none";
     renderPromptGrid();
     searchInput.focus();
   });
+  
+  // AI Model select listener
+  const formModelSelect = document.getElementById("form-model-select");
+  const formModelCustom = document.getElementById("form-model-custom");
+  if (formModelSelect && formModelCustom) {
+    formModelSelect.addEventListener("change", (e) => {
+      if (e.target.value === "기타") {
+        formModelCustom.style.display = "block";
+        formModelCustom.required = true;
+        formModelCustom.focus();
+      } else {
+        formModelCustom.style.display = "none";
+        formModelCustom.required = false;
+        formModelCustom.value = "";
+      }
+    });
+  }
   
   // Shortcut listener for search focus (Ctrl+K or /)
   window.addEventListener("keydown", (e) => {
@@ -2139,6 +2225,7 @@ function setupEventListeners() {
   // Sorting select box
   document.getElementById("sort-select").addEventListener("change", (e) => {
     state.currentSort = e.target.value;
+    state.promptsPage = 1;
     renderPromptGrid();
   });
   
@@ -2146,6 +2233,7 @@ function setupEventListeners() {
   document.getElementById("btn-reset-search").addEventListener("click", () => {
     searchInput.value = "";
     state.searchQuery = "";
+    state.promptsPage = 1;
     searchClear.style.display = "none";
     state.currentCategoryFilter = null;
     state.currentTagFilter = null;
@@ -2293,7 +2381,13 @@ function setupEventListeners() {
     }
     const tags = document.getElementById("form-tags").value.trim();
     const description = document.getElementById("form-desc").value.trim();
-    const recommendedModel = document.getElementById("form-model").value.trim();
+    const modelSelect = document.getElementById("form-model-select").value;
+    let recommendedModel = "";
+    if (modelSelect === "기타") {
+      recommendedModel = document.getElementById("form-model-custom").value.trim();
+    } else {
+      recommendedModel = modelSelect;
+    }
     const promptText = document.getElementById("form-prompt").value.trim();
     const outputText = document.getElementById("form-output").value.trim();
     
@@ -2691,6 +2785,8 @@ function setupEventListeners() {
         renderVideoWarehouseGrid();
       } else if (state.currentFilter === "lm-warehouse") {
         renderLMWarehouseGrid();
+      } else {
+        renderPromptGrid();
       }
     }, 150);
   });
