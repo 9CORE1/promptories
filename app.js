@@ -2617,6 +2617,10 @@ function setupEventListeners() {
   document.getElementById("btn-fav-category-order-modal-close").addEventListener("click", closeFavCategoryOrderModal);
   document.getElementById("btn-fav-category-order-modal-cancel").addEventListener("click", closeFavCategoryOrderModal);
   document.getElementById("btn-fav-category-order-modal-save").addEventListener("click", () => {
+    if (!state.isAdmin) {
+      alert("관리자 모드에서만 카테고리 순서를 변경할 수 있습니다.");
+      return;
+    }
     saveFavCategoryOrder(tempCategoryOrder);
     closeFavCategoryOrderModal();
     renderFavShareGrid();
@@ -4484,6 +4488,10 @@ function getFavCategoryOrder() {
 
 // Save Category order to config item and local storage
 function saveFavCategoryOrder(order) {
+  if (!state.isAdmin) {
+    alert("관리자 모드에서만 카테고리 순서를 변경할 수 있습니다.");
+    return;
+  }
   localStorage.setItem("prompt_manager_fav_category_order", JSON.stringify(order));
   
   let configItem = state.favShareItems.find(x => x.id === "config-category-order");
@@ -4507,6 +4515,10 @@ function saveFavCategoryOrder(order) {
 let tempCategoryOrder = [];
 
 function openFavCategoryOrderModal() {
+  if (!state.isAdmin) {
+    alert("관리자 모드에서만 카테고리 순서를 변경할 수 있습니다.");
+    return;
+  }
   const modal = document.getElementById("fav-category-order-modal");
   
   // Get currently active categories
