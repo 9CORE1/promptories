@@ -11,10 +11,11 @@
     "promptText": "당신은 글로벌 IT 기업의 전문 번역가입니다. 다음 한국어 이메일 내용을 수신자({{수신자_관계}})에 알맞은 정중하고 자연스러운 비즈니스 영어 이메일로 번역해주세요.\n전문적인 톤앤매너를 유지하고, 비즈니스 이메일 표준 서식(인사말, 본문, 맺음말)을 갖추어 주세요.\n\n[이메일 본문]\n{{이메일_본문}}\n\n[추가 요청사항]\n{{추가_요청사항}}",
     "outputText": "Subject: Inquiry Regarding the Partnership Proposal\n\nDear Mr. Smith,\n\nI hope this email finds you well.\nMy name is Min-su Kim, Project Manager of the Global Business Team at ABC Corp.\n\nI am writing to discuss the partnership proposal we received last week. We are very interested in collaborating on the upcoming integration project and would like to schedule a brief meeting next week to align on the next steps.\n\nPlease let us know your availability.\n\nSincerely,\nMin-su Kim\nProject Manager",
     "description": "수신자와의 관계(예: 클라이언트, 협력업체, 사내동료)에 최적화하여 격식 있는 비즈니스 영어 이메일로 번역합니다.",
-    "recommendedModel": "GPT-4o",
+    "recommendedModel": "GPT",
     "usageCount": 12,
     "createdAt": "2026-06-24T00:00:00.000Z",
-    "updatedAt": "2026-06-24T00:00:00.000Z"
+    "updatedAt": "2026-07-08T02:12:02.546Z",
+    "outputImage": ""
   },
   {
     "id": "default-blog-writer",
@@ -29,10 +30,11 @@
     "promptText": "{{주제}}에 대한 매력적이고 정보가 알찬 블로그 포스팅 원고를 작성해주세요.\n주요 타겟층은 {{타겟_독자}}입니다.\n\n원고 작성 가이드라인:\n- 호기심을 이끌어내는 인트로 및 눈길을 끄는 소제목 3개 이상 구성\n- 독자에게 친근하게 다가가는 친절하고 부드러운 구어체 사용 (~해요, ~합니다)\n- 검색 최적화(SEO)를 고려하여 주요 키워드가 문맥 속에 자연스럽게 스며들도록 작성\n- 마지막 문단에 요약 정리 및 댓글 소통을 유도하는 질문 기입",
     "outputText": "[제목] 코딩 입문자를 위한 필수 개발 도구 3가지 추천\n\n안녕하세요! 개발의 세계에 첫 발을 내딛으신 여러분, 환영합니다. \n처음 프로그래밍을 배울 때 어떤 도구부터 설치해야 할지 막막하셨죠? \n오늘인 입문자분들의 학습 속도를 2배로 올려줄 필수 개발 프로그램 3가지를 정리해 드립니다.\n...\n여러분은 이 중 어떤 프로그램을 주로 사용하시나요? 댓글로 함께 이야기를 나누어 보아요!",
     "description": "소비자의 클릭을 유도하는 매력적인 블로그 마케팅 문안을 SEO 친화적으로 빌드합니다.",
-    "recommendedModel": "GPT-4o",
+    "recommendedModel": "GPT",
     "usageCount": 15,
     "createdAt": "2026-06-24T00:20:00.000Z",
-    "updatedAt": "2026-06-24T00:20:00.000Z"
+    "updatedAt": "2026-07-08T02:11:55.797Z",
+    "outputImage": ""
   },
   {
     "id": "default-text-summarizer",
@@ -46,10 +48,11 @@
     "promptText": "제시되는 긴 문장이나 문서를 직관적이고 빠르게 이해할 수 있도록 요약해주세요.\n결과는 반드시 다음 3단계 서식에 맞게 아웃풋을 고정해주시기 바랍니다:\n\n1. [3줄 요약]: 전체 텍스트에서 가장 중요한 핵심 내용 3문장으로 간추림.\n2. [상세 요약]: 주요 쟁점이나 포인트를 요점 기호(•)를 써서 구체적으로 5개 이하로 나열.\n3. [시사점 및 액션플랜]: 우리가 눈여겨보아야 할 주요 인사이트 혹은 행동 요령 1-2가지 작성.\n\n[대상 텍스트]\n{{대상_텍스트}}",
     "outputText": "1. [3줄 요약]\n- 전 세계 리모트 워크 비율이 급속도로 늘고 있으나 협업 공백에 대한 우려도 증대되고 있음.\n- 기업들은 하이브리드 워크 모델을 통해 직원의 생산성과 대면 소통의 강점을 절충하는 추세임.\n- 이 성공 요인은 명확한 KPI와 자율성을 존중하는 팀 문화 구축에 있음.\n\n2. [상세 요약]\n• 직원의 70%가 하이브리드 워크가 일과 삶의 균형을 극대화한다고 답변.\n• 물리적 사무실은 소통과 소속감 형성을 위한 공동 공간으로 재정의되고 있음...\n\n3. [시사점]\n- 리더십 그룹은 문서화(Documentation) 프로세스를 투명하게 안착시키는 것이 중요함.",
     "description": "뉴기사, 논문 초록, 회사 회의록 등 장문의 텍스트를 구조화된 3단계로 명료하게 요약합니다.",
-    "recommendedModel": "Gemini 1.5 Flash",
+    "recommendedModel": "Gemini",
     "usageCount": 5,
     "createdAt": "2026-06-24T00:30:00.000Z",
-    "updatedAt": "2026-06-24T00:30:00.000Z"
+    "updatedAt": "2026-07-08T02:11:48.645Z",
+    "outputImage": ""
   },
   {
     "id": "prompt-1782375021563-c2usk4m49",
@@ -60,13 +63,13 @@
       "화질개선"
     ],
     "description": "저화질 이미지를 고화질로 변환",
-    "recommendedModel": "GPT-4o",
+    "recommendedModel": "GPT",
     "promptText": "Prompt:\n{ \"task\": \"image_restoration_upscale\", \"positive_prompt\":\n\"Restore and enhance the provided image. Preserve original identity, facial structure, proportions and composition. High-fidelity photo restoration, ultra-realistic, natural skin texture, accurate details, professional photographic look. 4K output, sharp but natural focus, modern cinematic lighting, subtle volumetric lighting, professional color grading, depth of field, HDR. Shot on Arri Alexa, raw photo aesthetic, masterpiece.\",\n\"negative_prompt\": \"Creative reinterpretation, style change, identity alteration, face reshaping, exaggerated features, cartoonish, painting, illustration, over-sharpening, plastic skin, blur, noise, film grain, jpeg artifacts, distortion, bad anatomy, overexposed, underexposed, washed out colors.\", \"parameters\":\n{ \"steps\": 30, \"cfg_scale\": 6.5, \"denoising_strength\": 0.45,\n\"upscaler\": \"4x_NMKD_Siax_200k\", \"target_resolution\": \"4K\" } }",
     "outputText": "",
     "outputImage": "images/prompt-1782375021563-c2usk4m49.jpeg",
     "usageCount": 0,
     "createdAt": "2026-06-25T08:10:21.563Z",
-    "updatedAt": "2026-06-25T08:10:21.563Z"
+    "updatedAt": "2026-07-08T02:11:41.068Z"
   },
   {
     "id": "prompt-1782375267254-2wk9o8bge",
@@ -77,13 +80,13 @@
       "테두리"
     ],
     "description": "손글시와 테두리를 추가하여 꾸미기",
-    "recommendedModel": "Gemini 1.5 Flash",
+    "recommendedModel": "Gemini",
     "promptText": "이 사진 위에 손으로 그린 듯한 [색연필 및 크레용 질감의 삐뚤삐뚤한 수작업 느낌'의 라인 드로잉과 낙서 요소들을 오버레이 합니다. [주요 피사체]를 검은색 외곽선 스케치로 표현하고, '봄동 비빔밥'와 같은 짧은 문구를 추가하고, [피사체]의 주분에도 [꽃잎, 작은 하트, 빛나는 선]들을 추가해주세요. 실사와 드로잉이 조화를  이루는 감성적인 동화책 일러스트 포스터 스타일로 생성해주세요.",
     "outputText": "",
     "outputImage": "images/prompt-1782375267254-2wk9o8bge.jpeg",
     "usageCount": 0,
     "createdAt": "2026-06-25T08:14:27.254Z",
-    "updatedAt": "2026-06-25T08:14:27.254Z"
+    "updatedAt": "2026-07-08T02:11:33.342Z"
   },
   {
     "id": "prompt-1782886390240-y45bseh58",
@@ -94,13 +97,13 @@
       "홈페이지"
     ],
     "description": "웹페이지 제작을 위한 초기 프롬프트(기능 디자인 기획 완료)",
-    "recommendedModel": "Gemini 1.5 Flash",
+    "recommendedModel": "Gemini",
     "promptText": "# 프로젝트 명세서: [프로젝트 이름]\n\n[대상/목적]을 위한 웹 애플리케이션입니다. 로컬 구동(Node.js)과 정적 호스팅 환경 환경을 모두 지원하는 하이브리드 형태로 개발해 주세요.\n\n## 🛠️ 1. 기술 스택\n- **프론트엔드:** [예: HTML5, Vanilla CSS, Vanilla JavaScript]\n- **백엔드 (로컬 전용):** [예: Node.js & Express]\n- **데이터 구조:** [예: 단일 JSON 파일(data.json) 기반 관리]\n\n## 🌟 2. 핵심 기능\n1. **[기능 1: 메인 화면]**: [예: 카테고리 필터링 및 클릭 시 상세 모달 팝업]\n2. **[기능 2: 서브 화면/컴포넌트]**: [예: 이력을 시간 순으로 보여주는 동적 타임라인]\n3. **[기능 3: 관리자 모드]**: [예: 인증 후 UI 상에서 콘텐츠 실시간 추가/수정/삭제]\n4. **[기능 4: 데이터 동기화]**: \n   - 로컬 구동 시: [예: Express API를 통해 로컬 data.json에 직접 저장]\n   - 정적 호스팅 시: [예: GitHub API를 통해 원격 리포지토리의 data.json에 커밋/푸시]\n5. **[기능 5: 미디어 처리]**: [예: 업로드된 이미지를 물리적 파일로 저장 후 경로 자동 치환]\n\n## 📂 3. 파일 구조\n- `package.json` ([필요 라이브러리])\n- `server.js` (로컬 Express 서버)\n- `index.html` (UI 마크업)\n- `styles.css` (스타일시트)\n- `app.js` (프론트엔드 로직 및 동기화 스크립트)\n- `data.json` (기초 데이터 스키마)\n\n## 🚀 요청 사항\n프로젝트 초기 설정을 위해 **`package.json`**, **`server.js`**, **`data.json`**의 완성된 소스 코드부터 순차적으로 작성해 주세요.",
     "outputText": "https://9core1.github.io/chassem/",
     "outputImage": "images/prompt-1782886390240-y45bseh58.jpeg",
     "usageCount": 0,
     "createdAt": "2026-07-01T06:13:10.240Z",
-    "updatedAt": "2026-07-01T06:59:16.387Z"
+    "updatedAt": "2026-07-08T02:11:23.072Z"
   },
   {
     "id": "prompt-1782889360485-phekv647b",
@@ -111,13 +114,13 @@
       "웹페이지"
     ],
     "description": "[기본형] 원페이지 스크롤 웹사이트 뼈대 요청 프롬프트",
-    "recommendedModel": "Gemini 1.5 Flash",
+    "recommendedModel": "Gemini",
     "promptText": "나는 GitHub Pages로 배포할 개인 포트폴리오 웹사이트를 만들려고 해. \n아래 기획 내용을 바탕으로 전체적인 웹사이트의 뼈대가 되는 단일 HTML 파일과 스타일을 위한 CSS 코드를 작성해 줘. \n스크롤을 내리면서 모든 메뉴를 볼 수 있는 '원페이지 스크롤' 형태로 만들어줘.\n\n[기획 워크시트 내용 입력]\n- 목적 및 타깃 독자: [ 예: 프리랜서 개발자 외주 수주 목적 / 잠재 클라이언트 타깃 ]\n- 메인 슬로건: [ 예: 복잡한 비즈니스 로직을 깔끔한 코드로 해결합니다. ]\n- 메뉴 구성: [ 예: Home, About, Skills, Projects, Contact ]\n- 디자인 스타일 키워드: [ 예: 개발자 감성의 깔끔한 다크모드, 미니멀리즘 ]\n- 레이아웃 방식: [ 예: 프로젝트 리스트는 2x3 바둑판 Grid 형태 ]\n- 구현 방식: [ 예: 순수 HTML / CSS / JavaScript ]\n\n위 조건에 맞는 기본 레이아웃과 반응형(모바일 지원)이 반영된 코드를 짜줘.",
     "outputText": "",
     "outputImage": "images/prompt-1782889360485-phekv647b.jpeg",
     "usageCount": 0,
     "createdAt": "2026-07-01T07:02:40.485Z",
-    "updatedAt": "2026-07-01T07:02:58.900Z"
+    "updatedAt": "2026-07-08T02:11:15.608Z"
   },
   {
     "id": "prompt-1782889449575-xqi9k8v0o",
@@ -128,13 +131,13 @@
       "웹페이지"
     ],
     "description": "[디자인 집중형] Tailwind CSS 활용 현대적 UI 프롬프트",
-    "recommendedModel": "Gemini 1.5 Flash",
+    "recommendedModel": "Gemini",
     "promptText": "AI인 너를 실력 있는 웹 프론트엔드 UI/UX 디자이너라고 생각하고 요청할게.\nGitHub Pages에 배포할 포트폴리오 웹사이트를 제작 중이야. 별도의 CSS 파일 없이 CDN 방식으로 Tailwind CSS를 활용한 단일 HTML 코드를 작성해 주면 좋겠어. \n\n내가 워크시트에 정리한 비주얼 콘셉트와 정보는 다음과 같아.\n\n[기획 워크시트 내용 입력]\n- 메인 슬로건: [ 예: 사용자 경험을 먼저 생각하는 프론트엔드 디자이너 OOO입니다. ]\n- 메뉴 구성: [ 예: Intro, Profile, Portfolio, Contact ]\n- 디자인 스타일 키워드: [ 예: 화이트 톤의 깔끔하고 화사한 무드, 세련된 타이포그래피 ]\n- 보유 기술 스택: [ 예: Figma, HTML/CSS, React, Tailwind CSS ]\n- 프로젝트 리스트 레이아웃: [ 예: 좌측에 프로젝트 썸네일 이미지, 우측에 텍스트 설명이 교차로 나오는 List 형태 ]\n\n요즘 트렌드에 맞는 여백(Padding)과 세련된 애니메이션 효과(Hover 등)가 들어간 모던한 UI 코드를 생성해 줘.",
     "outputText": "",
     "outputImage": "images/prompt-1782889449575-xqi9k8v0o.jpeg",
     "usageCount": 0,
     "createdAt": "2026-07-01T07:04:09.575Z",
-    "updatedAt": "2026-07-01T07:04:09.575Z"
+    "updatedAt": "2026-07-08T02:11:07.675Z"
   },
   {
     "id": "prompt-1782889504388-awp301f3l",
@@ -145,13 +148,13 @@
       "웹페이지"
     ],
     "description": "[React/Next.js 개발자용] 컴포넌트 기반 구조화 프롬프트",
-    "recommendedModel": "Gemini 1.5 Flash",
+    "recommendedModel": "Gemini",
     "promptText": "나는 GitHub Pages로 Static Export(정적 배포)할 예정인 React 포트폴리오 웹사이트를 개발하려고 해. \n아래 워크시트 기획안을 바탕으로 컴포넌트 구조를 설계하고, 메인 페이지(`App.jsx` 또는 `page.jsx`)와 각 섹션별 컴포넌트 코드를 구조적으로 짜줘.\n\n[기획 워크시트 내용 입력]\n- 메뉴 구성 (컴포넌트 분할 기준): [ 예: Hero, AboutMe, TechStack, ProjectList, ContactForm ]\n- 디자인 스타일 및 구현 방식: [ 예: React + Tailwind CSS를 활용한 미니멀한 다크모드 ]\n- 프로젝트 데이터 예시: \n  [ 예: 프로젝트 1 - 이름: AI 다이어리 / 기술: React, Node.js / 내용: AI 기반 감정 분석 일기장 ]\n  [ 예: 프로젝트 2 - 이름: 오픈마켓 클론 / 기술: JavaScript / 내용: 상태 관리를 활용한 쇼핑몰 ]\n\n가장 먼저 프로젝트 전체의 디렉토리 구조(폴더 구조)를 제안해 주고, 메인 페이지와 주요 컴포넌트 코드를 작성해 줘.",
     "outputText": "",
     "outputImage": "images/prompt-1782889504388-awp301f3l.jpeg",
     "usageCount": 0,
     "createdAt": "2026-07-01T07:05:04.388Z",
-    "updatedAt": "2026-07-01T07:05:04.388Z"
+    "updatedAt": "2026-07-08T02:10:51.601Z"
   },
   {
     "id": "prompt-1782889566777-socv49zzu",
@@ -162,13 +165,13 @@
       "웹페이지"
     ],
     "description": "[스토리텔링형] 프로젝트 트래블슈팅 강조 프롬프트",
-    "recommendedModel": "Gemini 1.5 Flash",
+    "recommendedModel": "Gemini",
     "promptText": "내 포트폴리오 웹사이트에서 가장 중요한 건 '프로젝트 상세 섹션'이야. \n단순히 결과물만 보여주는 게 아니라, 내가 겪은 문제와 해결 과정(Troubleshooting)이 잘 드러나도록 가독성 높은 HTML/CSS 레이아웃을 짜줬으면 해. \n내가 워크시트에 적은 프로젝트 정보를 보기 좋게 시각화할 수 있는 템플릿 코드를 만들어줘.\n\n[기획 워크시트 내용 입력]\n- 프로젝트 리스트 구성:\n  * 프로젝트명: [ 예: 기업 협업 프리랜서 매칭 플랫폼 ]\n  * 사용 기술: [ 예: Vue.js, Firebase ]\n  * 나의 역할: [ 예: 프론트엔드 UI 개발 및 실시간 채팅 기능 구현 ]\n  * 핵심 문제 및 해결 과정 (중요): [ 예: Firebase 실시간 리스너 과다 호출 문제 해결 과정 ]\n  * 성과 및 배운 점: [ 예: 데이터 호출 비용 40% 절감 ]\n\n인사담당자가 이 트래블슈팅 내용을 한눈에 쉽게 읽을 수 있도록 카드 레이아웃이나 토글(Accordion) 형태를 활용한 UI 코드를 제안해 줘.",
     "outputText": "",
     "outputImage": "images/prompt-1782889566777-socv49zzu.jpeg",
     "usageCount": 0,
     "createdAt": "2026-07-01T07:06:06.777Z",
-    "updatedAt": "2026-07-01T07:06:06.777Z"
+    "updatedAt": "2026-07-08T02:10:42.326Z"
   },
   {
     "id": "prompt-1782889609266-a2eqlcqfm",
@@ -179,12 +182,12 @@
       "웹페이지"
     ],
     "description": "[인터랙티브형] 미니멀 액션 및 연락처 폼 중심 프롬프트",
-    "recommendedModel": "Gemini 1.5 Flash",
+    "recommendedModel": "Gemini",
     "promptText": "GitHub Pages로 배포할 포트폴리오 사이트의 레이아웃을 잡고 있어. 방문자가 사이트를 둘러보고 나에게 쉽게 연락(외주 문의나 커피챗 제안)을 보낼 수 있도록 Contact 섹션과 이력서 다운로드 버튼이 강조된 페이지를 만들고 싶어.\n\n아래 기획 내용에 맞춰서 깔끔한 단일 페이지 코드를 짜줘.\n\n[기획 워크시트 내용 입력]\n- 기본 인적 사항 & 링크: [ 예: 이메일(test@email.com), GitHub(github.com/user), LinkedIn 링크 ]\n- 목적 및 타깃: [ 예: 프리랜서 외주 문의 유도 / 스타트업 대표 및 기획자 타깃 ]\n- 메인 슬로건: [ 예: 아이디어를 현실적인 웹서비스로 빠르게 구현해 드립니다. ]\n- 메뉴 구성: [ Home -> Projects -> Contact ]\n\nContact 섹션에는 사용자가 입력할 수 있는 폼(이름, 이메일, 내용 입력 칸)의 UI를 예쁘게 만들어 주고, 이메일 링크(`mailto:`)나 외부 주소로 연결되는 버튼들이 직관적으로 보이게 CSS 스타일을 적용해 줘.",
     "outputText": "",
     "outputImage": "images/prompt-1782889609266-a2eqlcqfm.jpeg",
     "usageCount": 0,
     "createdAt": "2026-07-01T07:06:49.266Z",
-    "updatedAt": "2026-07-01T07:06:49.266Z"
+    "updatedAt": "2026-07-08T02:10:24.356Z"
   }
 ]
