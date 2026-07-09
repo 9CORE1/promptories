@@ -24,6 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalOutputTextarea = document.getElementById('final-output-textarea');
     const toastContainer = document.getElementById('toast-container');
     const presetSelect = document.getElementById('preset-select');
+<<<<<<< HEAD
+=======
+    const artistStyleSelect = document.getElementById('artist-style-select');
+    const selectedArtistStyleBox = document.getElementById('selected-artist-style-box');
+    const artistStyleImg = document.getElementById('artist-style-img');
+    const artistStyleName = document.getElementById('artist-style-name');
+    const btnClearArtistStyle = document.getElementById('btn-clear-artist-style');
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
 
     // 촬영/구도/오디오/라이팅 전문 용어 툴팁 사전 (방송, 홍보, 마케팅 실무 관점)
     const tooltipDictionary = {
@@ -119,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="card-body ${s === (selectedMode === 'video' ? 7 : 0) ? 'scrollable-card-body' : ''}">
             `;
 
+<<<<<<< HEAD
             // Step 1 Special Selector: Choose Mode Purpose
             if (s === 1) {
                 cardHtml += `
@@ -146,6 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="divider"></div>
                 `;
             }
+=======
+
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
 
             // Find all fields belonging to this step
             const fieldsInStep = Object.keys(config.fields).filter(id => config.fields[id].step === s);
@@ -267,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+<<<<<<< HEAD
         // Re-bind Purpose Cards Select Listener (Step 1)
         document.querySelectorAll('.purpose-select-card').forEach(card => {
             card.addEventListener('click', () => {
@@ -282,6 +295,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+=======
+
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
 
         // Sync Step UI visibility & progress
         updateProgress();
@@ -344,11 +360,72 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Render dynamic Purpose Selector Grid at the top of the form area
+     */
+    function renderPurposeSelector() {
+        const purposeContainer = document.getElementById('purpose-selector-container');
+        if (!purposeContainer) return;
+        
+        let html = `
+            <label class="purpose-selector-label">
+                <i class="fa-solid fa-layer-group"></i> 
+                ${selectedMode === 'video' ? '영상 제작 목적 선택' : '이미지 제작 목적 선택'} (전체 템플릿 전환) 
+                <span class="required-mark">*</span>
+            </label>
+            <div class="purpose-cards-grid">
+                ${Object.keys(currentConfigs).map(key => {
+                    const cfg = currentConfigs[key];
+                    const isSelected = key === selectedPurpose ? 'selected' : '';
+                    return `
+                        <div class="purpose-select-card ${isSelected}" data-purpose="${key}">
+                            <div class="purpose-card-icon">
+                                <i class="fa-solid ${cfg.icon}"></i>
+                            </div>
+                            <div class="purpose-card-info">
+                                <h4>${cfg.title}</h4>
+                                <p>${cfg.desc}</p>
+                            </div>
+                            <div class="purpose-check"><i class="fa-solid fa-circle-check"></i></div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+        purposeContainer.innerHTML = html;
+        
+        // Re-bind Purpose Cards Select Listener
+        purposeContainer.querySelectorAll('.purpose-select-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const newPurpose = card.getAttribute('data-purpose');
+                if (newPurpose !== selectedPurpose) {
+                    if (hasAnyInputData()) {
+                        if (confirm('제작 목적을 변경하면 현재 작성 중인 프롬프트 내용이 모두 초기화됩니다. 계속하시겠습니까?')) {
+                            switchPurpose(newPurpose);
+                        }
+                    } else {
+                        switchPurpose(newPurpose);
+                    }
+                }
+            });
+        });
+    }
+
+    /**
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
      * Switch Video/Image Purpose configuration
      */
     function switchPurpose(newPurpose) {
         selectedPurpose = newPurpose;
         currentStep = 1;
+        
+        if (selectedArtistStyleBox) {
+            selectedArtistStyleBox.style.display = 'none';
+        }
+        if (artistStyleSelect) {
+            artistStyleSelect.value = '';
+        }
         
         // Reset and rebuild formData keys
         if (selectedMode === 'video') {
@@ -366,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Re-render UI and updates
         renderApp();
+        renderPurposeSelector();
         updatePreview();
         updatePresetSelectOptions();
         const modeText = selectedMode === 'video' ? '영상' : '이미지';
@@ -385,9 +463,25 @@ document.addEventListener('DOMContentLoaded', () => {
     function goToStep(step) {
         if (step < 1 || step > totalSteps) return;
 
+<<<<<<< HEAD
         const config = currentConfigs[selectedPurpose];
         const inputStepsCount = totalSteps - 1;
 
+=======
+        // Automatically hide selected artist style box when leaving Step 1
+        if (step !== 1) {
+            if (selectedArtistStyleBox) {
+                selectedArtistStyleBox.style.display = 'none';
+            }
+            if (artistStyleSelect) {
+                artistStyleSelect.value = '';
+            }
+        }
+
+        const config = currentConfigs[selectedPurpose];
+        const inputStepsCount = totalSteps - 1;
+
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
         // Hide all input cards
         for (let s = 1; s <= inputStepsCount; s++) {
             const card = document.getElementById(`step-card-${s}`);
@@ -796,6 +890,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (navItem) navItem.classList.remove('completed');
             });
             
+            if (selectedArtistStyleBox) {
+                selectedArtistStyleBox.style.display = 'none';
+            }
+            if (presetSelect) presetSelect.value = '';
+            if (artistStyleSelect) artistStyleSelect.value = '';
+            
             updatePreview();
             if (currentStep === totalSteps) {
                 assembleFinalPrompt();
@@ -831,17 +931,13 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
-        toast.className = `toast`;
+        toast.className = `toast toast-${type}`;
         
         let icon = 'fa-check-circle';
         if (type === 'error') {
             icon = 'fa-exclamation-circle';
-            toast.style.borderColor = 'var(--color-accent)';
-            toast.style.boxShadow = '0 4px 20px rgba(244, 63, 94, 0.2)';
         } else if (type === 'info') {
             icon = 'fa-info-circle';
-            toast.style.borderColor = 'var(--color-secondary)';
-            toast.style.boxShadow = '0 4px 20px rgba(6, 182, 212, 0.2)';
         }
 
         toast.innerHTML = `
@@ -947,8 +1043,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset step
         currentStep = 1;
 
+<<<<<<< HEAD
         // Re-render UI
         renderApp();
+=======
+        if (selectedArtistStyleBox) {
+            selectedArtistStyleBox.style.display = 'none';
+        }
+        if (artistStyleSelect) {
+            artistStyleSelect.value = '';
+        }
+
+        // Re-render UI
+        renderApp();
+        renderPurposeSelector();
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
         updatePreview();
         updatePresetSelectOptions();
         goToStep(1);
@@ -1007,11 +1116,95 @@ document.addEventListener('DOMContentLoaded', () => {
                 goToStep(currentStep); // Refresh current step cards UI
                 
                 showToast(`'${selectedPreset.name}' 프리셋이 성공적으로 불러와졌습니다.`, 'success');
+<<<<<<< HEAD
                 presetSelect.value = '';
+=======
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
             }
         });
     }
 
+<<<<<<< HEAD
+=======
+    // Artist Style Selection Change Event
+    if (artistStyleSelect) {
+        artistStyleSelect.addEventListener('change', (e) => {
+            const index = e.target.value;
+            if (index === '') return;
+            
+            const artists = window.artistStylesConfig;
+            const selectedArtist = artists[index];
+            if (selectedArtist) {
+                // Determine the correct style field based on selectedMode (video uses step6-style, image uses step4-style-type)
+                const styleFieldId = (selectedMode === 'video') ? 'step6-style' : 'step4-style-type';
+                
+                const fieldsToUpdate = {
+                    'step1-genre': `${selectedArtist.name} 스타일`,
+                    'step1-mood': selectedArtist.keywords,
+                    [styleFieldId]: selectedArtist.safeExpression
+                };
+                
+                // Apply to formData and DOM elements if present
+                Object.keys(fieldsToUpdate).forEach(id => {
+                    const val = fieldsToUpdate[id];
+                    formData[id] = val;
+                    
+                    const inputEl = document.getElementById(id);
+                    if (inputEl) {
+                        inputEl.value = val;
+                    }
+                });
+                
+                // Update completion states for these steps
+                Object.keys(fieldsToUpdate).forEach(id => {
+                    updateStepCompletedState(id);
+                });
+                
+                updatePreview();
+                goToStep(currentStep); // Refresh current step cards UI
+                
+                // Update and show Selected Artist Style Box in Sidebar
+                if (selectedArtistStyleBox && artistStyleImg && artistStyleName) {
+                    const id = Number(index) + 1;
+                    artistStyleImg.src = `images/artist_${id}.png`;
+                    artistStyleName.textContent = selectedArtist.name;
+                    selectedArtistStyleBox.style.display = 'flex';
+                }
+                
+                showToast(`'${selectedArtist.name}' 작가스타일 레퍼런스가 적용되었습니다.`, 'success');
+            }
+        });
+    }
+
+    // Artist Style Clear Button Event
+    if (btnClearArtistStyle) {
+        btnClearArtistStyle.addEventListener('click', () => {
+            if (selectedArtistStyleBox) {
+                selectedArtistStyleBox.style.display = 'none';
+            }
+            if (artistStyleSelect) {
+                artistStyleSelect.value = '';
+            }
+        });
+    }
+
+    function populateArtistStyleOptions() {
+        if (!artistStyleSelect) return;
+        artistStyleSelect.innerHTML = '<option value="">-- 작가스타일을 선택하여 스타일 관련 필드에 적용 --</option>';
+        
+        if (window.artistStylesConfig && window.artistStylesConfig.length > 0) {
+            window.artistStylesConfig.forEach((artist, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                // Show artist name and a short preview of keywords
+                const shortKeyword = artist.keywords.split(',')[0];
+                option.textContent = `${index + 1}. ${artist.name} (${shortKeyword} 등)`;
+                artistStyleSelect.appendChild(option);
+            });
+        }
+    }
+
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
     // --- First Application Boot ---
     // Pre-initialize empty values
     const initialConfig = currentConfigs[selectedPurpose];
@@ -1020,6 +1213,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     renderApp();
+    renderPurposeSelector();
     updatePreview();
     updatePresetSelectOptions();
+<<<<<<< HEAD
+=======
+    populateArtistStyleOptions();
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
 });

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿// configurations for Video and Image prompt generators
+=======
+// configurations for Video and Image prompt generators
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
 window.purposeConfigs = {
     product: {
         title: '상품 연출 광고',
@@ -1133,3 +1137,109 @@ Negative Prompt: {피해야 할 생성 오류}
         }
     }
 };
+<<<<<<< HEAD
+=======
+
+window.artistStylesConfig = [
+    {
+        name: "Wes Anderson",
+        keywords: "대칭 구도, 파스텔 컬러, 위트 있는 세트, 정돈된 미장센",
+        safeExpression: "symmetrical pastel brand film, whimsical art direction, centered composition"
+    },
+    {
+        name: "David LaChapelle",
+        keywords: "초고채도, 팝 초현실주의, 과장된 연출, 글로시한 상업사진",
+        safeExpression: "glossy pop-surreal commercial photography, hyper-saturated colors, theatrical set"
+    },
+    {
+        name: "Saul Bass",
+        keywords: "강한 그래픽, 단순한 형태, 상징적 실루엣, 레트로 모던",
+        safeExpression: "minimalist graphic title sequence, bold cutout shapes, retro modern motion design"
+    },
+    {
+        name: "Barbara Kruger",
+        keywords: "흑백 사진, 빨간 박스 타이포, 직설적 카피, 시각적 선언문",
+        safeExpression: "bold editorial poster, black-and-white photo collage, red typography blocks"
+    },
+    {
+        name: "Andy Warhol",
+        keywords: "팝아트, 반복 이미지, 강한 컬러, 대중문화 아이콘화",
+        safeExpression: "pop art product campaign, repeated icon imagery, high-contrast commercial colors"
+    },
+    {
+        name: "Piet Mondrian",
+        keywords: "그리드, 원색 블록, 미니멀 구조, 질서감 있는 구성",
+        safeExpression: "geometric grid layout, primary color blocks, modernist brand design"
+    },
+    {
+        name: "Alphonse Mucha",
+        keywords: "아르누보, 장식적 프레임, 우아한 인물, 플로럴 패턴",
+        safeExpression: "Art Nouveau luxury poster, ornate floral frame, elegant feminine composition"
+    },
+    {
+        name: "Ridley Scott",
+        keywords: "네오누아르, 연기와 빛, 고대비 조명, 미래적 도시감",
+        safeExpression: "cinematic sci-fi noir commercial, smoke, backlight, high-contrast urban atmosphere"
+    },
+    {
+        name: "Wong Kar-wai",
+        keywords: "네온 반사, 슬로모션, 낭만적 고독, 감각적 색감",
+        safeExpression: "neon-lit emotional brand film, slow motion, wet street reflections, romantic mood"
+    },
+    {
+        name: "Milton Glaser",
+        keywords: "따뜻한 그래픽, 굵은 일러스트, 상징적 로고 감각, 대중성",
+        safeExpression: "warm retro poster illustration, bold symbolic graphic, friendly brand identity"
+    },
+    {
+        name: "Massimo Vignelli",
+        keywords: "스위스 모던, 그리드, 절제된 타이포그래피, 프리미엄 질서감",
+        safeExpression: "Swiss modern corporate identity, strict grid, refined typography, minimal layout"
+    },
+    {
+        name: "Paula Scher",
+        keywords: "대담한 타이포, 지도형 그래픽, 에너지 있는 레이아웃",
+        safeExpression: "bold typographic campaign poster, urban energy, expressive map-like layout"
+    },
+    {
+        name: "Herb Lubalin",
+        keywords: "감각적인 서체 조합, 타이포 중심 비주얼, 세련된 편집 디자인",
+        safeExpression: "elegant typographic logo design, sophisticated editorial advertising, expressive lettering"
+    },
+    {
+        name: "Peter Saville",
+        keywords: "미니멀 아트워크, 절제된 이미지, 지적인 브랜드 무드",
+        safeExpression: "minimalist music-inspired brand artwork, restrained composition, intellectual luxury mood"
+    },
+    {
+        name: "Neville Brody",
+        keywords: "실험적 타이포, 디지털 펑크, 강한 편집 리듬",
+        safeExpression: "experimental broadcast typography, digital punk layout, high-impact editorial rhythm"
+    },
+    {
+        name: "David Carson",
+        keywords: "해체주의 편집, 거친 질감, 비정형 타이포그래피",
+        safeExpression: "deconstructed magazine layout, grungy texture, rebellious typography, youth culture aesthetic"
+    },
+    {
+        name: "Roy Lichtenstein",
+        keywords: "만화적 하프톤, 굵은 윤곽선, 말풍선, 원색 팝아트",
+        safeExpression: "comic book pop art advertising, halftone dots, bold outlines, speech bubble graphics"
+    },
+    {
+        name: "Keith Haring",
+        keywords: "굵은 선, 춤추는 인물, 아이콘형 그래픽, 경쾌한 에너지",
+        safeExpression: "energetic line-art icons, public campaign mural style, dancing figures, bold graphic symbols"
+    },
+    {
+        name: "Yayoi Kusama",
+        keywords: "반복 도트, 몰입형 패턴, 강한 색 대비, 설치미술 감각",
+        safeExpression: "immersive polka-dot pattern, repeated organic forms, high-contrast installation aesthetic"
+    },
+    {
+        name: "James Turrell",
+        keywords: "빛의 공간, 그라데이션, 미니멀 몰입감, 명상적 분위기",
+        safeExpression: "luminous minimal light space, soft gradient atmosphere, meditative architectural glow"
+    }
+];
+>>>>>>> 789fe84 (프롬프트 메이커 추가)

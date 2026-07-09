@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>프롬프트 메이커</title>
+=======
+    <title>Prompt Studio - 프롬프트 메이커</title>
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<<<<<<< HEAD
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+=======
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Nanum+Gothic+Coding:wght@400;700&family=Noto+Serif+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -31,6 +39,15 @@
                     <!-- Injected by JS -->
                 </ul>
             </nav>
+
+            <!-- Selected Artist Style Box -->
+            <div id="selected-artist-style-box" class="selected-artist-style-box" style="display: none;">
+                <div class="artist-style-header">
+                    <span><i class="fa-solid fa-palette"></i> <span id="artist-style-name">Wes Anderson</span></span>
+                    <button id="btn-clear-artist-style" title="선택 해제"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <img id="artist-style-img" class="artist-style-img" src="" alt="Artist Style Reference">
+            </div>
 
             <div class="sidebar-footer">
                 <div class="hashtag-container">
@@ -75,6 +92,13 @@
                 <!-- Form Area -->
                 <section class="form-section">
                     
+<<<<<<< HEAD
+=======
+                    <!-- Purpose Selector Bar -->
+                    <div id="purpose-selector-container" class="purpose-selector-container">
+                        <!-- Dynamic Purpose Cards Grid will be injected here by JS -->
+                    </div>
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
                     <!-- Preset Selector Bar -->
                     <div id="preset-selector-container" class="preset-selector-container">
                         <label for="preset-select"><i class="fa-solid fa-wand-magic-sparkles"></i> 프리셋 불러오기:</label>
@@ -83,6 +107,17 @@
                         </select>
                     </div>
 
+<<<<<<< HEAD
+=======
+                    <!-- Artist Style Selector Bar -->
+                    <div id="artist-style-selector-container" class="preset-selector-container" style="margin-top: 10px;">
+                        <label for="artist-style-select"><i class="fa-solid fa-palette"></i> 작가스타일 레퍼런스:</label>
+                        <select id="artist-style-select" class="form-control preset-select">
+                            <option value="">-- 작가스타일을 선택하여 스타일 관련 필드에 적용 --</option>
+                        </select>
+                    </div>
+
+>>>>>>> 789fe84 (프롬프트 메이커 추가)
                     <!-- Dynamic Form Cards Container -->
                     <div id="dynamic-form-container">
                         <!-- Step Cards (1 to 9) will be injected dynamically by JS -->
