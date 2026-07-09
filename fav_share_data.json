@@ -109,11 +109,12 @@
   },
   {
     "id": "fav-1783493661688-l4zvpzjrb",
-    "title": "video_prompt_creator",
+    "title": "prompt_creator",
     "category": "콘텐츠 제작 관련 사이트",
     "url": "https://9core1.github.io/promptories/video_prompt/index.html",
-    "desc": "영상 프롬프트 생성기",
-    "createdAt": "2026-07-08T06:54:21.688Z"
+    "desc": "방송, 홍보, 마케팅 용 비디오, 이미지 제작을 위한 프롬프트 메이커",
+    "createdAt": "2026-07-08T06:54:21.688Z",
+    "updatedAt": "2026-07-09T05:30:01.375Z"
   },
   {
     "id": "config-category-order",
