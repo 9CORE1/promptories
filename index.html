@@ -3,921 +3,639 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PROMPTORIES - 나만의 프롬프트 라이브러리</title>
+  <title>PROMPTORIES - 스마트 AI 프롬프트 관리 스테이션</title>
   <link rel="icon" href="images/favicon.jpg" type="image/jpeg">
   
   <!-- SEO Meta Tags -->
-  <meta name="description" content="자주 사용하는 프롬프트와 템플릿, 그리고 결과물들을 스마트하게 저장하고 관리하며 빠르게 검색하여 복사해 쓰는 프롬프트 생산성 관리 도구입니다.">
-  <meta name="keywords" content="프롬프트, prompt, AI, ChatGPT, Claude, 프롬프트관리, 템플릿, 프롬프트엔지니어링">
+  <meta name="description" content="자주 사용하는 AI 프롬프트와 템플릿을 스마트하게 관리하고 실시간으로 변수를 채워 즉시 복사하는 생산성 도구 PROMPTORIES입니다.">
+  <meta name="keywords" content="프롬프트, AI, ChatGPT, Claude, 프롬프트관리, 템플릿, 프롬프트엔지니어링, 생산성도구">
   <meta name="author" content="Antigravity">
   
-  <!-- Font Setup (Google Fonts) -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=D2Coding&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
-  <!-- Lucide Icons CDN -->
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* CSS Variables matching styles.css (Bright & Modern Premium) */
+    :root {
+      --bg-main: #f8fafc;        /* Slate 50 */
+      --bg-card: #ffffff;        /* Pure white */
+      --border-color: rgba(0, 0, 0, 0.06);
+      --border-accent: rgba(99, 102, 241, 0.15);
+      --text-main: #0f172a;      /* Slate 900 */
+      --text-muted: #64748b;     /* Slate 500 */
+      --accent-primary: #4f46e5;   /* Indigo 600 */
+      --accent-secondary: #0ea5e9; /* Sky 500 */
+      --accent-pink: #d946ef;
+      --gradient-accent: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 50%, #0ea5e9 100%);
+      --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.01);
+      --shadow-glow: 0 15px 30px rgba(79, 70, 229, 0.15);
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    /* Ambient Animated Aurora Background (Light Mode) */
+    .bg-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .aurora-blur {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.35;
+      mix-blend-mode: multiply;
+    }
+
+    .aurora-1 {
+      top: -10%;
+      left: -5%;
+      width: 45vw;
+      height: 45vw;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(99, 102, 241, 0) 70%);
+      animation: float-aurora-1 20s infinite alternate ease-in-out;
+    }
+
+    .aurora-2 {
+      bottom: -10%;
+      right: -5%;
+      width: 40vw;
+      height: 40vw;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.35) 0%, rgba(14, 165, 233, 0) 70%);
+      animation: float-aurora-2 18s infinite alternate-reverse ease-in-out;
+    }
+
+    .aurora-3 {
+      top: 30%;
+      left: 45%;
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, rgba(217, 70, 239, 0.2) 0%, rgba(217, 70, 239, 0) 70%);
+      animation: float-aurora-3 25s infinite alternate ease-in-out;
+    }
+
+    /* Aurora Keyframe Animations */
+    @keyframes float-aurora-1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, 60px) scale(1.1); }
+      100% { transform: translate(-30px, -40px) scale(0.9); }
+    }
+
+    @keyframes float-aurora-2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-60px, 30px) scale(1.05); }
+      100% { transform: translate(40px, -50px) scale(0.95); }
+    }
+
+    @keyframes float-aurora-3 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(50px, -30px) scale(0.9); }
+      100% { transform: translate(-40px, 50px) scale(1.15); }
+    }
+
+    /* Grid Overlay for Premium Dev Feel */
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Layout Container */
+    .container {
+      max-width: 1200px;
+      height: 100vh;
+      margin: 0 auto;
+      padding: 0 2rem 1rem 2rem;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Header Styling */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 0;
+      animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      color: var(--accent-primary);
+      filter: drop-shadow(0 2px 8px rgba(79, 70, 229, 0.25));
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo:hover .logo-icon {
+      transform: rotate(15deg) scale(1.1);
+    }
+
+    .logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    .logo-text span {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 1.5rem 0 1rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .badge-wrapper {
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(79, 70, 229, 0.06);
+      border: 1px solid rgba(79, 70, 229, 0.12);
+      color: var(--accent-primary);
+      padding: 0.4rem 1.1rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      backdrop-filter: blur(4px);
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.2px;
+      margin-bottom: 2.5rem;
+      max-width: 800px;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
+
+    .gradient-title-text {
+      background: linear-gradient(135deg, #1e1b4b 20%, #475569 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .highlight-text {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      margin-top: 0.25rem;
+    }
+
+    .hero-description {
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      max-width: 900px;
+      margin-bottom: 2rem;
+      font-weight: 400;
+      line-height: 1.75;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    }
+
+    .desc-highlight {
+      font-weight: 700;
+      color: #1e1b4b;
+      background: linear-gradient(to top, rgba(99, 102, 241, 0.18) 42%, transparent 42%);
+      padding: 0 3px;
+      display: inline;
+    }
+
+    /* CTA Button & Interactive Flow */
+    .cta-wrapper {
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+      position: relative;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--gradient-accent);
+      color: #ffffff;
+      padding: 1.1rem 2.6rem;
+      border-radius: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.15);
+      transition: var(--transition-bounce);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transition: 0.6s ease;
+    }
+
+    .cta-button:hover::before {
+      left: 100%;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: var(--shadow-glow);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .cta-button:active {
+      transform: translateY(-1px) scale(0.99);
+    }
+
+    .cta-button i {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .cta-button:hover i {
+      transform: translateX(5px);
+    }
+
+    /* Live Ripple Glow behind button */
+    .cta-glow-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 110%;
+      height: 110%;
+      background: rgba(79, 70, 229, 0.12);
+      border-radius: 20px;
+      filter: blur(15px);
+      z-index: 1;
+      animation: pulseGlow 3s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+    }
+
+    /* Features Grid */
+    .features-section {
+      padding: 1.5rem 0;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Interactive Soft-Glow Cards */
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition-bounce);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* Delayed staggered entrance animation for cards */
+    .features-grid > :nth-child(1) { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both; }
+    .features-grid > :nth-child(2) { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both; }
+    .features-grid > :nth-child(3) { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both; }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.02) 0%, rgba(14, 165, 233, 0.02) 100%);
+      pointer-events: none;
+    }
+
+    /* Animated border highlight on hover */
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 1.5px;
+      background: linear-gradient(135deg, transparent, transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      transition: var(--transition-smooth);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.08), 0 0 0 1px rgba(79, 70, 229, 0.05);
+      border-color: rgba(79, 70, 229, 0.15);
+    }
+
+    .feature-card:hover::after {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    }
+
+    .icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      position: relative;
+      transition: var(--transition-bounce);
+    }
+
+    .feature-card:hover .icon-box {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .icon-box.cyan {
+      background: rgba(14, 165, 233, 0.08);
+      color: var(--accent-secondary);
+    }
+    .icon-box.indigo {
+      background: rgba(99, 102, 241, 0.08);
+      color: var(--accent-primary);
+    }
+    .icon-box.purple {
+      background: rgba(217, 70, 239, 0.08);
+      color: var(--accent-pink);
+    }
+
+    .feature-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+      transition: var(--transition-smooth);
+    }
+
+    .feature-card:hover h3 {
+      color: var(--accent-primary);
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 1.25rem 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+    }
+
+    /* Base Keyframe Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Interactive Cursor Spotlight (Glow Effect follow mouse) */
+    .cursor-glow {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, rgba(99, 102, 241, 0) 70%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 4rem 0 3rem 0;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+        letter-spacing: -0.8px;
+      }
+      .hero-description {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+      .cta-button {
+        padding: 0.9rem 2.2rem;
+        font-size: 1rem;
+      }
+      .features-section {
+        padding: 2rem 0 6rem 0;
+      }
+    }
+  </style>
 </head>
 <body>
-  
-  <div class="app-layout">
-    
-    <!-- Sidebar -->
-    <aside class="app-sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <i data-lucide="terminal" class="logo-icon"></i>
-          <h1>PROMPT<span>ORIES</span></h1>
-        </div>
+
+  <!-- Ambient Glows -->
+  <div class="bg-animation">
+    <div class="aurora-blur aurora-1"></div>
+    <div class="aurora-blur aurora-2"></div>
+    <div class="aurora-blur aurora-3"></div>
+  </div>
+  <div class="grid-overlay"></div>
+
+  <!-- Cursor Spotlight -->
+  <div class="cursor-glow" id="cursor-glow"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <a href="#" class="logo">
+        <i data-lucide="terminal" class="logo-icon"></i>
+        <h1 class="logo-text">PROMPT<span>ORIES</span></h1>
+      </a>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="badge-wrapper">
+        <span class="tag-badge">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          Prompt Management Station
+        </span>
       </div>
+      <h1>
+        <span class="gradient-title-text">나만의 스마트한 AI</span>
+        <span class="highlight-text">프롬프트 라이브러리</span>
+      </h1>
+      <p class="hero-description">
+        자주 쓰는 <span class="desc-highlight">프롬프트</span>를 클릭 한 번으로 링크화해 <span class="desc-highlight">공유</span>하고, 카테고리태그로 손쉽게 <span class="desc-highlight">분류검색</span>하며, 유용한 참고 사이트까지 한곳에 모아 <span class="desc-highlight">함께 관리</span>할 수 있을 뿐 아니라,<br>
+        한 번의 클릭으로 최적의 프롬프트를 <span class="desc-highlight">즉시 복사</span>하여 <span class="desc-highlight">바로 활용</span>할 수 있게 해줍니다.
+      </p>
       
-      <div class="sidebar-action">
-        <div class="admin-status-bar" id="admin-status-bar">
-          <span class="status-indicator">
-            <span class="status-dot"></span>
-            <span class="status-text" id="admin-status-text">일반 사용자 모드</span>
-          </span>
-          <button class="btn-admin-action" id="btn-admin-login-toggle" title="관리자 인증">
-            <i data-lucide="lock" id="admin-lock-icon"></i>
-          </button>
-        </div>
+      <div class="cta-wrapper">
+        <div class="cta-glow-pulse"></div>
+        <a href="app.html" id="btn-enter-station" class="cta-button">
+          <span>프롬프트 스테이션 시작하기</span>
+          <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
+        </a>
       </div>
-      
-      <nav class="sidebar-nav">
-        <!-- Main Quick Links -->
-        <ul class="nav-menu">
-          <li class="nav-item active" data-filter="all">
-            <a href="#" class="nav-link">
-              <i data-lucide="layout-grid"></i>
-              <span>모든 프롬프트</span>
-              <span class="badge" id="count-all">0</span>
-            </a>
-          </li>
-          <li class="nav-item" data-filter="fav-share" id="nav-fav-share">
-            <a href="#" class="nav-link">
-              <i data-lucide="bookmark"></i>
-              <span>즐겨찾기 공유</span>
-            </a>
-          </li>
-          <li class="nav-item" id="nav-warehouse" style="display: none;">
-            <a href="#" class="nav-link">
-              <i data-lucide="archive"></i>
-              <span>프롬프트 창고</span>
-            </a>
-          </li>
-          <li class="nav-item" id="nav-video-warehouse" style="display: none;">
-            <a href="#" class="nav-link">
-              <i data-lucide="video"></i>
-              <span>영상 프롬프트 창고</span>
-            </a>
-          </li>
-          <li class="nav-item" id="nav-lm-warehouse" style="display: none;">
-            <a href="#" class="nav-link">
-              <i data-lucide="layers"></i>
-              <span>LM스타일 창고</span>
-            </a>
-          </li>
-        </ul>
-        
-        <!-- Categories Section -->
-        <div class="nav-section">
-          <h3 class="nav-section-title">
-            <span>카테고리</span>
-            <i data-lucide="folder"></i>
-          </h3>
-          <ul class="nav-menu" id="categories-list">
-            <!-- Dynamically populated -->
-          </ul>
-        </div>
-        
-        <!-- Tags Section -->
-        <div class="nav-section">
-          <h3 class="nav-section-title">
-            <span>인기 태그</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span id="btn-more-tags" style="font-size: 10px; font-weight: 600; color: var(--accent-primary); cursor: pointer; text-transform: none; letter-spacing: 0;">더보기</span>
-              <i data-lucide="tag"></i>
-            </div>
-          </h3>
-          <div class="tag-cloud collapsed" id="tags-list">
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-      </nav>
-      
-      <!-- Sidebar Footer Settings -->
-      <div class="sidebar-footer">
-        <button class="btn btn-ghost btn-sm" id="btn-github-config" title="GitHub 연동 계정 및 토큰 설정을 변경합니다." style="display: none;">
-          <i data-lucide="settings"></i>
-          <span>GitHub 설정</span>
-        </button>
-      </div>
-    </aside>
-    
-    <!-- Main Content Area -->
-    <main class="app-main">
-      <!-- Top Navigation -->
-      <header class="app-header">
-        <div class="header-search">
-          <div class="search-box">
-            <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="search-input" placeholder="프롬프트 제목, 본문, 태그 검색... (Ctrl+K)" autocomplete="off">
-            <button class="search-clear-btn" id="search-clear" style="display: none;">
-              <i data-lucide="x"></i>
-            </button>
-            <span class="search-shortcut">/</span>
-          </div>
-        </div>
-        
-        <div class="header-actions">
-          <div class="filter-indicator" id="filter-indicator" style="display: none;">
-            <span class="filter-label">필터 적용됨</span>
-            <button class="filter-clear-btn" id="btn-clear-filters">
-              <span id="filter-name">카테고리: 개발</span>
-              <i data-lucide="x"></i>
-            </button>
-          </div>
-          
-          <div class="sorting-wrapper">
-            <i data-lucide="sliders-horizontal" class="sort-icon"></i>
-            <select id="sort-select" class="sort-select">
-              <option value="newest">최신 등록순</option>
-              <option value="oldest">오래된 순</option>
-              <option value="most-used">자주 사용한 순</option>
-              <option value="alphabetical">가나다순</option>
-            </select>
-          </div>
-        </div>
-      </header>
-      
-      <!-- Prompt Cards View / Warehouse View -->
-      <div class="content-scroll">
-        <!-- Main Prompts Section -->
-        <div id="prompts-main-view">
-          <div class="warehouse-header flex-between" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">프롬프트 라이브러리</h2>
-              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">자주 사용하는 AI 프롬프트 템플릿과 실행 결과물을 확인하고 관리합니다.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-secondary btn-sm" id="btn-sync-prompts-page" title="GitHub 서버의 prompts_data.json 파일 데이터로 동기화합니다." style="display: none;">
-                <i data-lucide="refresh-cw"></i>
-                <span>서버 업데이트</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-export-prompts-page" title="현재 프롬프트 데이터를 prompts_data.json 파일로 내보냅니다." style="display: none;">
-                <i data-lucide="download"></i>
-                <span>JSON 다운로드</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-copy-prompts-json" title="현재 프롬프트 데이터를 JSON 텍스트로 복사합니다." style="display: none;">
-                <i data-lucide="copy"></i>
-                <span>JSON 복사</span>
-              </button>
-              <button class="btn btn-primary btn-sm" id="btn-new-prompt-page" style="display: none;">
-                <i data-lucide="plus"></i>
-                <span>새 프롬프트 추가</span>
-              </button>
-            </div>
-          </div>
-          
-          <div class="prompt-grid" id="prompt-grid">
-            <!-- Dynamically populated -->
-          </div>
-          
-          <!-- Pagination -->
-          <div class="pagination-container" id="prompt-pagination"></div>
-          
-          <!-- Empty State -->
-          <div class="empty-state" id="empty-state" style="display: none;">
-            <div class="empty-icon">
-              <i data-lucide="search-code"></i>
-            </div>
-            <h2>검색 결과가 없습니다</h2>
-            <p>다른 검색어를 입력하거나 카테고리/태그 필터를 변경해보세요.</p>
-            <button class="btn btn-secondary btn-sm" id="btn-reset-search">검색 조건 초기화</button>
-          </div>
-        </div>
+    </section>
 
-        <!-- Warehouse Section (Admin Only) -->
-        <div id="warehouse-main-view" class="hidden">
-          <div class="warehouse-header flex-between" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">프롬프트 창고</h2>
-              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">웹 링크 및 캡처 이미지를 카드 형태로 보관하고 관리합니다.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-secondary btn-sm" id="btn-sync-warehouse" title="GitHub 서버의 warehouse_data.json 파일 데이터로 동기화합니다.">
-                <i data-lucide="refresh-cw"></i>
-                <span>서버 업데이트</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-export-warehouse" title="현재 창고 데이터를 warehouse_data.json 파일로 내보냅니다.">
-                <i data-lucide="download"></i>
-                <span>JSON 다운로드</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-copy-warehouse-json" title="현재 창고 데이터를 JSON 텍스트로 복사합니다.">
-                <i data-lucide="copy"></i>
-                <span>JSON 복사</span>
-              </button>
-              <button class="btn btn-primary btn-sm" id="btn-new-warehouse-item">
-                <i data-lucide="plus"></i>
-                <span>새 링크/캡처 등록</span>
-              </button>
-            </div>
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="icon-box cyan">
+            <i data-lucide="share-2" style="width: 28px; height: 28px;"></i>
           </div>
-          
-          <div class="prompt-grid" id="warehouse-grid">
-            <!-- Dynamically populated, reusing prompt-grid class for grid styles -->
-          </div>
-          
-          <!-- Pagination -->
-          <div class="pagination-container" id="warehouse-pagination"></div>
-          
-          <!-- Warehouse Empty State -->
-          <div class="empty-state" id="warehouse-empty-state" style="display: none;">
-            <div class="empty-icon">
-              <i data-lucide="archive"></i>
-            </div>
-            <h2>저장된 창고 자료가 없습니다</h2>
-            <p>상단의 버튼을 통해 참조 링크나 결과물 캡처를 기록해보세요.</p>
-          </div>
-        </div>
-
-        <!-- Video Warehouse Section (Admin Only) -->
-        <div id="video-warehouse-main-view" class="hidden">
-          <div class="warehouse-header flex-between" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">영상 프롬프트 창고</h2>
-              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">영상 생성용 프롬프트 및 참조 결과물을 저장하고 관리합니다.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-secondary btn-sm" id="btn-sync-video-warehouse" title="GitHub 서버의 video_warehouse_data.json 파일 데이터로 동기화합니다.">
-                <i data-lucide="refresh-cw"></i>
-                <span>서버 업데이트</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-export-video-warehouse" title="현재 영상 프롬프트 창고 데이터를 video_warehouse_data.json 파일로 내보냅니다.">
-                <i data-lucide="download"></i>
-                <span>JSON 다운로드</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-copy-video-warehouse-json" title="현재 영상 프롬프트 창고 데이터를 JSON 텍스트로 복사합니다.">
-                <i data-lucide="copy"></i>
-                <span>JSON 복사</span>
-              </button>
-              <button class="btn btn-primary btn-sm" id="btn-new-video-warehouse-item">
-                <i data-lucide="plus"></i>
-                <span>새 자료 등록</span>
-              </button>
-            </div>
-          </div>
-          
-          <div class="prompt-grid" id="video-warehouse-grid">
-            <!-- Dynamically populated -->
-          </div>
-          
-          <!-- Pagination -->
-          <div class="pagination-container" id="video-warehouse-pagination"></div>
-          
-          <!-- Video Warehouse Empty State -->
-          <div class="empty-state" id="video-warehouse-empty-state" style="display: none;">
-            <div class="empty-icon">
-              <i data-lucide="video"></i>
-            </div>
-            <h2>저장된 영상 프롬프트 자료가 없습니다</h2>
-            <p>상단의 버튼을 통해 새로운 영상 프롬프트 자료를 기록해보세요.</p>
-          </div>
-        </div>
-
-        <!-- LM Style Warehouse Section (Admin Only) -->
-        <div id="lm-warehouse-main-view" class="hidden">
-          <div class="warehouse-header flex-between" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">LM스타일 창고</h2>
-              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">LM 스타일의 템플릿과 실행 결과물을 저장하고 관리합니다.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-secondary btn-sm" id="btn-sync-lm-warehouse" title="GitHub 서버의 lm_warehouse_data.json 파일 데이터로 동기화합니다.">
-                <i data-lucide="refresh-cw"></i>
-                <span>서버 업데이트</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-export-lm-warehouse" title="현재 LM스타일 창고 데이터를 lm_warehouse_data.json 파일로 내보냅니다.">
-                <i data-lucide="download"></i>
-                <span>JSON 다운로드</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-copy-lm-warehouse-json" title="현재 LM스타일 창고 데이터를 JSON 텍스트로 복사합니다.">
-                <i data-lucide="copy"></i>
-                <span>JSON 복사</span>
-              </button>
-              <button class="btn btn-primary btn-sm" id="btn-new-lm-warehouse-item">
-                <i data-lucide="plus"></i>
-                <span>새 자료 등록</span>
-              </button>
-            </div>
-          </div>
-          
-          <div class="prompt-grid" id="lm-warehouse-grid">
-            <!-- Dynamically populated -->
-          </div>
-          
-          <!-- Pagination -->
-          <div class="pagination-container" id="lm-warehouse-pagination"></div>
-          
-          <!-- LM Warehouse Empty State -->
-          <div class="empty-state" id="lm-warehouse-empty-state" style="display: none;">
-            <div class="empty-icon">
-              <i data-lucide="layers"></i>
-            </div>
-            <h2>저장된 LM스타일 자료가 없습니다</h2>
-            <p>상단의 버튼을 통해 새로운 LM스타일 자료를 기록해보세요.</p>
-          </div>
-        </div>
-
-        <!-- Favorites Share Section -->
-        <div id="fav-share-main-view" class="hidden">
-          <div class="warehouse-header flex-between" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">즐겨찾기 공유</h2>
-              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">유용한 즐겨찾기 사이트와 설명을 등록하고 바로가기 링크를 공유합니다.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-secondary btn-sm" id="btn-sync-fav-share" title="GitHub 서버의 fav_share_data.json 파일 데이터로 동기화합니다." style="display: none;">
-                <i data-lucide="refresh-cw"></i>
-                <span>서버 업데이트</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-export-fav-share" title="현재 즐겨찾기 데이터를 fav_share_data.json 파일로 내보냅니다." style="display: none;">
-                <i data-lucide="download"></i>
-                <span>JSON 다운로드</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-copy-fav-share-json" title="현재 즐겨찾기 데이터를 JSON 텍스트로 복사합니다." style="display: none;">
-                <i data-lucide="copy"></i>
-                <span>JSON 복사</span>
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-fav-category-order" style="display: none;">
-                <i data-lucide="list-ordered"></i>
-                <span>순서 변경</span>
-              </button>
-              <button class="btn btn-primary btn-sm" id="btn-new-fav-share-item" style="display: none;">
-                <i data-lucide="plus"></i>
-                <span>새 즐겨찾기 등록</span>
-              </button>
-            </div>
-          </div>
-          
-          <div id="fav-share-container">
-            <!-- Dynamically populated categories and grids -->
-          </div>
-          
-          <!-- Favorites Share Empty State -->
-          <div class="empty-state" id="fav-share-empty-state" style="display: none;">
-            <div class="empty-icon">
-              <i data-lucide="bookmark"></i>
-            </div>
-            <h2>등록된 즐겨찾기가 없습니다</h2>
-            <p id="fav-share-empty-desc">즐겨찾기 공유 아이템이 비어있습니다.</p>
-          </div>
-        </div>
-      </div>
-    </main>
-    
-    <!-- Right Detail Drawer -->
-    <div class="drawer-backdrop" id="detail-drawer-backdrop"></div>
-    <div class="detail-drawer" id="detail-drawer">
-      <div class="drawer-header">
-        <span class="drawer-category" id="detail-category">카테고리</span>
-        <div class="drawer-header-actions">
-          <button class="btn-icon text-primary" id="btn-detail-edit" title="수정하기">
-            <i data-lucide="edit-3"></i>
-          </button>
-          <button class="btn-icon text-danger" id="btn-detail-delete" title="삭제하기">
-            <i data-lucide="trash-2"></i>
-          </button>
-          <button class="btn-icon" id="btn-detail-close" title="닫기">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-      </div>
-      
-      <div class="drawer-body">
-        <h2 class="drawer-title" id="detail-title">프롬프트 제목</h2>
-        
-        <div class="drawer-tags" id="detail-tags">
-          <!-- Tags go here -->
-        </div>
-        
-        <div class="drawer-section" id="detail-desc-section">
-          <h4 class="section-title">설명 / 메모</h4>
-          <p class="drawer-desc" id="detail-desc">설명이 여기에 나타납니다.</p>
-        </div>
-        
-        <div class="drawer-section" id="detail-model-section" style="display: none;">
-          <h4 class="section-title">권장 AI 모델</h4>
-          <div class="detail-model-badge" id="detail-model"></div>
-        </div>
-
-        
-        <!-- Prompt Original Text Box (Simple Layout) -->
-        <div class="drawer-section" id="detail-prompt-section">
-          <h4 class="section-title flex-between">
-            <span>프롬프트 본문 템플릿</span>
-            <button class="btn btn-primary btn-sm" id="btn-copy-original" style="font-size: 11px; padding: 4px 8px; height: auto; display: inline-flex; align-items: center; gap: 4px;">
-              <i data-lucide="copy" style="width: 12px; height: 12px;"></i>
-              <span>복사하기</span>
-            </button>
-          </h4>
-          <div class="code-container">
-            <pre class="code-block" id="detail-original-text" style="max-height: 350px;"></pre>
-          </div>
-        </div>
-        
-        <!-- Typical Output / Result Section -->
-        <div class="drawer-section" id="detail-output-section">
-          <h4 class="section-title flex-between">
-            <span>답변 결과물 예시</span>
-            <button class="btn btn-ghost btn-xs" id="btn-copy-output">
-              <i data-lucide="copy" class="size-xs"></i>
-              <span>결과물 복사</span>
-            </button>
-          </h4>
-          
-          <div class="code-container output-container" id="detail-output-text-container">
-            <pre class="code-block output-block" id="detail-output-text">결과물 텍스트가 표시됩니다.</pre>
-          </div>
-          
-          <div class="detail-image-container" id="detail-output-image-container" style="display: none;">
-            <img id="detail-output-image" src="" alt="결과물 캡쳐 이미지">
-            <div class="image-overlay-info"><i data-lucide="zoom-in"></i> 클릭하여 확대 보기</div>
-          </div>
-        </div>
-        
-        <!-- Metadata -->
-        <div class="drawer-meta">
-          <div id="detail-usage-container"><i data-lucide="copy"></i> 복사 횟수: <span id="detail-usage-count">0</span>회</div>
-          <div><i data-lucide="calendar"></i> 생성: <span id="detail-created-at">2026-06-24</span></div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Add / Edit Modal -->
-    <div class="modal-overlay" id="prompt-modal">
-      <div class="modal-container">
-        <div class="modal-header">
-          <h2 id="modal-title">새 프롬프트 추가</h2>
-          <button class="btn-icon" id="btn-modal-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        
-        <form id="prompt-form" class="modal-form">
-          <input type="hidden" id="prompt-id">
-          
-          <div class="form-group">
-            <label for="form-title">제목 <span class="required">*</span></label>
-            <input type="text" id="form-title" placeholder="예: 영한 비즈니스 이메일 번역기" required autocomplete="off">
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group flex-1">
-              <label for="form-category">카테고리 <span class="required">*</span></label>
-              <div class="select-new-combo">
-                <select id="form-category" required>
-                  <option value="" disabled selected>선택하세요</option>
-                  <!-- Dynamically populated options -->
-                </select>
-                <input type="text" id="form-category-new" placeholder="새 카테고리 입력" class="hidden">
-                <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-new-category" title="새 카테고리 추가">
-                  <i data-lucide="plus"></i>
-                </button>
-              </div>
-            </div>
-            
-            <div class="form-group flex-1">
-              <label for="form-tags">태그 <span class="muted">(쉼표로 구분)</span></label>
-              <input type="text" id="form-tags" placeholder="예: 번역, 비즈니스, 영어" autocomplete="off">
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="form-desc">설명 / 메모</label>
-            <input type="text" id="form-desc" placeholder="프롬프트의 용도나 사용법을 간단히 적어주세요." autocomplete="off">
-          </div>
-          
-          <div class="form-group">
-            <label for="form-model-select">권장 AI 모델 <span class="muted">(선택 또는 직접 입력)</span></label>
-            <select id="form-model-select">
-              <option value="GPT">GPT</option>
-              <option value="Gemini">Gemini</option>
-              <option value="Claude">Claude</option>
-              <option value="기타">기타 (직접 입력)</option>
-            </select>
-            <input type="text" id="form-model-custom" placeholder="AI 모델명을 직접 입력해주세요." autocomplete="off" style="margin-top: 8px; display: none;">
-          </div>
-
-          
-          <div class="form-group">
-            <label for="form-prompt">프롬프트 템플릿 본문 <span class="required">*</span></label>
-            <div class="textarea-wrapper">
-              <textarea id="form-prompt" rows="7" placeholder="프롬프트 내용을 입력하세요. 변수가 필요하면 {{변수명}} 형태로 입력하세요.&#10;예: '다음의 한국어 문장을 {{language}}로 자연스럽게 번역해줘: {{text}}'" required></textarea>
-              <div class="textarea-hint">변수 예시: <code>{{언어}}</code>, <code>{{문장}}</code> 등을 입력하면 자동으로 입력 필드가 만들어집니다.</div>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="form-output">답변 결과물 예시 <span class="muted">(선택사항)</span></label>
-            <textarea id="form-output" rows="3" placeholder="성공적이었던 AI의 답변 결과물을 저장해 두면 유용합니다."></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label>결과물 이미지 첨부 <span class="muted">(스크린샷 이미지 업로드 또는 붙여넣기 가능)</span></label>
-            <div class="image-upload-zone" id="image-upload-zone">
-              <div class="upload-placeholder" id="upload-placeholder">
-                <i data-lucide="image-plus" class="upload-icon"></i>
-                <span class="upload-text">클릭하여 이미지 파일 선택 또는 이 창에서 스크린샷 붙여넣기 (Ctrl+V)</span>
-              </div>
-              <input type="file" id="form-image-input" accept="image/*" class="hidden">
-              
-              <div class="image-preview-container hidden" id="modal-image-preview-container">
-                <img id="modal-image-preview" src="" alt="첨부 이미지 미리보기">
-                <button type="button" class="btn-remove-image" id="btn-remove-image" title="이미지 삭제">
-                  <i data-lucide="x"></i>
-                </button>
-              </div>
-            </div>
-            <input type="hidden" id="form-image-data">
-          </div>
-          
-          <div class="modal-actions">
-            <button type="button" class="btn btn-ghost btn-sm text-info" id="btn-modal-share" style="margin-right: auto; display: inline-flex; align-items: center; gap: 4px;">
-              <i data-lucide="share-2" style="width: 14px; height: 14px;"></i>
-              <span>공유 링크 복사</span>
-            </button>
-            <button type="button" class="btn btn-secondary" id="btn-modal-cancel">취소</button>
-            <button type="submit" class="btn btn-primary" id="btn-modal-submit">저장하기</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    
-    <!-- Lightbox Modal for Image Zoom -->
-    <div class="lightbox-overlay" id="lightbox-modal">
-      <button class="btn-icon lightbox-close" id="btn-lightbox-close" title="닫기">
-        <i data-lucide="x"></i>
-      </button>
-      <div class="lightbox-content">
-        <img id="lightbox-image" src="" alt="확대 이미지">
-      </div>
-    </div>
-
-    <!-- Warehouse Item Add Modal -->
-    <div class="modal-overlay" id="warehouse-modal">
-      <div class="modal-container modal-sm">
-        <div class="modal-header">
-          <h2 id="warehouse-modal-title">새 링크/캡처 등록</h2>
-          <button class="btn-icon" id="btn-warehouse-modal-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        
-        <form id="warehouse-form" class="modal-form">
-          <input type="hidden" id="wh-id">
-          
-          <div class="form-group">
-            <label for="wh-title">자료 설명/제목 <span class="required">*</span></label>
-            <input type="text" id="wh-title" placeholder="예: 번역 이메일 레이아웃 스크린샷" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          
-          <div class="form-group">
-            <label for="wh-url">참조 링크 (URL) <span class="muted">(선택사항)</span></label>
-            <input type="text" id="wh-url" placeholder="예: https://example.com/reference" autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          
-          <div class="form-group">
-            <label for="wh-prompt">프롬프트 내용 <span class="muted">(선택사항)</span></label>
-            <textarea id="wh-prompt" placeholder="관련 프롬프트 내용을 입력하세요." rows="4" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%; resize: vertical; font-family: inherit; line-height: 1.6;"></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label>캡처 이미지 첨부 <span class="required">*</span> <span class="muted">(클릭 업로드 또는 이 창에서 Ctrl+V 붙여넣기 가능)</span></label>
-            <div class="image-upload-zone" id="wh-image-upload-zone">
-              <div class="upload-placeholder" id="wh-upload-placeholder">
-                <i data-lucide="image-plus" class="upload-icon"></i>
-                <span class="upload-text">클릭하여 이미지 파일 선택 또는 스크린샷 붙여넣기 (Ctrl+V)</span>
-              </div>
-              <input type="file" id="wh-image-input" accept="image/*" class="hidden">
-              
-              <div class="image-preview-container hidden" id="wh-image-preview-container">
-                <img id="wh-image-preview" src="" alt="첨부 이미지 미리보기" style="max-height: 180px; max-width: 100%; border-radius: 6px; object-fit: contain;">
-                <button type="button" class="btn-remove-image" id="btn-wh-remove-image" title="이미지 삭제">
-                  <i data-lucide="x"></i>
-                </button>
-              </div>
-            </div>
-            <input type="hidden" id="wh-image-data" required>
-          </div>
-          
-          <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="btn-warehouse-modal-cancel">취소</button>
-            <button type="submit" class="btn btn-primary" id="btn-warehouse-modal-submit">등록하기</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Video Warehouse Item Add Modal -->
-    <div class="modal-overlay" id="video-warehouse-modal">
-      <div class="modal-container modal-sm">
-        <div class="modal-header">
-          <h2 id="video-warehouse-modal-title">새 영상 프롬프트 자료 등록</h2>
-          <button class="btn-icon" id="btn-video-warehouse-modal-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        
-        <form id="video-warehouse-form" class="modal-form">
-          <input type="hidden" id="video-wh-id">
-          
-          <div class="form-group">
-            <label for="video-wh-title">자료 설명/제목 <span class="required">*</span></label>
-            <input type="text" id="video-wh-title" placeholder="예: 시네마틱 숲 속 드론 뷰" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          
-          <div class="form-group">
-            <label for="video-wh-url">참조 링크 (URL) <span class="muted">(선택사항)</span></label>
-            <input type="text" id="video-wh-url" placeholder="예: https://example.com/reference" autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          
-          <div class="form-group">
-            <label for="video-wh-prompt">프롬프트 내용 <span class="muted">(선택사항)</span></label>
-            <textarea id="video-wh-prompt" placeholder="관련 프롬프트 내용을 입력하세요." rows="4" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%; resize: vertical; font-family: inherit; line-height: 1.6;"></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label>캡처 이미지 첨부 <span class="required">*</span> <span class="muted">(클릭 업로드 또는 이 창에서 Ctrl+V 붙여넣기 가능)</span></label>
-            <div class="image-upload-zone" id="video-wh-image-upload-zone">
-              <div class="upload-placeholder" id="video-wh-upload-placeholder">
-                <i data-lucide="image-plus" class="upload-icon"></i>
-                <span class="upload-text">클릭하여 이미지 파일 선택 또는 스크린샷 붙여넣기 (Ctrl+V)</span>
-              </div>
-              <input type="file" id="video-wh-image-input" accept="image/*" class="hidden">
-              
-              <div class="image-preview-container hidden" id="video-wh-image-preview-container">
-                <img id="video-wh-image-preview" src="" alt="첨부 이미지 미리보기" style="max-height: 180px; max-width: 100%; border-radius: 6px; object-fit: contain;">
-                <button type="button" class="btn-remove-image" id="btn-video-wh-remove-image" title="이미지 삭제">
-                  <i data-lucide="x"></i>
-                </button>
-              </div>
-            </div>
-            <input type="hidden" id="video-wh-image-data" required>
-          </div>
-          
-          <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="btn-video-warehouse-modal-cancel">취소</button>
-            <button type="submit" class="btn btn-primary" id="btn-video-warehouse-modal-submit">등록하기</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- LM Warehouse Item Add Modal -->
-    <div class="modal-overlay" id="lm-warehouse-modal">
-      <div class="modal-container modal-sm">
-        <div class="modal-header">
-          <h2 id="lm-warehouse-modal-title">새 LM스타일 자료 등록</h2>
-          <button class="btn-icon" id="btn-lm-warehouse-modal-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        
-        <form id="lm-warehouse-form" class="modal-form">
-          <input type="hidden" id="lm-wh-id">
-          
-          <div class="form-group">
-            <label for="lm-wh-title">자료 설명/제목 <span class="required">*</span></label>
-            <input type="text" id="lm-wh-title" placeholder="예: LM스타일 번역 템플릿" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          
-          <div class="form-group">
-            <label for="lm-wh-url">참조 링크 (URL) <span class="muted">(선택사항)</span></label>
-            <input type="text" id="lm-wh-url" placeholder="예: https://example.com/reference" autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          
-          <div class="form-group">
-            <label for="lm-wh-prompt">프롬프트 내용 <span class="muted">(선택사항)</span></label>
-            <textarea id="lm-wh-prompt" placeholder="관련 프롬프트 내용을 입력하세요." rows="4" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%; resize: vertical; font-family: inherit; line-height: 1.6;"></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label>캡처 이미지 첨부 <span class="required">*</span> <span class="muted">(클릭 업로드 또는 이 창에서 Ctrl+V 붙여넣기 가능)</span></label>
-            <div class="image-upload-zone" id="lm-wh-image-upload-zone">
-              <div class="upload-placeholder" id="lm-wh-upload-placeholder">
-                <i data-lucide="image-plus" class="upload-icon"></i>
-                <span class="upload-text">클릭하여 이미지 파일 선택 또는 스크린샷 붙여넣기 (Ctrl+V)</span>
-              </div>
-              <input type="file" id="lm-wh-image-input" accept="image/*" class="hidden">
-              
-              <div class="image-preview-container hidden" id="lm-wh-image-preview-container">
-                <img id="lm-wh-image-preview" src="" alt="첨부 이미지 미리보기" style="max-height: 180px; max-width: 100%; border-radius: 6px; object-fit: contain;">
-                <button type="button" class="btn-remove-image" id="btn-lm-wh-remove-image" title="이미지 삭제">
-                  <i data-lucide="x"></i>
-                </button>
-              </div>
-            </div>
-            <input type="hidden" id="lm-wh-image-data" required>
-          </div>
-          
-          <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="btn-lm-warehouse-modal-cancel">취소</button>
-            <button type="submit" class="btn btn-primary" id="btn-lm-warehouse-modal-submit">등록하기</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    
-    
-    <!-- Favorites Share Item Add/Edit Modal -->
-    <div class="modal-overlay" id="fav-share-modal">
-      <div class="modal-container modal-sm">
-        <div class="modal-header">
-          <h2 id="fav-share-modal-title">새 즐겨찾기 등록</h2>
-          <button class="btn-icon" id="btn-fav-share-modal-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        
-        <form id="fav-share-form" class="modal-form">
-          <input type="hidden" id="fav-id">
-          
-          <div class="form-group">
-            <label for="fav-title">사이트 이름/간단 설명 <span class="required">*</span></label>
-            <input type="text" id="fav-title" placeholder="예: ChatGPT 공식 사이트" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          
-          <div class="form-group">
-            <label for="fav-category">카테고리 <span class="required">*</span></label>
-            <div class="select-new-combo">
-              <select id="fav-category" required style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
-                <option value="" disabled selected>선택하세요</option>
-                <!-- Dynamically populated options -->
-              </select>
-              <input type="text" id="fav-category-new" placeholder="새 카테고리 입력" class="hidden" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
-              <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-fav-new-category" title="새 카테고리 추가">
-                <i data-lucide="plus"></i>
-              </button>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="fav-url">참조 링크 (URL) <span class="required">*</span></label>
-            <input type="url" id="fav-url" placeholder="예: https://chatgpt.com" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          
-          <div class="form-group">
-            <label for="fav-desc">상세 설명 <span class="muted">(선택사항)</span></label>
-            <textarea id="fav-desc" placeholder="사이트에 대한 추가 설명을 입력하세요." rows="3" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%; resize: vertical; font-family: inherit; line-height: 1.6;"></textarea>
-          </div>
-          
-          <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="btn-fav-share-modal-cancel">취소</button>
-            <button type="submit" class="btn btn-primary" id="btn-fav-share-modal-submit">등록하기</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Favorites Share Category Order Modal -->
-    <div class="modal-overlay" id="fav-category-order-modal">
-      <div class="modal-container modal-sm">
-        <div class="modal-header">
-          <h2>카테고리 순서 변경</h2>
-          <button class="btn-icon" id="btn-fav-category-order-modal-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        
-        <div class="modal-form" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
-          <p style="font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.5;">
-            카테고리 이름을 선택한 후 우측의 위/아래 버튼으로 표시 순서를 조정할 수 있습니다.
+          <h3>프롬프트 공유</h3>
+          <p>
+            자주 사용하는 프롬프트를 단 한 번의 클릭으로 공유 가능한 고유 URL 링크로 변환합니다. 생성된 링크를 활용해 팀원이나 외부에 즉시 최적의 프롬프트를 전송하고 협업할 수 있습니다.
           </p>
-          
-          <div style="border: 1px solid var(--border-color); border-radius: 10px; max-height: 250px; overflow-y: auto; background-color: var(--bg-card);">
-            <ul id="fav-category-order-list" style="list-style: none; padding: 0; margin: 0;">
-              <!-- Dynamically populated category items -->
-            </ul>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="icon-box indigo">
+            <i data-lucide="filter" style="width: 28px; height: 28px;"></i>
           </div>
-          
-          <div class="modal-actions" style="margin-top: 8px;">
-            <button type="button" class="btn btn-secondary" id="btn-fav-category-order-modal-cancel">취소</button>
-            <button type="button" class="btn btn-primary" id="btn-fav-category-order-modal-save">저장하기</button>
+          <h3>카테고리별 필터링</h3>
+          <p>
+            등록한 프롬프트들을 카테고리와 다양한 태그로 정교하게 분류하여 관리합니다. 아무리 방대한 양의 프롬프트 보관소라도 원클릭 필터를 통해 필요한 템플릿을 신속히 찾아냅니다.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="icon-box purple">
+            <i data-lucide="globe" style="width: 28px; height: 28px;"></i>
           </div>
+          <h3>프롬프트 관련 사이트 공유</h3>
+          <p>
+            유용하거나 자주 참고하는 AI 프롬프트 관련 웹사이트 및 외부 자원들의 링크를 등록하고 관리합니다. 필수적인 참고 리소스를 한곳에 모아 팀원들과 즉시 공유할 수 있습니다.
+          </p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Email Auth Modal -->
-    <div class="modal-overlay" id="email-auth-modal">
-      <div class="modal-container modal-sm">
-        <div class="modal-header">
-          <h2>관리자 인증</h2>
-          <button class="btn-icon" id="btn-auth-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        
-        <div class="modal-form" id="auth-email-step">
-          <div class="modal-desc">관리자 권한이 필요한 작업입니다. 이메일 인증을 진행해주세요.</div>
-          <div class="form-group">
-            <label for="auth-email">관리자 이메일 주소 <span class="required">*</span></label>
-            <input type="email" id="auth-email" placeholder="admin@example.com" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth);">
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="btn-auth-cancel">취소</button>
-            <button type="button" class="btn btn-primary" id="btn-send-code">인증 코드 발송</button>
-          </div>
-        </div>
-        
-        <div class="modal-form hidden" id="auth-code-step">
-          <div class="modal-desc">입력하신 이메일로 6자리 인증 코드가 전송되었습니다. 코드를 입력해주세요.</div>
-          <div class="form-group">
-            <label for="auth-code">인증 코드 (6자리) <span class="required">*</span></label>
-            <div class="code-input-wrapper">
-              <input type="text" id="auth-code" maxlength="6" placeholder="000000" required autocomplete="off" style="letter-spacing: 0.5em; text-align: center; font-size: 1.5rem; font-weight: 700; background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); transition: var(--transition-smooth);">
-              <span class="timer-badge" id="auth-timer">03:00</span>
-            </div>
-          </div>
-          
-          <!-- Real Email Notification Info -->
-          <div class="real-notification-info" style="margin-top: 15px; padding: 12px; background-color: rgba(79, 70, 229, 0.04); border: 1px solid rgba(79, 70, 229, 0.15); border-radius: 10px; font-size: 13px; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
-            <i data-lucide="info" style="width: 16px; height: 16px; color: var(--accent-primary); flex-shrink: 0;"></i>
-            <span>입력하신 메일 주소로 인증번호가 발송되었습니다. 메일함을 확인해주세요.</span>
-          </div>
-          
-          <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" id="btn-auth-back">이메일 수정</button>
-            <button type="button" class="btn btn-primary" id="btn-verify-code">인증 완료</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- GitHub Config Modal -->
-    <div class="modal-overlay" id="github-config-modal">
-      <div class="modal-container modal-sm">
-        <div class="modal-header">
-          <h2>GitHub 서버 동기화 설정</h2>
-          <button class="btn-icon" id="btn-github-config-close">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-        
-        <form id="github-config-form" class="modal-form">
-          <div class="modal-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">JSON 데이터를 GitHub 저장소에 동기화(저장)하기 위한 계정 및 토큰 설정을 입력해주세요.</div>
-          
-          <div class="form-group">
-            <label for="github-token">Personal Access Token (PAT) <span class="required">*</span></label>
-            <input type="password" id="github-token" placeholder="ghp_..." required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
-            <div class="textarea-hint" style="margin-top: 4px; font-size: 11px; color: var(--text-muted);">필요 권한: <code>repo</code> 권한이 활성화된 토큰이어야 합니다.</div>
-          </div>
-          
-          <div class="form-group">
-            <label for="github-owner">GitHub 사용자 이름 (Owner) <span class="required">*</span></label>
-            <input type="text" id="github-owner" placeholder="예: github-username" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
-          </div>
-          
-          <div class="form-group">
-            <label for="github-repo">저장소 이름 (Repository) <span class="required">*</span></label>
-            <input type="text" id="github-repo" placeholder="예: promptories" required autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
-          </div>
-          
-          <div class="form-group">
-            <label for="github-branch">브랜치 이름 (Branch)</label>
-            <input type="text" id="github-branch" placeholder="main (비워두면 main으로 설정)" autocomplete="off" style="background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 14px; transition: var(--transition-smooth); width: 100%;">
-          </div>
-          
-          <div class="modal-actions" style="margin-top: 20px;">
-            <button type="button" class="btn btn-secondary text-danger" id="btn-github-config-delete" style="margin-right: auto;" title="저장된 GitHub 연동 토큰 및 설정을 로컬 스토리지에서 삭제합니다.">설정 삭제</button>
-            <button type="button" class="btn btn-secondary" id="btn-github-config-cancel">취소</button>
-            <button type="submit" class="btn btn-primary" id="btn-github-config-save">설정 저장</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Toast Notification Container -->
-    <div class="toast-container" id="toast-container"></div>
-    
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2026 PROMPTORIES. Designed by Antigravity. All rights reserved.</p>
+    </footer>
   </div>
 
-  <!-- EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function() {
-      // 본인의 EmailJS Public Key를 아래에 설정하세요. (예: "pX9...")
-      emailjs.init({
-        publicKey: "aXXhO0m1M7H5nSE-P",
-      });
-    })();
-  </script>
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
 
-  <script src="app.js"></script>
+    // Mouse Tracking Glow Effect
+    const glow = document.getElementById('cursor-glow');
+    
+    document.addEventListener('mousemove', (e) => {
+      glow.style.opacity = '1';
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('mouseleave', () => {
+      glow.style.opacity = '0';
+    });
+  </script>
 </body>
 </html>

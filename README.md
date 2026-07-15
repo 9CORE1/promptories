@@ -11,8 +11,9 @@
 이 프로젝트는 별도의 데이터베이스나 백엔드 서버 설치 과정이 필요하지 않은 **순수 클라이언트 사이드 웹 애플리케이션**입니다. 
 
 ### 1. 즉시 실행하기
-프로젝트 폴더에 있는 `index.html` 파일을 더블 클릭하여 웹 브라우저(Chrome, Edge, Safari 등)에서 즉시 실행할 수 있습니다.
-*   **파일 위치**: `C:/Users/HRDPRO/Documents/antigravity/index.html`
+프로젝트 폴더에 있는 `index.html` 파일을 더블 클릭하여 서비스 소개 및 랜딩 페이지를 볼 수 있습니다. 실제 프롬프트 관리 스테이션 애플리케이션으로 바로 진입하려면 `app.html` 파일을 실행할 수도 있습니다.
+*   **소개 및 진입 페이지**: `C:/Users/HRDPRO/Documents/antigravity/index.html`
+*   **메인 애플리케이션 페이지**: `C:/Users/HRDPRO/Documents/antigravity/app.html`
 
 ---
 
