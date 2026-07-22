@@ -270,5 +270,69 @@
     "usageCount": 0,
     "createdAt": "2026-07-22T03:11:10.253Z",
     "updatedAt": "2026-07-22T03:11:10.253Z"
+  },
+  {
+    "id": "prompt-1784690968688-srixobc8u",
+    "title": "캐릭터시트활용1 - 노트북속의 나",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "캐릭터시트활용1 - 노트북속의 나",
+    "recommendedModel": "GPT",
+    "promptText": "Preserve the exact same face, hairstyle, body proportions, skin tone, clothing, colors, fabrics, accessories, and styling. Use the reference image only for the pose, framing, camera perspective, and editorial mood.\n\nPhotograph with an ultra wide-angle 18–20mm lens from slightly above eye level, angled gently downward. Keep the camera close so the head, face, shoulders, and laptop appear naturally larger from perspective. Do not use a low-angle viewpoint.\n\nFrame as a tight upper-thigh shot. Crop through the upper thighs so the knees, lower legs, ankles, and feet remain completely outside the frame. Do not generate a full-body or three-quarter portrait. The subject fills approximately 85% of the frame with minimal headroom.\n\nThe model stands in a relaxed contrapposto pose with weight on one leg and the upper body leaning slightly toward the camera. Keep the head almost upright with a subtle tilt, the chin gently raised, and maintain calm, direct eye contact. The model holds an open laptop naturally with one hand from underneath at upper-abdomen to lower-chest height while the other arm hangs naturally. The laptop screen faces directly toward the camera and displays an extreme close-up of the same uploaded model's face, filling almost the entire display. Leave negative space on the right so the charging cable extends naturally toward the edge.\n\nCreate the scene inside a seamless cool blue-gray cyclorama studio, not a pure white studio. The wall and floor blend into one continuous surface with a soft blue-gray tint, creating a luxurious minimal editorial atmosphere. Use large diffused studio lighting with almost shadowless illumination, cool white balance, smooth highlight roll-off, low contrast, subtle analog grain, slightly desaturated colors, soft cool skin tones, and gentle blue-gray ambient reflections. High-end early-2000s luxury fashion editorial aesthetic. Color palette: #F4F7FA, #E6ECF2, #D6DEE8, #BCC8D5, #7F8D9C. Vertical 2:3 aspect ratio, no props, text, logos, or watermark, ultra-photorealistic.",
+    "outputText": "",
+    "outputImage": "images/prompt-1784690968688-srixobc8u.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T03:29:28.688Z",
+    "updatedAt": "2026-07-22T03:29:28.688Z"
+  },
+  {
+    "id": "prompt-1784691024557-n3at7z691",
+    "title": "캐릭터시트활용2 - 미니미 나와 함께",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "캐릭터시트활용2 - 미니미 나와 함께",
+    "recommendedModel": "GPT",
+    "promptText": "Preserve the exact same face, hairstyle, body proportions, outfit and accessories. Use the reference image only for the composition and pose. Create a surreal giant-object editorial photograph. A giant version of the model fills the left side of the frame, with only the back, hips and lower body extending beyond the frame while the entire face remains fully visible. The giant is in a very deep squat, both feet flat on the floor, knees deeply bent, torso leaning forward, both hands resting naturally on the knees, looking directly at the miniature. The miniature model is 15–20% of the image height, positioned in the lower-right corner, jumping on one leg with the opposite knee raised, smiling and waving while making direct eye contact. Both figures exist in the same physical studio, photographed in a single exposure with identical perspective, lighting, shadows and floor contact, creating a completely natural scale illusion rather than a composite. Soft seamless studio background with a cool bluish-gray gradient, low-contrast editorial lighting, subtle falloff, gentle shadows, muted tones, Kodak Portra 400 color palette shifted cooler (#E8EDF2, #D8E0E6, #B8C2CC, #6B7480), fine analog film grain, soft highlight roll-off, cinematic fashion photography, 2:3 aspect ratio, ultra photorealistic. Negative: composite look, mismatched shadows, inconsistent perspective, pasted subject, cropped face, CGI, illustration, anime, text, watermark.",
+    "outputText": "",
+    "outputImage": "images/prompt-1784691024557-n3at7z691.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T03:30:24.557Z",
+    "updatedAt": "2026-07-22T03:30:24.557Z"
+  },
+  {
+    "id": "prompt-1784691077089-yy8nx2hga",
+    "title": "캐릭터시트활용3 - MZ샷",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "캐릭터시트활용3 - MZ샷",
+    "recommendedModel": "GPT",
+    "promptText": "Top-down hero angle full-body fashion editorial. The camera is positioned approximately 2 meters directly above the model's head, pitched straight downward about 75–85 degrees, and placed slightly in front of the model's centerline rather than directly overhead. The entire body is fully visible from head to toe with both feet completely inside the frame and generous space around the body. The model stands perfectly centered in the composition. Ultra wide-angle perspective (20–24mm lens equivalent) with strong but natural perspective distortion: the face appears noticeably larger due to the camera angle while the legs appear dramatically longer. The body forms a subtle S-curve with one hip pushed outward and the weight resting naturally on one leg. Both hands are naturally clasped behind the back or resting behind the waist. The chin is slightly lowered while maintaining direct eye contact with the camera. The head is closest to the camera and the feet are farthest away, creating a powerful top-down perspective. Soft cool blue-gray seamless studio background with a subtle center-to-edge gradient (#DCE6F2 → #B8C7D9). Soft diffused studio lighting with a cool daylight white balance (6000–6500K), gentle wraparound illumination, smooth tonal transitions, very soft natural shadows, low-contrast editorial color grading, slightly muted saturation, cool neutral whites, clean natural skin tones, deep charcoal blacks, and a refined cinematic studio look. Premium luxury fashion campaign editorial, bold composition, dramatic perspective, elegant posture, high-end magazine photography, crisp details, photorealistic.",
+    "outputText": "",
+    "outputImage": "images/prompt-1784691077089-yy8nx2hga.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T03:31:17.089Z",
+    "updatedAt": "2026-07-22T03:31:17.089Z"
+  },
+  {
+    "id": "prompt-1784691121879-rop4f0jtf",
+    "title": "캐릭터시트활용4 - TV속의 나",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "캐릭터시트활용4 - TV속의 나",
+    "recommendedModel": "GPT",
+    "promptText": "Preserve the model 100%, including facial identity, facial proportions, hairstyle, skin tone, body proportions, expression, and all distinctive features. Keep the exact same outfit, colors, fabric texture, shoes, and accessories from the uploaded photo. Never redesign, recolor, or replace any clothing. Ignore only the original background, lighting, composition, pose, and camera angle. Use the reference image only for the pose, composition, props, and studio layout.\n\nCreate a seamless white studio with three vintage CRT televisions. One large CRT television is placed prominently in the foreground with its screen facing the camera. Two additional CRT televisions are positioned behind the model on opposite sides, angled toward the camera. Every television screen must be turned on and clearly display close-up portraits of the exact same model from different angles. The TV screens are mandatory and must never be blank, turned off, show static, reflections, graphics, or unrelated imagery. The model kneels on both knees beside the front television, resting both forearms stacked flat across the top with the head gently resting on the arms while looking directly into the camera. Keep this pose exactly. Shoot from a slightly left-front diagonal angle using an off-center editorial composition. Place the front TV in the foreground and the model slightly behind it so the head and shoulders appear closer to the camera, creating strong foreground-background depth. Avoid perfectly centered, symmetrical, or catalog-style framing. 2:3 vertical, 28–35mm lens, eye-level, soft diffused studio lighting, authentic film grain, low contrast, warm ivory highlights, creamy whites, muted blacks, soft peach skin tones, nostalgic color grading. Color palette: #F6F1EA, #F8F6F2, #E8C9C8, #E8B8A8, #D8C7B6, #4A4643. Ultra-photorealistic, premium editorial fashion photography, crisp facial details, natural skin texture, authentic film look.",
+    "outputText": "",
+    "outputImage": "images/prompt-1784691121879-rop4f0jtf.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T03:32:01.879Z",
+    "updatedAt": "2026-07-22T03:32:01.879Z"
   }
 ]
