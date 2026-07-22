@@ -334,5 +334,21 @@
     "usageCount": 0,
     "createdAt": "2026-07-22T03:32:01.879Z",
     "updatedAt": "2026-07-22T03:32:01.879Z"
+  },
+  {
+    "id": "prompt-1784693511387-vz9cuxrph",
+    "title": "이미지 요소 추출하기",
+    "category": "이미지",
+    "tags": [
+      "요소추출"
+    ],
+    "description": "이미지에 있는 요소 추출하기",
+    "recommendedModel": "GPT",
+    "promptText": "Output this image as JSON. Include a field noting that the reference image's identity must be preserved exactly.",
+    "outputText": "{\n\"image\": {\n\"file_name\": \"refer.jpg\",\n\"orientation\": \"portrait\",\n\"aspect_ratio\": \"approximately 2:3\",\n\"content_type\": \"fashion editorial portrait\",\n\"subject\": {\n\"count\": 1,\n\"description\": \"An adult woman with long, dark, wavy hair standing against a curved, textured concrete wall.\",\n\"pose\": \"Full-body standing pose, leaning lightly against the wall, one hand in a trouser pocket, facing the camera.\",\n\"expression\": \"Calm, composed, and slightly serious.\",\n\"gaze\": \"Directed toward the camera.\",\n\"wardrobe\": {\n\"top\": \"Ivory satin blouse with a deep V neckline and loose sleeves.\",\n\"bottom\": \"High-waisted, wide-leg black trousers with a broad wrap-style sash tied at the waist.\",\n\"footwear\": \"Black pointed-toe high heels.\",\n\"accessories\": \"Small earrings and a subtle bracelet.\"\n}\n},\n\"environment\": {\n\"setting\": \"Minimalist brutalist architectural interior.\",\n\"materials\": [\n\"Dark textured concrete walls\",\n\"Polished dark stone floor\"\n],\n\"architectural_features\": [\n\"Curved wall surfaces\",\n\"Large oval ceiling opening\",\n\"Geometric passageways and recessed steps\"\n]\n},\n\"lighting\": {\n\"type\": \"Dramatic natural directional light\",\n\"source\": \"Strong sunlight entering through an overhead architectural opening\",\n\"characteristics\": [\n\"High contrast\",\n\"Hard-edged geometric shadows\",\n\"Soft highlights on the subject's face and blouse\",\n\"Long shadow cast along the wall and floor\"\n]\n},\n\"composition\": {\n\"framing\": \"Full-length portrait\",\n\"subject_position\": \"Right of center\",\n\"camera_angle\": \"Approximately eye level\",\n\"visual_balance\": \"The subject is balanced by large negative space and sweeping light shapes on the left.\",\n\"depth\": \"Layered architectural planes create strong depth and leading lines.\"\n},\n\"color_palette\": [\n\"Charcoal black\",\n\"Warm gray\",\n\"Ivory\",\n\"Soft beige skin tones\"\n],\n\"mood\": [\n\"Elegant\",\n\"Architectural\",\n\"Minimalist\",\n\"Cinematic\",\n\"Sophisticated\"\n],\n\"style\": {\n\"genre\": \"Luxury fashion photography\",\n\"finish\": \"Photorealistic\",\n\"contrast\": \"High\",\n\"detail_level\": \"High\",\n\"visual_influences\": [\n\"Editorial fashion campaign\",\n\"Modern brutalist architecture\",\n\"Chiaroscuro lighting\"\n]\n}\n},\n\"identity_preservation\": {\n\"required\": true,\n\"instruction\": \"The reference image subject's identity must be preserved exactly, including facial structure, distinguishing features, skin tone, hairline, and overall likeness. Do not alter, reinterpret, or substitute the person's identity.\"\n}\n}",
+    "outputImage": "images/prompt-1784693511387-vz9cuxrph.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T04:11:51.387Z",
+    "updatedAt": "2026-07-22T04:11:51.387Z"
   }
 ]
