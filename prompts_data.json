@@ -206,5 +206,69 @@
     "usageCount": 0,
     "createdAt": "2026-07-08T09:00:03.872Z",
     "updatedAt": "2026-07-08T09:01:27.062Z"
+  },
+  {
+    "id": "prompt-1784689660623-zv7ziie3q",
+    "title": "캐릭터시트1 - 인물 바스트샷",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "전신샷을 바스트샷으로",
+    "recommendedModel": "GPT",
+    "promptText": "Using the provided image as the identity reference, recreate the same person as a high-quality bust portrait. Preserve the character's facial identity, facial proportions, skin texture, hairstyle, hair length, hair color, body proportions, age impression, and overall appearance exactly as shown in the reference image. Reframe the composition into a Bust Shot: Crop from just below the chest to slightly above the head. Keep the subject centered. Straight-on front-facing view. Neutral expression. Symmetrical posture. Do not change pose, expression, body shape, or camera angle. Enhance image quality: Increase facial clarity and micro-details. Sharpen eyelashes, eyebrows, irises, lips, and skin texture naturally. Improve hair strand definition. Remove blur and AI smoothing artifacts. Face details should appear crisp while preserving identity. Camera: 85mm portrait lens Eye-level camera Soft diffused studio lighting Background: Pure white seamless studio background. Output: 2:3 aspect ratio High-resolution 8K render quality Premium studio portrait aesthetic",
+    "outputText": "",
+    "outputImage": "images/prompt-1784689660623-zv7ziie3q.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T03:07:40.623Z",
+    "updatedAt": "2026-07-22T03:07:40.623Z"
+  },
+  {
+    "id": "prompt-1784689737227-ubcvfx8oz",
+    "title": "캐릭터시트2 - 페이스 턴어라운드",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "페이스 턴어라운드",
+    "recommendedModel": "GPT",
+    "promptText": "Use the uploaded photo as the identity reference only. Generate a professional 4 face turnaround sheet on a seamless white background with Front, 3/4 Left, Left portrait, Rear. Keep identical facial identity, hairstyle, skin texture, and proportions in every image. Upper chest crop, 85mm portrait, soft studio lighting, photorealistic, ultra realistic, 8K.",
+    "outputText": "",
+    "outputImage": "images/prompt-1784689737227-ubcvfx8oz.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T03:08:57.227Z",
+    "updatedAt": "2026-07-22T03:08:57.227Z"
+  },
+  {
+    "id": "prompt-1784689821024-nyts68ufo",
+    "title": "캐릭터시트3 - 인물 표정 시트",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "인물 표정 시트",
+    "recommendedModel": "GPT",
+    "promptText": "Use the uploaded image as the identity reference only. Reconstruct the person into a standardized head-and-shoulders studio portrait regardless of the input framing. Crop from just below the collarbones to slightly above the head, with the head filling about 70–75% of the frame. Never generate a full-body, half-body, waist-up, upper-body, or bust shot.\n\nCreate one professional facial expression sheet with exactly eight portraits arranged in a clean 4×2 grid on a pure white seamless background. Keep the same person perfectly consistent in every portrait, preserving identical facial identity, hairstyle, bangs, hair length, skin tone, facial proportions, neck, and clothing visible at the neckline. Keep identical framing, camera distance, lighting, color grading, and use a straight-on front view (0°). Only the facial expression may change. Expressions in order: Neutral, Soft Smile, Big Smile (teeth visible), Laughing, Surprised, Angry, Sad, Winking. Photorealistic studio portrait, 85mm lens, soft diffused lighting, ultra realistic, 8K. Negative prompt: full body, half body, waist up, bust shot, zoomed out, different framing, different person, altered face, different hairstyle, side view, profile, head rotation, inconsistent lighting, beauty filter, illustration, anime, CGI, blurry, text, watermark.",
+    "outputText": "",
+    "outputImage": "images/prompt-1784689821024-nyts68ufo.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T03:10:21.024Z",
+    "updatedAt": "2026-07-22T03:10:21.024Z"
+  },
+  {
+    "id": "prompt-1784689870253-fygsuwojt",
+    "title": "캐릭터시트4 - 바디 턴어라운드",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "바디 턴어라운드",
+    "recommendedModel": "GPT",
+    "promptText": "Use the full-body image as the base reference and the bust portrait as the identity reference. Generate a full-body turnaround sheet with exactly four views in this order: Front (0°), Front 3/4 Left (45°), Left Profile (90°), Back (180°). Preserve the face from the first image and the outfit, body, and hair from the second image exactly. No extra views or duplicated angles. White background. Photorealistic. 8K.",
+    "outputText": "",
+    "outputImage": "images/prompt-1784689870253-fygsuwojt.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-07-22T03:11:10.253Z",
+    "updatedAt": "2026-07-22T03:11:10.253Z"
   }
 ]
