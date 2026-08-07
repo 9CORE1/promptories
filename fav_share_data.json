@@ -141,11 +141,19 @@
   },
   {
     "id": "fav-1784778953990-pfess3xrw",
-    "title": "▶ 이미지·영상 강의내용",
-    "category": "콘텐츠 제작 관련 사이트",
+    "title": "[contents] 이미지·영상 강의내용",
+    "category": "강의·강좌",
     "url": "https://9core1.github.io/contents/",
     "desc": "이미지·영상 강의내용",
     "createdAt": "2026-07-23T03:55:53.990Z",
-    "updatedAt": "2026-07-23T03:57:36.714Z"
+    "updatedAt": "2026-08-07T00:51:03.235Z"
+  },
+  {
+    "id": "fav-1786063791288-4o9204wfx",
+    "title": "AI PPT 프롬프트 사이트",
+    "category": "AI 추천 서비스",
+    "url": "https://surgepix.ai/resources/ko/awesome-ppt-prompts",
+    "desc": "PPT 제작 프롬프트 모음 사이트",
+    "createdAt": "2026-08-07T00:49:51.288Z"
   }
 ]
