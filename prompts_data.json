@@ -412,5 +412,38 @@
     "usageCount": 0,
     "createdAt": "2026-08-14T02:30:10.541Z",
     "updatedAt": "2026-08-14T02:34:24.712Z"
+  },
+  {
+    "id": "prompt-1786675065262-grwikxocw",
+    "title": "기존 영상 캐릭터 바꾸기",
+    "category": "영상",
+    "tags": [
+      "higgsfield",
+      "SeedanceSkill"
+    ],
+    "description": "기존 영상의 사람을 업로드한 캐릭터로 수정하기",
+    "recommendedModel": "Enhanced Seedance 2.0",
+    "promptText": "@[Video 1](video_1) controls the circular cutout composition and frame layout. @[chacha](3b4ebdc1-f3e6-49c9-86f5-6a29b467ab7e) controls the character identity and design. Replace only the person in @[Video 1](video_1) with the character from @[chacha](3b4ebdc1-f3e6-49c9-86f5-6a29b467ab7e), while keeping the exact circular frame layout and background intact. Ignore the original person in @[Video 1](video_1). Smooth motion inside the circle, camera and framing stay locked.",
+    "outputText": "https://youtu.be/MLOJyA0swvQ",
+    "outputImage": "images/prompt-1786675065262-grwikxocw.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-14T02:37:45.262Z",
+    "updatedAt": "2026-08-14T02:37:45.262Z"
+  },
+  {
+    "id": "prompt-1786675793868-3ausy7ia2",
+    "title": "영상내 업로드 이미지 캐릭터로 수정",
+    "category": "영상",
+    "tags": [
+      "Firefly"
+    ],
+    "description": "",
+    "recommendedModel": "Kling 3.0 Omni",
+    "promptText": "마지막 부분에 나오는 남성을 업로드한 이미지의 캐릭터로 수정해줘.",
+    "outputText": "",
+    "outputImage": "images/prompt-1786675793868-3ausy7ia2.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-14T02:49:53.868Z",
+    "updatedAt": "2026-08-14T02:49:53.868Z"
   }
 ]
