@@ -382,5 +382,21 @@
     "usageCount": 0,
     "createdAt": "2026-08-03T05:17:00.305Z",
     "updatedAt": "2026-08-03T05:17:00.305Z"
+  },
+  {
+    "id": "prompt-1786672079337-yihfaiizx",
+    "title": "이미지 요소 추출하기(헤어, 배경 미포함)",
+    "category": "이미지",
+    "tags": [
+      "요소추출"
+    ],
+    "description": "이미지에 있는 요소 추출하기(헤어, 배경 미포함)",
+    "recommendedModel": "GPT",
+    "promptText": "Output this image as JSON. Include a field noting that the reference image's identity must be preserved exactly.\nDo not extract, infer, describe, or include any hair-related information from the reference image, including hairstyle, hair color, hair length, hair texture, hairline, bangs, facial hair, or any other hair characteristics. Do not create any JSON fields related to hair.\nDo not extract, infer, describe, or include any background-related information from the reference image, including background color, objects, scenery, environment, location, setting, lighting originating from the background, depth, architecture, furniture, decorations, text, people, or any other background elements. Do not create any JSON fields related to the background.\nIgnore all hair and background information entirely when generating the JSON output.",
+    "outputText": "캐릭터 시트 업로드 --> 프롬프트 본문 실행 --> 이미지 결과물\n\n{\n\"identity_preservation\": \"The reference image's identity must be preserved exactly.\",\n\"subject\": {\n\"pose\": \"Seated in a relaxed, low crouched position with legs spread apart; one elbow rests on a raised knee while that hand supports the side of the face, and the opposite arm hangs downward between the legs.\",\n\"facial_expression\": \"Calm, neutral expression with slightly parted lips.\",\n\"eyewear\": \"Large brown-tinted sunglasses with a light-colored frame.\",\n\"upper_clothing\": \"Black hooded sweatshirt with a multicolored graphic and lettering on the chest.\",\n\"lower_clothing\": \"Loose-fitting blue denim jeans with rolled cuffs.\",\n\"footwear\": \"White high-top lace-up sneakers with contrasting trim.\",\n\"accessories\": [\n\"Multiple bracelets worn on one wrist\",\n\"Blue beaded bracelet worn on the opposite wrist\"\n],\n\"orientation\": \"Facing generally toward the camera.\"\n},\n\"composition\": {\n\"framing\": \"Full-body portrait\",\n\"camera_angle\": \"Approximately eye-level to slightly elevated\",\n\"subject_placement\": \"Centered prominently in the frame\"\n}\n}",
+    "outputImage": "images/prompt-1786672079337-yihfaiizx.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-14T01:47:59.337Z",
+    "updatedAt": "2026-08-14T01:51:20.799Z"
   }
 ]
