@@ -445,5 +445,19 @@
     "usageCount": 0,
     "createdAt": "2026-08-14T02:49:53.868Z",
     "updatedAt": "2026-08-14T02:49:53.868Z"
+  },
+  {
+    "id": "prompt-1786677287890-jhfu5k6qa",
+    "title": "FLOW에서 영상제작",
+    "category": "영상",
+    "tags": [],
+    "description": "",
+    "recommendedModel": "Omni Flash",
+    "promptText": "A professional 10-second corporate introduction video highlighting the key strengths and vision of \"WONDER Solutions.\"\n\n[00:00-00:03] Strength 1 - R&D & Patents: The video opens with a seamless transition from the technical coding workspace of @storyboard06, morphing the digital code screens into high-tech graphic overlays displaying patent certificates, research breakthroughs, and highly qualified experts working in a modern lab, referencing @storyboard07.\n\n[00:03-00:06] Strength 2 - Industry-Academic Partnership: Smooth transition to an interconnected digital node graphic representing strategic industry-academic partnerships and collaborative research, matching @storyboard09.\n\n[00:06-00:08] Strength 3 - Global Expansion: The camera zooms out to a dynamic 3D glowing global map with connection lines spreading worldwide alongside key client logos, representing @storyboard13.\n\n[00:08-00:10] Core Value & Slogan: The scene settles on a sleek corporate background inspired by @storyboard15, displaying prominent text overlay: \"WONDER Solutions: Valuing Employees & Customers, Leading the Smart Manufacturing Revolution.\"\n\nVisual Style & Mood: High-tech corporate cinematic style, sleek motion graphics, blue and metallic gold color accents, smooth transitions, 4K resolution, ultra-detailed lighting.",
+    "outputText": "",
+    "outputImage": "images/prompt-1786677287890-jhfu5k6qa.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-14T03:14:47.890Z",
+    "updatedAt": "2026-08-14T03:14:47.890Z"
   }
 ]
