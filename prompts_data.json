@@ -459,5 +459,22 @@
     "usageCount": 0,
     "createdAt": "2026-08-14T03:14:47.890Z",
     "updatedAt": "2026-08-14T03:14:47.890Z"
+  },
+  {
+    "id": "prompt-1786677539127-tik5zbscv",
+    "title": "노트북LM 디자인 프롬프트(Playful)",
+    "category": "노트북LM",
+    "tags": [
+      "notebookLM",
+      "슬라이드"
+    ],
+    "description": "",
+    "recommendedModel": "notebookLM",
+    "promptText": "Design Style:\nName: \"Playful Engineering Handbook\"\nConcept: \"エンジニア採用資料・技術広報資料向けの、図解とイラストを活用した親しみやすいテックプレゼンテーション\"\n\nCanvas:\nRatio: \"16:9\"\n\nMood:\n\n* Engineering\n* Startup\n* Friendly\n* Playful\n* Technical\n* Transparent\n* Human\n* Modern\n\nColor Palette:\nBackground:\nBase: \"White\"\n\nAccent:\nMint: \"Bright Mint Green\"\nPink: \"Soft Pink\"\nYellow: \"Warm Yellow\"\nCyan: \"Turquoise\"\nOrange: \"Soft Orange\"\n\nText:\nPrimary: \"Pure Black\"\nSecondary: \"Dark Gray\"\n\nTypography:\nHeading:\nFont: \"Bold Condensed Sans Serif\"\nWeight: \"ExtraBold\"\nStyle: \"large, impactful, startup style\"\n\nBody:\nFont: \"Clean Japanese Sans Serif\"\nWeight: \"Regular\"\n\nLabel:\nFont: \"Bold Sans Serif\"\nWeight: \"Bold\"\n\nLayout:\nStructure:\n- Engineering handbook format\n- Recruiting presentation style\n- One message per slide\n- Illustration-driven storytelling\n- Diagram-centric communication\n- Strong visual hierarchy\n\nGrid:\nColumns: 12\nMargins: \"Wide\"\n\nComposition:\n- Large headline at top\n- Visual explanation in center\n- Minimal supporting text\n- Strong use of whitespace\n- Cartoon annotations\n- Callout boxes and speech balloons\n\nNavigation:\n\n* Small section number in corner\n* Minimal page number\n* Consistent chapter system\n\nSlide Types:\n\nCover:\n- Large mission statement\n- Simple branding\n- Clean white background\n\nVision:\n- Large typography\n- One key message\n- Supporting illustration\n\nProduct Introduction:\n- Step-by-step flow diagrams\n- Device mockups\n- Simple explanatory labels\n\nFeature Overview:\n- Product screenshots\n- Process arrows\n- Callout annotations\n\nTechnical Architecture:\n- System diagrams\n- Infrastructure maps\n- Platform relationships\n- Network visualizations\n\nTeam Structure:\n- Organizational diagrams\n- Squad model visualizations\n- Cross-functional workflow\n\nEngineering Culture:\n- Principle cards\n- Simple illustrations\n- Culture explanations\n\nTechnology Stack:\n- Technology logo grid\n- Categorized framework lists\n- Minimal technical tables\n\nHiring:\n- Employee introduction cards\n- Career path explanations\n- Recruiting messages\n\nVisual Elements:\n\nIllustrations:\nStyle:\n- Hand-drawn\n- Friendly\n- Mascot-based\n- Cartoon annotations\n- Informal visual language\n\nSpeech Balloons:\nUsage:\n- Explain diagrams\n- Highlight insights\n- Add personality\n- Humanize technical content\n\nDiagrams:\nStyle:\n- Simple\n- Black outlines\n- Color-coded categories\n- Easy-to-understand structure\n\nDevice Mockups:\n- Smartphone screens\n- App flows\n- Product walkthroughs\n\nCharts:\nStyle:\n- Flat design\n- Minimal decoration\n- Large labels\n- Strong contrast\n\nBrand Personality:\n\n* Engineering-first\n* Friendly and open\n* Transparent\n* Community-oriented\n* Product-driven\n* Playful but professional\n\nRules:\n\n* One key message per slide\n* Prefer diagrams over paragraphs\n* Use illustrations to simplify concepts\n* Keep layouts highly readable\n* Avoid corporate stiffness\n* Make technical topics approachable\n* Use visual storytelling throughout",
+    "outputText": "",
+    "outputImage": "images/prompt-1786677539127-tik5zbscv.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-14T03:18:59.127Z",
+    "updatedAt": "2026-08-14T03:18:59.127Z"
   }
 ]
