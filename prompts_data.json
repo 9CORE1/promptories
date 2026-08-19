@@ -509,5 +509,22 @@
     "usageCount": 0,
     "createdAt": "2026-08-14T05:07:10.725Z",
     "updatedAt": "2026-08-14T05:07:10.725Z"
+  },
+  {
+    "id": "prompt-1787117032949-nr53ht12e",
+    "title": "만화스타일 프롬프트",
+    "category": "이미지",
+    "tags": [
+      "만화",
+      "콘티"
+    ],
+    "description": "만화스타일 이미지로 수정",
+    "recommendedModel": "GPT",
+    "promptText": "GPT IMAGE 2 ON CHATGPT \n\nPrompt:\nCreate a highly detailed black-and-white manga illustration based on the uploaded photo while preserving the exact pose, composition, facial expressions, clothing, and camera angle. Two friends are taking a mirror selfie inside a modern elevator. The girl stands in the foreground holding a smartphone, wearing an oversized black hoodie, long dark hair, making an exaggerated screaming expression with one eye squinted. Behind her, the boy wears an oversized white hoodie with the hood up, also screaming dramatically with wide eyes and an open mouth, fists clenched in a playful pose.\n\nIllustrate everything using bold manga ink lines, clean contour work, expressive cross-hatching, fine pen strokes, subtle screentone shading, and dynamic comic-style line weight. Keep the elevator background minimal but recognizable with metallic panels and reflections. Add tiny manga emphasis lines around both heads to enhance the comedic energy.",
+    "outputText": "",
+    "outputImage": "images/prompt-1787117032949-nr53ht12e.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-19T05:23:52.949Z",
+    "updatedAt": "2026-08-19T05:23:52.949Z"
   }
 ]
