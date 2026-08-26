@@ -537,11 +537,11 @@
     "description": "아무렇게 찍은 사진을 정돈",
     "recommendedModel": "GPT",
     "promptText": "업로드한 이미지를 다음과 같이 수정.\n\n세로 3:4 비율. 중앙에 놓인 문어모양 마시멜로, 투명 케이스 삭제, 평범한 실내 조명, 일상적인 테이블 위, 제품 전체가 또렷하게 보이는 현실적인 사진. 현실적인 사진 또는 정교한 시각 자료, 핵심 대상이 한눈에 보이는 구도, 형태와 재질이 선명하게 보이는 조명, 과한 장식과 워터마크 없이, 다음 편집에 쓰기 좋은 깨끗한 베이스 이미지.",
-    "outputText": "",
+    "outputText": "출처 : @prompt_what",
     "outputImage": "images/prompt-1787706088889-t7d3c7u95.jpeg",
     "usageCount": 0,
     "createdAt": "2026-08-26T01:01:28.889Z",
-    "updatedAt": "2026-08-26T01:01:28.889Z"
+    "updatedAt": "2026-08-26T01:09:48.464Z"
   },
   {
     "id": "prompt-1787706217931-rpa24p97n",
@@ -553,11 +553,11 @@
     "description": "판매 페이지에 바로 넣을 깨끗한 상품 컷이 필요할 때",
     "recommendedModel": "GPT",
     "promptText": "/packshot\n첨부한 베이스 이미지를 기준으로 제품의 형태와 색을 정확히 유지하고 깨끗한 스튜디오 팩샷으로 정리하세요. 배경은 따뜻한 밝은 회색, 그림자는 짧고 자연스럽게, 표면 먼지와 불필요한 반사만 제거하세요 핵심 대상의 형태와 식별 특징을 유지하고 세로 3:4 비율의 단일 결과 이미지로 완성하세요. 읽을 수 없는 가짜 문구, 새 로고, 워터마크는 만들지 마세요.",
-    "outputText": "",
+    "outputText": "출처 : @prompt_what",
     "outputImage": "images/prompt-1787706217931-rpa24p97n.jpeg",
     "usageCount": 0,
     "createdAt": "2026-08-26T01:03:37.931Z",
-    "updatedAt": "2026-08-26T01:03:37.931Z"
+    "updatedAt": "2026-08-26T01:09:55.951Z"
   },
   {
     "id": "prompt-1787706300402-avkuflfzt",
@@ -569,11 +569,11 @@
     "description": "평범한 제품 사진을 실제 캠페인 광고처럼 바꾸고 싶을 때",
     "recommendedModel": "GPT",
     "promptText": "/productad \n첨부한 베이스 이미지를 기준으로 제품의 형태·비율·재질은 유지하면서 맛있고 재미있는 캠페인으로 재연출하세요. 핫핑크와 앰버 조명, 슈거파우더, 얇은 파우더 흩날림과 정교한 반사광을 사용하고 실제 브랜드 촬영처럼 완성하세요. 흰 배경과 분할 화면은 사용하지 마세요 핵심 대상의 형태와 식별 특징을 유지하고 세로 3:4 비율의 단일 결과 이미지로 완성하세요. 읽을 수 없는 가짜 문구, 새 로고, 워터마크는 만들지 마세요.",
-    "outputText": "",
+    "outputText": "출처 : @prompt_what",
     "outputImage": "images/prompt-1787706300402-avkuflfzt.jpeg",
     "usageCount": 0,
     "createdAt": "2026-08-26T01:05:00.402Z",
-    "updatedAt": "2026-08-26T01:05:00.402Z"
+    "updatedAt": "2026-08-26T01:10:03.854Z"
   },
   {
     "id": "prompt-1787706383579-6dxnhq4dh",
@@ -585,11 +585,11 @@
     "description": "제품 하나를 강한 메인 비주얼로 세우고 싶을 때",
     "recommendedModel": "GPT",
     "promptText": "/heroshot \n'octo'를 기준으로 제품을 화면 중앙의 주인공으로 크게 배치하고 낮은 시점, 강한 윤곽광, 짙은 네이비 배경과 얇은 연무로 프리미엄 히어로 컷을 만드세요. 제품의 로고와 구조는 그대로 유지하세요 핵심 대상의 형태와 식별 특징을 유지하고 세로 3:4 비율의 단일 결과 이미지로 완성하세요. 읽을 수 없는 가짜 문구, 새 로고, 워터마크는 만들지 마세요.",
-    "outputText": "",
+    "outputText": "출처 : @prompt_what",
     "outputImage": "images/prompt-1787706383579-6dxnhq4dh.jpeg",
     "usageCount": 0,
     "createdAt": "2026-08-26T01:06:23.579Z",
-    "updatedAt": "2026-08-26T01:06:23.579Z"
+    "updatedAt": "2026-08-26T01:10:11.783Z"
   },
   {
     "id": "prompt-1787706444606-4lvtakny7",
@@ -601,11 +601,11 @@
     "description": "제품과 구성품을 공중에 띄워 기능을 보여주고 싶을 때",
     "recommendedModel": "GPT",
     "promptText": "/levitation \n이미지 'octo'를 중심에 띄우고 막대사탕과 선물상자를 균형 있게 공중 배치하세요. 구성품 사이에 충분한 간격을 두고 부드러운 그림자로 높이를 표현하며 미니멀한 광고 세트로 완성하세요 핵심 대상의 형태와 식별 특징을 유지하고 세로 3:4 비율의 단일 결과 이미지로 완성하세요. 읽을 수 없는 가짜 문구, 새 로고, 워터마크는 만들지 마세요.",
-    "outputText": "",
+    "outputText": "출처 : @prompt_what",
     "outputImage": "images/prompt-1787706444606-4lvtakny7.jpeg",
     "usageCount": 0,
     "createdAt": "2026-08-26T01:07:24.606Z",
-    "updatedAt": "2026-08-26T01:07:24.606Z"
+    "updatedAt": "2026-08-26T01:10:21.153Z"
   },
   {
     "id": "prompt-1787706497287-0ccq0vwha",
@@ -617,10 +617,10 @@
     "description": "완성된 포장 디자인을 실제 제품처럼 확인하고 싶을 때",
     "recommendedModel": "GPT",
     "promptText": "/packagingmockup \n이미지 'octo'를 기준으로 선물상자와 막대사탕의 구조는 유지하고 화려안 핫핑크 색의 스페셜마시멜로 패키지로 완성하세요. 로고 자리에는 단순한 기하학 마크만 사용하고 읽을 수 없는 가짜 문구는 넣지 마세요 핵심 대상의 형태와 식별 특징을 유지하고 세로 3:4 비율의 단일 결과 이미지로 완성하세요. 읽을 수 없는 가짜 문구, 새 로고, 워터마크는 만들지 마세요.",
-    "outputText": "",
+    "outputText": "출처 : @prompt_what",
     "outputImage": "images/prompt-1787706497287-0ccq0vwha.jpeg",
     "usageCount": 0,
     "createdAt": "2026-08-26T01:08:17.287Z",
-    "updatedAt": "2026-08-26T01:08:17.287Z"
+    "updatedAt": "2026-08-26T01:10:28.019Z"
   }
 ]
