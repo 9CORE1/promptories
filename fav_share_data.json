@@ -93,20 +93,20 @@
   {
     "id": "fav-1783472323662-c0g09fxj3",
     "title": "무브먼트 프롬프트",
-    "category": "콘텐츠 제작 관련 사이트",
+    "category": "이미지·영상제작",
     "url": "https://aicameramovements.com/",
     "desc": "AI 영상 제작에 필요한 카메라 무브먼트 프롬프트 웹사이트",
     "createdAt": "2026-07-08T00:58:43.662Z",
-    "updatedAt": "2026-07-08T00:59:18.785Z"
+    "updatedAt": "2026-08-26T05:22:52.842Z"
   },
   {
     "id": "fav-1783493661688-l4zvpzjrb",
     "title": "prompt_creator",
-    "category": "콘텐츠 제작 관련 사이트",
+    "category": "이미지·영상제작",
     "url": "https://9core1.github.io/promptmaker/",
     "desc": "방송, 홍보, 마케팅 용 비디오, 이미지 제작을 위한 프롬프트 메이커",
     "createdAt": "2026-07-08T06:54:21.688Z",
-    "updatedAt": "2026-07-09T09:34:22.370Z"
+    "updatedAt": "2026-08-26T05:22:59.664Z"
   },
   {
     "id": "config-category-order",
@@ -125,11 +125,11 @@
   {
     "id": "fav-1784691989182-8gij1qehd",
     "title": "meigen.ai",
-    "category": "콘텐츠 제작 관련 사이트",
+    "category": "이미지·영상제작",
     "url": "https://www.meigen.ai/",
     "desc": "1,400+ 수많은 디자인 + 이미지 비디오 생성 프롬프트 컬렉션\nGPT Image 2, Nano Banana, Seedance 2.0, Veo 3.1 ..",
     "createdAt": "2026-07-22T03:46:29.182Z",
-    "updatedAt": "2026-07-22T03:46:41.597Z"
+    "updatedAt": "2026-08-26T05:22:35.651Z"
   },
   {
     "id": "fav-1786063791288-4o9204wfx",
@@ -150,10 +150,11 @@
   {
     "id": "fav-1786676099850-jzogg5njb",
     "title": "Seedance 2.0 Skill",
-    "category": "AI 추천 서비스",
+    "category": "이미지·영상제작",
     "url": "https://github.com/Emily2040/seedance-2.0",
     "desc": "Seedance 2.0\nAI 에이전트 전용 스킬 패키지",
-    "createdAt": "2026-08-14T02:54:59.850Z"
+    "createdAt": "2026-08-14T02:54:59.850Z",
+    "updatedAt": "2026-08-26T05:22:09.867Z"
   },
   {
     "id": "fav-1787112829134-ksmo3idii",
@@ -174,9 +175,19 @@
   {
     "id": "fav-1787721246602-wc6f7tuyk",
     "title": "Best Seedance Prompt",
-    "category": "콘텐츠 제작 관련 사이트",
+    "category": "이미지·영상제작",
     "url": "https://bestseedanceprompts.com/",
     "desc": "영상제작 프롬프트",
-    "createdAt": "2026-08-26T05:14:06.602Z"
+    "createdAt": "2026-08-26T05:14:06.602Z",
+    "updatedAt": "2026-08-26T05:22:26.141Z"
+  },
+  {
+    "id": "fav-1787721666296-l34w1syxo",
+    "title": "awesome-seedance-2-prompts",
+    "category": "이미지·영상제작",
+    "url": "https://github.com/YouMind-OpenLab/awesome-seedance-2-prompts/tree/main",
+    "desc": "깃허브 Youmind",
+    "createdAt": "2026-08-26T05:21:06.296Z",
+    "updatedAt": "2026-08-26T05:21:50.230Z"
   }
 ]
