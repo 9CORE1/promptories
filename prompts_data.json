@@ -574,5 +574,53 @@
     "usageCount": 0,
     "createdAt": "2026-08-26T01:05:00.402Z",
     "updatedAt": "2026-08-26T01:05:00.402Z"
+  },
+  {
+    "id": "prompt-1787706383579-6dxnhq4dh",
+    "title": "히어로 제품 컷",
+    "category": "이미지",
+    "tags": [
+      "제품광고"
+    ],
+    "description": "제품 하나를 강한 메인 비주얼로 세우고 싶을 때",
+    "recommendedModel": "GPT",
+    "promptText": "/heroshot \n'octo'를 기준으로 제품을 화면 중앙의 주인공으로 크게 배치하고 낮은 시점, 강한 윤곽광, 짙은 네이비 배경과 얇은 연무로 프리미엄 히어로 컷을 만드세요. 제품의 로고와 구조는 그대로 유지하세요 핵심 대상의 형태와 식별 특징을 유지하고 세로 3:4 비율의 단일 결과 이미지로 완성하세요. 읽을 수 없는 가짜 문구, 새 로고, 워터마크는 만들지 마세요.",
+    "outputText": "",
+    "outputImage": "images/prompt-1787706383579-6dxnhq4dh.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-26T01:06:23.579Z",
+    "updatedAt": "2026-08-26T01:06:23.579Z"
+  },
+  {
+    "id": "prompt-1787706444606-4lvtakny7",
+    "title": "공중 부유 연출",
+    "category": "이미지",
+    "tags": [
+      "제품광고"
+    ],
+    "description": "제품과 구성품을 공중에 띄워 기능을 보여주고 싶을 때",
+    "recommendedModel": "GPT",
+    "promptText": "/levitation \n이미지 'octo'를 중심에 띄우고 막대사탕과 선물상자를 균형 있게 공중 배치하세요. 구성품 사이에 충분한 간격을 두고 부드러운 그림자로 높이를 표현하며 미니멀한 광고 세트로 완성하세요 핵심 대상의 형태와 식별 특징을 유지하고 세로 3:4 비율의 단일 결과 이미지로 완성하세요. 읽을 수 없는 가짜 문구, 새 로고, 워터마크는 만들지 마세요.",
+    "outputText": "",
+    "outputImage": "images/prompt-1787706444606-4lvtakny7.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-26T01:07:24.606Z",
+    "updatedAt": "2026-08-26T01:07:24.606Z"
+  },
+  {
+    "id": "prompt-1787706497287-0ccq0vwha",
+    "title": "패키지 목업",
+    "category": "이미지",
+    "tags": [
+      "제품광고"
+    ],
+    "description": "완성된 포장 디자인을 실제 제품처럼 확인하고 싶을 때",
+    "recommendedModel": "GPT",
+    "promptText": "/packagingmockup \n이미지 'octo'를 기준으로 선물상자와 막대사탕의 구조는 유지하고 화려안 핫핑크 색의 스페셜마시멜로 패키지로 완성하세요. 로고 자리에는 단순한 기하학 마크만 사용하고 읽을 수 없는 가짜 문구는 넣지 마세요 핵심 대상의 형태와 식별 특징을 유지하고 세로 3:4 비율의 단일 결과 이미지로 완성하세요. 읽을 수 없는 가짜 문구, 새 로고, 워터마크는 만들지 마세요.",
+    "outputText": "",
+    "outputImage": "images/prompt-1787706497287-0ccq0vwha.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-08-26T01:08:17.287Z",
+    "updatedAt": "2026-08-26T01:08:17.287Z"
   }
 ]
