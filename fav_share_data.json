@@ -132,15 +132,6 @@
     "updatedAt": "2026-07-22T03:46:41.597Z"
   },
   {
-    "id": "fav-1784778953990-pfess3xrw",
-    "title": "[contents] 이미지·영상 강의내용",
-    "category": "강의·강좌",
-    "url": "https://9core1.github.io/contents/",
-    "desc": "이미지·영상 강의내용",
-    "createdAt": "2026-07-23T03:55:53.990Z",
-    "updatedAt": "2026-08-07T00:51:03.235Z"
-  },
-  {
     "id": "fav-1786063791288-4o9204wfx",
     "title": "AI PPT 프롬프트 사이트",
     "category": "AI 추천 서비스",
@@ -179,5 +170,13 @@
     "url": "https://getdesign.md/",
     "desc": "디자인 키트",
     "createdAt": "2026-08-24T02:35:45.931Z"
+  },
+  {
+    "id": "fav-1787721246602-wc6f7tuyk",
+    "title": "Best Seedance Prompt",
+    "category": "콘텐츠 제작 관련 사이트",
+    "url": "https://bestseedanceprompts.com/",
+    "desc": "영상제작 프롬프트",
+    "createdAt": "2026-08-26T05:14:06.602Z"
   }
 ]
