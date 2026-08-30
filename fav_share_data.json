@@ -216,5 +216,29 @@
     "desc": "명령어 모음\nhttps://github.com/promptwhat/promptwhat-soul2-skill/tree/main/docs",
     "createdAt": "2026-08-30T08:27:57.345Z",
     "updatedAt": "2026-08-30T08:28:11.361Z"
+  },
+  {
+    "id": "fav-1788078616849-df50akn93",
+    "title": "논문 번역 깃허브",
+    "category": "추천 사이트",
+    "url": "https://github.com/PDFMathTranslate/PDFMathTranslate",
+    "desc": "",
+    "createdAt": "2026-08-30T08:30:16.849Z"
+  },
+  {
+    "id": "fav-1788078758205-5flz23n9s",
+    "title": "무료음원 uppbeat",
+    "category": "이미지·영상제작",
+    "url": "https://uppbeat.io/",
+    "desc": "장르별로 잘 정리되어 있고 개인적으로\n오래 디깅 안해도 느좋인 음원을 찾기 편했음",
+    "createdAt": "2026-08-30T08:32:38.205Z"
+  },
+  {
+    "id": "fav-1788078820704-54wi7aa12",
+    "title": "픽사베이",
+    "category": "이미지·영상제작",
+    "url": "https://pixabay.com/ko/music/",
+    "desc": "등록된 음악 트랙 수 26만개,\n완전 무료 · 출처 표기 필요없음\n이미지/영상/효과음 전부 여기서 해결할 수 있음",
+    "createdAt": "2026-08-30T08:33:40.704Z"
   }
 ]
