@@ -192,11 +192,12 @@
   },
   {
     "id": "fav-1787896453498-qlh4y47h7",
-    "title": "웹페이지 디자인.md",
+    "title": "refero.design",
     "category": "콘텐츠 제작 관련 사이트",
     "url": "https://styles.refero.design/",
     "desc": "",
-    "createdAt": "2026-08-28T05:54:13.498Z"
+    "createdAt": "2026-08-28T05:54:13.498Z",
+    "updatedAt": "2026-08-30T08:25:02.422Z"
   },
   {
     "id": "fav-1787897807758-c1zzvcks9",
@@ -205,13 +206,5 @@
     "url": "https://www.arlan.me/vault",
     "desc": "",
     "createdAt": "2026-08-28T06:16:47.758Z"
-  },
-  {
-    "id": "fav-1788077410062-spondwosf",
-    "title": "웹디자인 디자인md",
-    "category": "콘텐츠 제작 관련 사이트",
-    "url": "https://refero.design/",
-    "desc": "",
-    "createdAt": "2026-08-30T08:10:10.062Z"
   }
 ]
