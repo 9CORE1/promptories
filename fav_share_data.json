@@ -134,10 +134,11 @@
   {
     "id": "fav-1786063791288-4o9204wfx",
     "title": "AI PPT 프롬프트 사이트",
-    "category": "AI 추천 서비스",
+    "category": "콘텐츠 제작 관련 사이트",
     "url": "https://surgepix.ai/resources/ko/awesome-ppt-prompts",
     "desc": "PPT 제작 프롬프트 모음 사이트",
-    "createdAt": "2026-08-07T00:49:51.288Z"
+    "createdAt": "2026-08-07T00:49:51.288Z",
+    "updatedAt": "2026-08-30T08:25:55.379Z"
   },
   {
     "id": "fav-1786593731583-hm5d3kfmc",
@@ -206,5 +207,14 @@
     "url": "https://www.arlan.me/vault",
     "desc": "",
     "createdAt": "2026-08-28T06:16:47.758Z"
+  },
+  {
+    "id": "fav-1788078477345-98y12eqxa",
+    "title": "soul3 skills 깃허브",
+    "category": "이미지·영상제작",
+    "url": "https://github.com/promptwhat/promptwhat-soul2-skill",
+    "desc": "명령어 모음\nhttps://github.com/promptwhat/promptwhat-soul2-skill/tree/main/docs",
+    "createdAt": "2026-08-30T08:27:57.345Z",
+    "updatedAt": "2026-08-30T08:28:11.361Z"
   }
 ]
