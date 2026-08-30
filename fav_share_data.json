@@ -118,7 +118,9 @@
       "AI 대화형 도구",
       "AI 추천 서비스",
       "콘텐츠 제작 관련 사이트",
-      "추천 사이트"
+      "이미지·영상제작",
+      "추천 사이트",
+      "논문"
     ],
     "createdAt": "2026-07-08T08:52:49.895Z"
   },
@@ -220,10 +222,11 @@
   {
     "id": "fav-1788078616849-df50akn93",
     "title": "논문 번역 깃허브",
-    "category": "추천 사이트",
+    "category": "논문",
     "url": "https://github.com/PDFMathTranslate/PDFMathTranslate",
     "desc": "",
-    "createdAt": "2026-08-30T08:30:16.849Z"
+    "createdAt": "2026-08-30T08:30:16.849Z",
+    "updatedAt": "2026-08-30T08:34:42.097Z"
   },
   {
     "id": "fav-1788078758205-5flz23n9s",
@@ -240,5 +243,13 @@
     "url": "https://pixabay.com/ko/music/",
     "desc": "등록된 음악 트랙 수 26만개,\n완전 무료 · 출처 표기 필요없음\n이미지/영상/효과음 전부 여기서 해결할 수 있음",
     "createdAt": "2026-08-30T08:33:40.704Z"
+  },
+  {
+    "id": "fav-1788078941922-lw1q7i5sw",
+    "title": "이미지 영상 업스케일링",
+    "category": "이미지·영상제작",
+    "url": "https://tapirconvert.com/",
+    "desc": "",
+    "createdAt": "2026-08-30T08:35:41.922Z"
   }
 ]
