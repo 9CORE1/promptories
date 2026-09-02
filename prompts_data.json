@@ -67,7 +67,7 @@
     "promptText": "Prompt:\n{ \"task\": \"image_restoration_upscale\", \"positive_prompt\":\n\"Restore and enhance the provided image. Preserve original identity, facial structure, proportions and composition. High-fidelity photo restoration, ultra-realistic, natural skin texture, accurate details, professional photographic look. 4K output, sharp but natural focus, modern cinematic lighting, subtle volumetric lighting, professional color grading, depth of field, HDR. Shot on Arri Alexa, raw photo aesthetic, masterpiece.\",\n\"negative_prompt\": \"Creative reinterpretation, style change, identity alteration, face reshaping, exaggerated features, cartoonish, painting, illustration, over-sharpening, plastic skin, blur, noise, film grain, jpeg artifacts, distortion, bad anatomy, overexposed, underexposed, washed out colors.\", \"parameters\":\n{ \"steps\": 30, \"cfg_scale\": 6.5, \"denoising_strength\": 0.45,\n\"upscaler\": \"4x_NMKD_Siax_200k\", \"target_resolution\": \"4K\" } }",
     "outputText": "",
     "outputImage": "images/prompt-1782375021563-c2usk4m49.jpeg",
-    "usageCount": 0,
+    "usageCount": 1,
     "createdAt": "2026-06-25T08:10:21.563Z",
     "updatedAt": "2026-07-08T02:11:41.068Z"
   },
@@ -638,5 +638,22 @@
     "usageCount": 0,
     "createdAt": "2026-08-30T08:47:45.306Z",
     "updatedAt": "2026-08-30T08:47:45.306Z"
+  },
+  {
+    "id": "prompt-1788313949733-l4kw5wtpa",
+    "title": "손그림 캐릭터 일러스트",
+    "category": "이미지",
+    "tags": [
+      "손그림",
+      "일러스트"
+    ],
+    "description": "",
+    "recommendedModel": "GPT",
+    "promptText": "Transform the subject from the reference image into a cute, quirky hand-drawn doodle illustration.\n\nUse a minimalist children’s storybook / fashion sketch aesthetic with loose, imperfect black ink lines, visible scribbly pencil strokes, subtle cross-hatching, and a charming handmade feel. Keep the character’s recognizable facial features, hairstyle, face shape, clothing, accessories, and overall identity from the reference while simplifying them into a cute illustrated character.\n\nCharacter design:\n- Oversized head and small simplified body\n- Simple dot-like eyes and tiny minimal mouth\n- Soft rounded facial features\n- Slight rosy pink blush on the cheeks\n- Messy, expressive hand-drawn hair with many loose sketch lines\n- Slightly exaggerated, playful proportions\n- Natural, relaxed pose with a whimsical fashion-illustration feel\n\nArt style:\n- Black-and-white pencil/ink doodle drawing\n- Rough, imperfect sketch lines rather than clean digital outlines\n- Dense scribbled hair and clothing details\n- Light hand-colored accents\n- Subtle watercolor/crayon-like coloring\n- Minimal shading\n- White or off-white clean background\n- Lots of negative space\n- Cute, innocent, playful, cozy aesthetic\n- Looks like an original handmade notebook/fashion doodle illustration\n\nPreserve the important details of the reference image while converting everything into this consistent doodle-art style. The final image should feel hand-sketched, slightly imperfect, adorable, expressive, and effortlessly stylish, not like polished vector art or 3D cartoon art.",
+    "outputText": "",
+    "outputImage": "images/prompt-1788313949733-l4kw5wtpa.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-09-02T01:52:29.733Z",
+    "updatedAt": "2026-09-02T01:52:29.733Z"
   }
 ]
