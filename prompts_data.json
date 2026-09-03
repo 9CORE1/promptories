@@ -671,5 +671,21 @@
     "usageCount": 0,
     "createdAt": "2026-09-02T23:46:30.420Z",
     "updatedAt": "2026-09-02T23:46:30.420Z"
+  },
+  {
+    "id": "prompt-1788403829846-eauef6vi7",
+    "title": "그리드 추가 캐릭터시트 (higgsfield)",
+    "category": "이미지",
+    "tags": [
+      "캐릭터시트"
+    ],
+    "description": "",
+    "recommendedModel": "Gemini",
+    "promptText": "Add a bold, coarse dark gray crosshatch grid over the face, using thick, evenly spaced straight diagonal lines to form large diamond-shaped cells. Render it as a flat 2D graphic overlay with no curvature, warping, or perspective distortion. Clip the grid to a simple vertical oval covering only the face, excluding the hair, ears, neck, and clothing; do not draw the oval outline. Preserve the original person, facial features, expression, lighting, and composition exactly.",
+    "outputText": "",
+    "outputImage": "images/prompt-1788403829846-eauef6vi7.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-09-03T02:50:29.846Z",
+    "updatedAt": "2026-09-03T02:50:29.846Z"
   }
 ]
