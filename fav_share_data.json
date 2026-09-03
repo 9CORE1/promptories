@@ -119,8 +119,10 @@
       "AI 추천 서비스",
       "콘텐츠 제작 관련 사이트",
       "이미지·영상제작",
+      "웹페이지",
       "추천 사이트",
-      "논문"
+      "논문",
+      "업무생산성"
     ],
     "createdAt": "2026-07-08T08:52:49.895Z"
   },
@@ -255,10 +257,11 @@
   {
     "id": "fav-1788306790882-phcrmro7m",
     "title": "프레임 레퍼런스",
-    "category": "콘텐츠 제작 관련 사이트",
+    "category": "웹페이지",
     "url": "https://design.ricoui.com/brands",
     "desc": "웹페이지 공간 참조",
-    "createdAt": "2026-09-01T23:53:10.882Z"
+    "createdAt": "2026-09-01T23:53:10.882Z",
+    "updatedAt": "2026-09-03T00:40:16.895Z"
   },
   {
     "id": "fav-1788313821660-ryrvu2e9m",
@@ -275,5 +278,13 @@
     "url": "https://xn--9v2b15lq3lrld.com/",
     "desc": "",
     "createdAt": "2026-09-02T23:44:47.123Z"
+  },
+  {
+    "id": "fav-1788396001437-3nd7mfk4z",
+    "title": "웹페이지 레이아웃",
+    "category": "웹페이지",
+    "url": "https://vibeui.online/",
+    "desc": "",
+    "createdAt": "2026-09-03T00:40:01.437Z"
   }
 ]
