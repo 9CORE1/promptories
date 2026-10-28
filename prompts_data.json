@@ -704,5 +704,19 @@
     "usageCount": 0,
     "createdAt": "2026-10-08T01:04:45.966Z",
     "updatedAt": "2026-10-08T01:04:45.966Z"
+  },
+  {
+    "id": "prompt-1793156011313-prqg3fc4n",
+    "title": "사진과 일러스트 세로배열",
+    "category": "이미지",
+    "tags": [],
+    "description": "",
+    "recommendedModel": "GPT",
+    "promptText": "A split vertical comparison collage featuring a real photographic scene on the top half paired directly with a matching hand-drawn anime or webtoon digital illustration on the bottom half. The image faithfully replicates the subject's exact pose, outfit, facial expression, and background elements into a charming 2D artistic style with soft color palettes and clean linework. Whether capturing a chic fashion portrait indoors, a cozy and tender moment holding a baby goat, or a smart-casual pose in a modern art gallery, the artwork mirrors the original photo's composition, lighting, and mood while giving it a dreamy, illustrated aesthetic.",
+    "outputText": "",
+    "outputImage": "images/prompt-1793156011313-prqg3fc4n.jpeg",
+    "usageCount": 0,
+    "createdAt": "2026-10-28T02:53:31.313Z",
+    "updatedAt": "2026-10-28T02:53:31.313Z"
   }
 ]
